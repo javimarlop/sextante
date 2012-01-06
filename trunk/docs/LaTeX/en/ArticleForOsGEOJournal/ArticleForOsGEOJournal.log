@@ -1,0 +1,319 @@
+This is pdfTeX, Version 3.141592-1.40.4 (MiKTeX 2.7 Beta 4) (preloaded format=pdflatex 2007.12.12)  20 MAY 2009 10:31
+entering extended mode
+**E:/Proyectos/sextante/docs/LaTeX/en/ArticleForOsGEOJournal/ArticleForOsGEOJou
+rnal.tex
+
+(E:/Proyectos/sextante/docs/LaTeX/en/ArticleForOsGEOJournal/ArticleForOsGEOJour
+nal.tex
+LaTeX2e <2005/12/01>
+Babel <v3.8g> and hyphenation patterns for english, dumylang, nohyphenation, sp
+anish, loaded.
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\base\article.cls"
+Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\base\size12.clo"
+File: size12.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\graphics\graphicx.sty"
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\graphics\keyval.sty"
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\graphics\graphics.sty"
+Package: graphics 2006/02/20 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 90.
+
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\graphics\pdftex.def"
+File: pdftex.def 2007/06/12 v0.04h Graphics/color for pdfTeX
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\hyperref\hyperref.sty"
+Package: hyperref 2007/06/14 v6.76i Hypertext links for LaTeX
+
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\oberdiek\hycolor.sty"
+Package: hycolor 2007/04/11 v1.1 Code for color options of hyperref/bookmark (H
+O)
+)
+\@linkdim=\dimen105
+\Hy@linkcounter=\count88
+\Hy@pagecounter=\count89
+
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\hyperref\pd1enc.def"
+File: pd1enc.def 2007/06/14 v6.76i Hyperref: PDFDocEncoding definition (HO)
+)
+("C:\Archivos de programa\MiKTeX 2.7\tex\generic\oberdiek\etexcmds.sty"
+Package: etexcmds 2007/09/09 v1.1 Providing prefix for e-TeX command names (HO)
+
+
+("C:\Archivos de programa\MiKTeX 2.7\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2007/09/09 v1.2 Providing info/warning/message (HO)
+))
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\00miktex\hyperref.cfg"
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\oberdiek\kvoptions.sty"
+Package: kvoptions 2007/10/02 v2.8 Connects package keyval with LaTeX options (
+HO)
+)
+Package hyperref Info: Hyper figures OFF on input line 2571.
+Package hyperref Info: Link nesting OFF on input line 2576.
+Package hyperref Info: Hyper index ON on input line 2579.
+Package hyperref Info: Plain pages OFF on input line 2586.
+Package hyperref Info: Backreferencing OFF on input line 2591.
+
+Implicit mode ON; LaTeX internals redefined
+Package hyperref Info: Bookmarks ON on input line 2741.
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\ltxmisc\url.sty"
+\Urlmuskip=\muskip10
+Package: url 2005/06/27  ver 3.2  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 2909.
+\Fld@menulength=\count90
+\Field@Width=\dimen106
+\Fld@charsize=\dimen107
+\Choice@toks=\toks15
+\Field@toks=\toks16
+Package hyperref Info: Hyper figures OFF on input line 3393.
+Package hyperref Info: Link nesting OFF on input line 3398.
+Package hyperref Info: Hyper index ON on input line 3401.
+Package hyperref Info: backreferencing OFF on input line 3408.
+Package hyperref Info: Link coloring OFF on input line 3413.
+\Hy@abspage=\count91
+\c@Item=\count92
+\c@Hfootnote=\count93
+)
+*hyperref using default driver hpdftex*
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\hyperref\hpdftex.def"
+File: hpdftex.def 2007/06/14 v6.76i Hyperref driver for pdfTeX
+\Fld@listcount=\count94
+)
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\tools\xspace.sty"
+Package: xspace 2006/05/08 v1.12 Space after command names (DPC,MH)
+)
+(ArticleForOsGEOJournal.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+
+("C:\Archivos de programa\MiKTeX 2.7\tex\context\base\supp-pdf.tex"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count95
+\scratchdimen=\dimen108
+\scratchbox=\box26
+\nofMPsegments=\count96
+\nofMParguments=\count97
+\MPscratchCnt=\count98
+\MPscratchDim=\dimen109
+\MPnumerator=\count99
+\everyMPtoPDFconversion=\toks17
+)
+Package hyperref Info: Link coloring OFF on input line 14.
+ ("C:\Archivos de programa\MiKTeX 2.7\tex\latex\hyperref\nameref.sty"
+Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
+
+("C:\Archivos de programa\MiKTeX 2.7\tex\latex\oberdiek\refcount.sty"
+Package: refcount 2006/02/20 v3.0 Data extraction from references (HO)
+)
+\c@section@level=\count100
+)
+LaTeX Info: Redefining \ref on input line 14.
+LaTeX Info: Redefining \pageref on input line 14.
+
+(ArticleForOsGEOJournal.out) (ArticleForOsGEOJournal.out)
+\@outlinefile=\write3
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <14.4> on input line 16.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 16.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 19.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 19.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 19.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 19.
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--27
+[][][][]$\OT1/cmtt/m/n/10 http : / / www . saga-[]gis . uni-[]goettingen . de /
+
+ []
+
+[1{C:/Documents and Settings/All Users/Datos de programa/MiKTeX/2.7/pdftex/conf
+ig/pdftex.map}
+
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 34.
+ ("C:\Archivos de programa\MiKTeX 2.7\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 34.
+
+Underfull \hbox (badness 2261) in paragraph at lines 34--35
+\OT1/cmr/m/n/12 ex-ten-sion and plug--in ar-chi-tec-ture,
+ []
+
+
+Underfull \hbox (badness 1082) in paragraph at lines 39--40
+\OT1/cmr/m/n/12 li-braries, or even to serve SEX-TANTE
+ []
+
+
+Underfull \hbox (badness 8132) in paragraph at lines 43--43
+[]\OT1/cmr/bx/n/17.28 The ar-chi-tec-ture of
+ []
+
+[2] <ExtensionManager.png, id=75, 380.42125pt x 491.8375pt>
+File: ExtensionManager.png Graphic file (type png)
+
+<use ExtensionManager.png> [3 <ExtensionManager.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 76--77
+[]\OT1/cmr/m/n/12 The \OT1/cmr/m/it/12 Com-mand His-tory Man-ager\OT1/cmr/m/n/1
+2 .
+ []
+
+
+Underfull \hbox (badness 1888) in paragraph at lines 76--77
+\OT1/cmr/m/n/12 When-ever a SEX-TANTE ex-ten-sion
+ []
+
+<History.png, id=83, 488.82625pt x 380.42125pt>
+File: History.png Graphic file (type png)
+ <use History.png>
+<Toolbar.png, id=86, 88.33pt x 25.09375pt>
+File: Toolbar.png Graphic file (type png)
+ <use Toolbar.png>
+Underfull \hbox (badness 1107) in paragraph at lines 98--99
+\OT1/cmr/m/n/12 TANTE tool-box. A new win-dow will
+ []
+
+<ParametersWindow.png, id=88, 1068.99374pt x 426.59375pt>
+File: ParametersWindow.png Graphic file (type png)
+
+<use ParametersWindow.png> <RasterOutput.png, id=90, 682.55pt x 348.30125pt>
+File: RasterOutput.png Graphic file (type png)
+
+<use RasterOutput.png>
+Overfull \hbox (5.0pt too wide) in paragraph at lines 113--114
+ [][] 
+ []
+
+[4 <History.png (PNG copy)> <Toolbar.png (PNG copy)> <RasterOutput.png (PNG cop
+y)>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+<HelpAuthoring.png, id=102, 805.0075pt x 532.99126pt>
+File: HelpAuthoring.png Graphic file (type png)
+ <use HelpAuthoring.png>
+[5 <ParametersWindow.png (PNG copy)>]
+
+LaTeX Warning: Citation `GrassKepler' on page 6 undefined on input line 145.
+
+
+Underfull \hbox (badness 1237) in paragraph at lines 150--151
+[]\OT1/cmr/m/n/12 Defining the in-puts needed by the
+ []
+
+[6 <HelpAuthoring.png (PNG copy)>] <Model.png, id=119, 754.82pt x 532.99126pt>
+File: Model.png Graphic file (type png)
+
+<use Model.png>
+Underfull \hbox (badness 3386) in paragraph at lines 169--169
+[]\OT1/cmr/bx/n/17.28 Executing an ex-ten-
+ []
+
+
+Underfull \hbox (badness 6125) in paragraph at lines 171--172
+\OT1/cmr/m/n/12 All SEX-TANTE al-go-rithms (in-clud-ing
+ []
+
+<BatchProcess.png, id=121, 785.93625pt x 353.32pt>
+File: BatchProcess.png Graphic file (type png)
+ <use BatchProcess.png>
+[7 <BatchProcess.png (PNG copy)>]
+<CommandLine.png, id=129, 373.395pt x 225.84375pt>
+File: CommandLine.png Graphic file (type png)
+ <use CommandLine.png>
+[8 <Model.png (PNG copy)> <CommandLine.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 222--222
+[][][]\OT1/cmr/m/n/10 see []$\OT1/cmtt/m/n/10 https : / / svn . forge . osor . 
+eu / svn /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 222--223
+[]\OT1/cmr/m/n/12 Developers can ac-cess SEX-TANTE
+ []
+
+
+Underfull \hbox (badness 2744) in paragraph at lines 230--231
+[]\OT1/cmr/m/n/12 Zhang, J.; Pen-ning-ton, D.; Mich-
+ []
+
+[9] (ArticleForOsGEOJournal.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 3173 strings out of 95349
+ 44161 string characters out of 1184261
+ 98933 words of memory out of 1500000
+ 6325 multiletter control sequences out of 110000
+ 9185 words of font info for 33 fonts, out of 1200000 for 2000
+ 14 hyphenation exceptions out of 8191
+ 25i,8n,38p,879b,365s stack positions out of 5000i,500n,10000p,200000b,5000s
+<C:/Archivos de programa/MiKTeX 2.7/fonts/type1/bluesky/cm/cmbx12.pfb><C:/Arc
+hivos de programa/MiKTeX 2.7/fonts/type1/bluesky/cm/cmmi12.pfb><C:/Archivos de 
+programa/MiKTeX 2.7/fonts/type1/bluesky/cm/cmr10.pfb><C:/Archivos de programa/M
+iKTeX 2.7/fonts/type1/bluesky/cm/cmr12.pfb><C:/Archivos de programa/MiKTeX 2.7/
+fonts/type1/bluesky/cm/cmr17.pfb><C:/Archivos de programa/MiKTeX 2.7/fonts/type
+1/bluesky/cm/cmr7.pfb><C:/Archivos de programa/MiKTeX 2.7/fonts/type1/bluesky/c
+m/cmr8.pfb><C:/Archivos de programa/MiKTeX 2.7/fonts/type1/bluesky/cm/cmsy10.pf
+b><C:/Archivos de programa/MiKTeX 2.7/fonts/type1/bluesky/cm/cmsy8.pfb><C:/Arch
+ivos de programa/MiKTeX 2.7/fonts/type1/bluesky/cm/cmti12.pfb><C:/Archivos de p
+rograma/MiKTeX 2.7/fonts/type1/bluesky/cm/cmtt10.pfb><C:/Archivos de programa/M
+iKTeX 2.7/fonts/type1/bluesky/cm/cmtt12.pfb>
+Output written on ArticleForOsGEOJournal.pdf (9 pages, 270034 bytes).
+PDF statistics:
+ 198 PDF objects out of 1000 (max. 8388607)
+ 38 named destinations out of 1000 (max. 131072)
+ 150 words of extra memory for PDF output out of 10000 (max. 10000000)
+

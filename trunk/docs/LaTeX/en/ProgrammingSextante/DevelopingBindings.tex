@@ -1,0 +1,120 @@
+\chapter{Developing bindings}\label{DevelopingBindings}
+
+\section{Introduction}
+
+Although bindings for some popular GIS like gvSIG or OpenJUMP already exist, you might want to add SEXTANTE to your own application, or to any other software using some different data model. In this chapter we will see how to do that, so you can create the corresponding bindings between SEXTANTE and your software.
+
+There are to different parts in the process of creating those bindings, both of which we will review in detail.
+
+\begin{itemize}
+ \item Bind the SEXTANTE data model with your data model. This will allow SEXTANTE to access your data. This is the only thing you need to do if you want to use SEXTANTE programatically or you plan to develop you own GUI for accessing SEXTANTE algorithms
+\item Incorporate SEXTANTE graphical elements into your application. Apart from using the geoalgorithms included in SEXTANTE from your source code, you can easily integrate them into you GIS app, using some graphical elements that make part of the SEXTANTE library as well. Of course, you can develop your own GUI elements and call SEXTANTE geoalgorithms from them, but that is a hard work. A better solution is to use the graphical elements included in SEXTANTE, which will help users of your application to get the best out of the set of algorithms provided by SEXTANTE.
+\end{itemize}
+
+\section{Binding the data model}
+
+Bindings are basically wrappers for your data classes, so SEXTANTE can access those data classes through them. Wrapper classes implement the interfaces that we already know, and that are designed to wrap raster layers, vector layers and tables.
+
+\begin{itemize}
+ \item \texttt{IRasterLayer}
+\item \texttt{ILayer}
+\item \texttt{ITable}
+\end{itemize}
+
+Instead of implementing this interfaces directly, there are three additional classes that should be extended, and that make the creation of bindings much easier.
+
+\begin{itemize}
+ \item \texttt{AbstractRasterLayer}
+\item \texttt{AbstractVectorLayer}
+\item \texttt{AbstractTable}
+\end{itemize}
+
+For all of them, creating the corresponding binding class should include implement the following capabilities:
+
+\begin{itemize}
+ \item Construction of the object from an object of your data model. Methods used for this will be used when passing data objects to a SEXTANTE algorithm, and will do the actual wrapping of an already existing object that does not implement the required SEXTANTE interfaces.
+\item Construction of the object from scratch, using arguments defining the characteristics of the object to create. This is used when creating output objects. Methods responsible of this should create a data object using the data model that you are binding, and then wrapping it with the methods or techniques mentioned in the previous item.
+\item Providing the logic for data access through the binding classes, so once the data objects are wrapped the data they contain can be accessed by SEXTANTE algorithms
+\end{itemize}
+
+For vector layers and tables, additional interfaces have to be implemented to deal with features and table record, which are accessed through iterators. 
+
+\begin{itemize}
+ \item \texttt{IRecordsetIterator}
+\item \texttt{IFeatureIterator}
+\end{itemize}
+
+Those iterators return objects implementing the \texttt{IRecord} and \texttt{IFeature} interfaces. This interfaces are, however, very simple, and code from other bindings can easily be reused. Two simple implementations already exist and are included in the SEXTANTE source code, namely \texttt{FeatureImpl} and \texttt{RecordImpl}.
+
+Another important part of bindings is the output factory. We already know about it, since it was needed to execute SEXTANTE algorithms, as we saw in chapter \ref{UsingGeoalgorithms}. Creating the corresponding output factory for your bindings is easy. You just have to extend the \texttt{OutputFactory} abstract class, and implement its methods so they return you particular wrappers.
+
+Having a look at some already developed binding is the best way of understanding how to create your new bindings. The OpenJUMP data model is very simple, and its bindings are thus very simple as well. You can checkout the \texttt{bindings/openjump} folder from the SVN repository and starting exploring them.
+
+Javadocs for the SEXTANTE main classes are available for download from the SEXTANTE website. Check the description of each one of the methods of each interface and class to get more information.
+
+\section{Using SEXTANTE graphical elements}
+
+Once you have created the bindings for your data model, you can already call SEXTANTE algorithms programmatically. You could also create a nice GUI to get parameter values from the user and then execute algorithms with those values. Although you can do all that work from scratch, SEXTANTE also includes some graphical elements that you can reuse, and incorporating them into your application is much easier than doing all the work yourself.
+
+These elements include:
+
+\begin{itemize}
+ \item A toolbox
+ \item A graphical modeler, to link several processes and create a workflow
+ \item A batch processing interface
+ \item A command-line interface
+ \item A history manager
+ \item A results manager, to manage results others than layers or tables, which might not fit into the data model of a traditional GIS. 
+\end{itemize}
+
+To include these in your GIS, you must follow the following steps:
+
+\begin{enumerate}
+\item Create an input factory. An input factory implements the \texttt{IInputFactory} interface, and will be used by SEXTANTE to get the data objects currently available in the GIS. That means that, when you load a layer and then want to execute an algorithm, SEXTANTE must know that you have that layer (and maybe other ones), in order to show you a list of them to choose from, and then pass the chosen one(s) to the algorithm. The input factory turns your GIS data into data that fit into the SEXTANTE data model (making use of the data model bindings), and acts as a source of valid data for SEXTANTE graphical elements and algorithms.
+
+The input factory also has to be able to create valid data objects not from other java objects representing layers or tables, but from files. If you want to use the batch processing interface (and you probably will), it will need to open files directly, since it does not take it inputs from the GIS.
+
+Instead of implementing the \texttt{IInputFactory interface}, extending the \texttt{AbstractInputFactory} class is recommended.
+
+\item Create a post--process task factory and a post--process task. Once an algorithm has created its output objects, you must do something with them. This usually includes adding them to a view in your GIS, but maybe you want some other operations to be performed on those objects. The post--processing task is responsible of browsing the outputs generated by an algorithm and managing them. The post--processing task factory just returns a suitable post-processing task for a given algorithm.
+
+There is an interface for the post--process task factory:\texttt{IPostProcessTaskFactory}. The task itself is just a Java \texttt{Runnable}.
+
+The post-processing task should also add all data objects created to the input factory (using its \texttt{add(IDataObject) method}), so they are available for the next algorithm without having to rebuild the set of SEXTANTE data objects from the ones currently in the GIS.
+
+\item Once you have created this classes, you have to set them as the current input factory and process task factory. The \texttt{SextanteGUI} class is the one used for that, and it centralizes all the GUI elements and the additional classes needed.
+
+There are three methods that you have to use:
+
+\begin{verbatim}
+SextanteGUI.setOutputFactory(OutputFactory);
+SextanteGUI.setInputFactory(IInputFactory);
+SextanteGUI.setPostProcessTaskFactory(IPostProcessTaskFactory);
+\end{verbatim}
+
+The first one is needed to execute algorithm with the right output factory. You should have an output factory in your bindings, according to what we saw in the last section.
+
+Before using them, you should call the \emph{initialize()} method.
+
+\begin{verbatim}
+SextanteGUI.initialize();
+\end{verbatim}
+  
+This will load all configuration parameters that the user might have setted in a previous session using any of the corresponding SEXTANTE GUI elements.
+
+And before all that, do not forget to initialize the library, so the list of available algorithms is created. Otherwise, you will see no algorithms at all.
+
+\begin{verbatim}
+Sextante.initialize()
+\end{verbatim}
+
+\item And now, you can use methods from the \texttt{GUIFactory} class to show up the SEXTANTE tools. For example, to show the toolbox dialog, call the \texttt{showToolboxDialog()} method
+
+\begin{verbatim}
+SextanteGUI.showToolboxDialog(Frame parent);
+\end{verbatim}
+
+This will show the toolbox, which is already fully functional. That means that you can already use it to execute an algorithm, and it will create the corresponding interface to set the parameter values (if the algorithm requires layers, they will be taken from the input factory) and generate new layers (which will be created using the selected output factory and managed using the post--process task), and you do not have to do anything but adding that single line.
+
+Use the plug--in mechanism of your GIS application to create an extension that calls the corresponding method of the \texttt{GUIFactory} class when a button is clicked or a menu selected.
+\end{enumerate}
