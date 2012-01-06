@@ -1,0 +1,40 @@
+<project name="" default="create-jars" basedir=".">
+    <description>
+        SEXTANTE bindings for ArcGIS
+    </description>
+  <!-- set global properties for this build -->
+
+  <property name="dist"  location="dist"/>
+  <property name="bin"  location="bin"/>
+
+  <target name="create-jars">
+  	<ant antfile="../sextante/build.xml" inheritall="no" />
+
+
+    <jar jarfile="C:\Program Files (x86)\ArcGIS\Desktop10.0\java\lib\ext\sextante_arcgis_bindings.jar" manifest="MANIFEST.MF">
+  		<fileset dir="bin">
+            <include name="**"/>
+ 		</fileset>
+ 	</jar>
+
+	</target>
+
+	<target name="distribution">
+
+		<mkdir dir="../../tmp/bindings/arcgis"/>
+	    <jar jarfile="../../tmp/bindings/arcgis/sextante_arcgis_bindings.jar" manifest="MANIFEST.MF">
+	  		<fileset dir="bin">
+	            <include name="**"/>
+	 		</fileset>
+	 	</jar>
+						<copy todir="../../tmp/bindings/arcgis">
+                            <fileset dir="." includes="readme.txt"/>
+							<fileset dir="." includes="sextante.tbx"/>
+                        </copy>
+
+
+
+	</target>
+
+
+</project>

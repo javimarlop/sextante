@@ -1,0 +1,14 @@
+state=final
+name=SEXTANTE
+official=true
+owner=Victor Olaya
+code=es.unex.sextante
+operating-system=all
+architecture=all
+web-url=http\://www.sextantegis.com
+java-version=j1_6
+gvSIG-version=1.11
+version=1.0
+type=plugin
+description=Official SEXTANTE distribution for gvSIG
+model-version=1.0.1

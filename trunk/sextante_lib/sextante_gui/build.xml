@@ -1,0 +1,45 @@
+<project name="SEXTANTE_LIB" default="generate-without-source" basedir=".">
+    <description>
+        SEXTANTE_GUI
+    </description>
+	<property name="version.number" value="0.7"/>
+
+  <target name="generate-without-source"
+  	description="generate the distribution without the source file">
+
+  	       <tstamp>
+  	         <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+  	       </tstamp>
+
+  	    <manifest file="MANIFEST.MF">
+  	        <attribute name="Implementation-Version"
+  	            value="${version.number}"/>
+  	        <attribute name="Built-Date" value="${TODAY}"/>
+  	   </manifest>
+
+    <jar jarfile="../dist/sextante_gui.jar" manifest="MANIFEST.MF">
+  		<fileset dir="bin">
+  			<include name="**"/>
+ 		</fileset>
+ 	</jar>
+
+    <jar jarfile="../dist/sextante_gui.jar" update ="true">
+        <fileset dir=".">
+            <include name="i18n/**"/>
+        </fileset>
+    </jar>
+
+    <jar jarfile="../dist/sextante_gui.jar" update ="true">
+        <fileset dir=".">
+            <include name="images/**"/>
+        	<include name="grass/**"/>
+        </fileset>
+    </jar>
+
+    <copy todir="../dist">
+    	<fileset dir="lib" includes="**"/>
+    </copy>
+
+  </target>
+
+</project>

@@ -1,0 +1,40 @@
+<project name="SEXTANTE_OJ" default="generate-without-source" basedir=".">
+    <description>
+        Bindings for OpenJUMP
+    </description>
+
+	<property name="version.number" value="0.7"/>
+  <target name="generate-without-source">
+
+  	<ant antfile="../sextante/build.xml" inheritall="no" />
+
+    <mkdir dir="../lib"/>
+    <mkdir dir="../lib/ext"/>
+    <jar jarfile="../dist/sextante_openjump.jar">
+        <fileset dir="bin">
+            <include name="**"/>
+        </fileset>
+    </jar>
+        <copy todir="../openjump_app/lib/ext">
+             <fileset dir="../dist" includes="**"/>
+        </copy>
+    <copy todir="../lib/ext">
+         <fileset dir="../dist" includes="**"/>
+    </copy>
+  </target>
+
+	<target name="distribution">
+		<mkdir dir="../../tmp/bindings/openjump"/>
+		<jar jarfile="../../tmp/bindings/openjump/sextante_openjump.jar">
+		        <fileset dir="bin">
+		            <include name="**"/>
+		        </fileset>
+		    </jar>
+		<copy todir="../../tmp/bindings/openjump">
+		<fileset dir=".">
+		 <include name="readme.txt"/>
+		 </fileset>
+		</copy>
+	</target>
+
+</project>

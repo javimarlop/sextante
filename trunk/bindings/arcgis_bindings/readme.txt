@@ -1,0 +1,86 @@
+Installing SEXTANTE for ArcGIS
+-------------------------------
+
+To install SEXTANTE for ArcGIS, follow these steps.
+
+-ArcGIS 9.3.1 or higher is needed to run SEXTANTE.
+
+-The ArcDesktop Java SDK must be installed prior to SEXTANTE.  The ArcDesktop Java SDK is on the install media provided with ESRI software at version 10 and higher.  At version 9.3.1, it must be separately purchased as ArcEngine.
+
+-In your ArcGIS installation folder, locate the Java extensions folder under java\lib\ext. 
+
+-From the sextante.zip file, unzip the content of the "arcgis_bindings" folder in the Java extensions folder
+
+-Do the same with the content of the "core" folder
+
+-Now start ArcGIS, and add a new toolbox. Right click on the toolbox and select "Add...->Tool..." to add new algorithms to it.
+
+-You will find a group of algorithms named "SEXTANTE tools". It contains all the SEXTANTE algorithms divided in subgroups. Select the ones you want to add to the toolbox.
+
+-You can also use the toolbox provided in this same file, in the "arcgis_bindings" folder. It contains all SEXTANTE and SAGA algorithms, divided in their corresponding groups.
+
+-IMPORTANT: to use SEXTANTE algorithms, they should run on the foreground, not in the background. Uncheck the corresponding checkbox in the geoprocessing settings before running any SEXTANTE algorithm. Otherwise, the process might freeze.
+
+Installing the SEXTANTE add-in
+--------------------------------
+
+To be able to use the results window where chart and text results are displayed, you need to install the SEXTANTE add-in. This add-in will add a new toolbar with a button that you can use to access the results window. To install it, do the following:
+
+-Among the files that you have copied to the java extensions folder, you should find one named sextante_addins.esriaddin. Just double click on it to install it.
+
+-Now in ArcMap you will have a new toolbar named SEXTANTE Toolbar with a single button. Add it to your toolbar using the Customize->Toolbars menu.
+
+-Enjoy SEXTANTE!
+
+
+
+Configuration. Limitations and known issues.
+-------------------------------
+
+This is an early release of SEXTANTE for ArcGIS and, as such, has certain limitations. Please, read this section carefully before using SEXTANTE. It also contains information about how to configure SEXTANTE for ArcGIS and some useful tips and suggestions.
+
+
+---Selection in feature layers---
+
+*SEXTANTE adds a new category (named SEXTANTE) to the geoprocessing environment. It currently contains just one parameter named "Use only selected features". If this parameter is set to true (the corresponding check box is checked), algorithms using feature layers will only use the features currently selected. If no selection exists for those layers, or if the parameter is set to false, all features will be used.
+
+
+---Output formats---
+
+*Output raster layers are stored as tif files. If the selected output filename doesn't have the "tif" extension, it will be automatically added to it.
+*Output vector layers are stored as shapefiles. If the selected output filename doesn't have the "shp" extension, it will be automatically added to it.
+*Output tables are stored as DBase files. If the selected output filename doesn't have the "dbf" extension, it will be automatically added to it.
+
+
+---Overwriting---
+
+*Overwriting can cause unpredicted results if the output file is already opened in ArcMap or it is used as input to the algorithm. If the selected output file exists but it is not open, it can be overwritten if the "Overwrite the output of geoprocessing operations" check box is checked in the "Geoprocessing options" settings dialog. Otherwise, an error message will be shown and the algorithm won't run.
+
+
+---Processing Extent---
+
+*SEXTANTE algorithms do not honor the "Processing Extent" settings. In the case of an algorithm requiring several raster layers, they must cover the same extent and have the same cellsize. An error message is shown in the execution dialog otherwise. The output raster layer (in case the algorithm generates one) will have that same extent and cellsize.
+*Algorithms requiring a processing extent (such as interpolation ones), will explicitly show a extent selection parameter along with other parameters needed.
+
+
+---Geometries---
+
+*Polygons with holes cannot be created yet by SEXTANTE
+
+
+---Model Builder---
+
+*Certain algorithms will not work properly on the Model Builder, due to differences between the semantics of SEXTANTE algorithms and ArcGIS tools. Particularly, those generating vector layers from which the attributes table is to be used in a later step cannot be used like that, since they have no way of updating the schema of the resulting table (which is needed in the Model Builder). The SEXTANTE modeler checks the existence of table fields at run time, while the Model Builder checks that at design time, hence this limitation. This algorithms can be, however, used in the Model Builder as long as the attributes table and its schema are not relevant to algorithms executed later within the model.
+
+
+---Attributes Table---
+
+*ArcGIS might in some cases report errors in attribute tables when selecting the Open Attribute Table command, complaining that a "column was specified that does not exist". These layers however, can be opened with most other GISs, so re-saving the shapefile (or exporting to another format) with any of them might give a temporary fix for this problem.
+
+
+Troubleshooting
+--------------------
+
+If you are having problems with SEXTANTE for ArcGIS, you can help us debugging the software by reporting bugs. The following website will give you more information about how to enable the trouble shooting elements in ArcGIS, so you can give us more detailed descriptions of your problems.
+
+http://resources.esri.com/help/9.3/arcgisserver/adf/java/help/doc/4ecc7c38-c7d9-4e99-bcf4-de28ab770faa.htm

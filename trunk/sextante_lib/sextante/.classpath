@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/libMath"/>
+	<classpathentry exported="true" kind="lib" path="lib/jcommon-1.0.14.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jfreechart-1.0.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/kxml2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jts-1.12.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
