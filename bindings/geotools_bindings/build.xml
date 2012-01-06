@@ -1,0 +1,25 @@
+<project name="" default="copy" basedir=".">
+
+  <property name="lib-dir" location="../geotools27/lib/sextante"/>
+
+  <target name="copy"
+        description="">
+        <mkdir dir="${lib-dir}"/>
+        <copy todir="${lib-dir}">
+           <fileset dir="../dist" includes="**"/>
+         </copy>
+  </target>
+
+<target name="distribution">
+        <mkdir dir="../../tmp/bindings/geotools27"/>
+    <jar jarfile="../../tmp/bindings/geotools27/sextante_gt27_bindings.jar">
+        <fileset dir="bin">
+            <include name="**"/>
+                <exclude name="**/examples/**"/>
+                <exclude name="**/test/**"/>
+        </fileset>
+    </jar>
+
+  </target>
+
+</project>

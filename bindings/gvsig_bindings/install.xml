@@ -1,0 +1,11 @@
+<project name=es.unex.sextante" default="main" basedir=".">
+  <target name="main" depends="copy_files"/>
+  <target name="copy_files">
+    	<copy failonerror="false" todir="${gvsig_dir}">
+  		<fileset dir="${extensions_dir}/es.unex.sextante/install/files" includes="**"/>
+	</copy>
+	<delete quiet="false" failonerror="true" file="${extensions_dir}/com.iver.cit.gvsig/lib/jts-1.9_gvSIG.jar"/>
+	<delete quiet="false" failonerror="true" file="${extensions_dir}/com.iver.cit.gvsig/lib/jtsio-1.8.jar"/>
+  </target>
+</project>
+

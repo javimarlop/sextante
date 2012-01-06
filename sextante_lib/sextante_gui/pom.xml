@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>es.unex.sextante</groupId>
+		<artifactId>lib</artifactId>
+		<version>0.6-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>es.unex.sextante.lib</groupId>
+			<artifactId>sextante</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+        <dependency>
+          <groupId>es.unex.sextante.lib</groupId>
+          <artifactId>sextante_wps</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>es.unex.sextante.lib</groupId>
+			<artifactId>libDocEngines</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jgraph</groupId>
+			<artifactId>jgraph</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>info.clearthought</groupId>
+			<artifactId>tablelayout</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.beanshell</groupId>
+			<artifactId>bsh</artifactId>
+		</dependency>
+	</dependencies>
+
+
+	<!-- =========================================================== -->
+	<!--     Module Description                                      -->
+	<!-- =========================================================== -->
+	<groupId>es.unex.sextante.lib</groupId>
+	<artifactId>sextante_gui</artifactId>
+	<packaging>jar</packaging>
+	<name>Sextante GUI</name>
+</project>
