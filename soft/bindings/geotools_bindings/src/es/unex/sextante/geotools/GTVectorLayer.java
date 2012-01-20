@@ -123,7 +123,7 @@ public class GTVectorLayer
          if (m_iShapeType == IVectorLayer.SHAPE_TYPE_POINT) {
             builder.add("geom", MultiPoint.class);
          }
-         if (m_iShapeType == IVectorLayer.SHAPE_TYPE_LINE) {
+         else if (m_iShapeType == IVectorLayer.SHAPE_TYPE_LINE) {
             builder.add("geom", MultiLineString.class);
          }
          else {
