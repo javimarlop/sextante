@@ -59,7 +59,8 @@ public class gvRasterLayer
       extent.setYRange(m_Layer.getMinY(), m_Layer.getMaxY(), true);
       m_AnalysisExtent = extent;
       m_Projection = m_Layer.getProjection();
-      m_sFilename = m_Layer.getDataSource().getDataset(0)[0].getFName();
+      if (m_Layer.getDataSource() != null)
+    	  m_sFilename = m_Layer.getDataSource().getDataset(0)[0].getFName();
       m_sName = m_Layer.getName();
       m_iBands = m_Layer.getBandCount();
       m_OutputChannel = null;
