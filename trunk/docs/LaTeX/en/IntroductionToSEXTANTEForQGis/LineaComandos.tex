@@ -1,0 +1,113 @@
+\chapter{Using SEXTANTE from the console. Creating scripts.}
+
+\section{Introduction}
+
+The console allows advanced users to increase their productivity and performe complex operations that cannot be performed using any of the other elements of the SEXTANTE GUI. Models involving several algorithms can be defined using the command--line interface, and additional operations such as loops and conditional sentences can be added to create more flexible and powerful workflows.
+
+There is not a SEXTANTE console in QGIS, but all SEXTANTE commands are available instead from QGIS built--in Python console. That means that you can incorporate those command to your console work and connect SEXTANTE algorithms to all the other features (including methods from the QGIS API) available from there.
+
+The code that you can execute from the Python console, even if it does call any SEXTANTE method, can be converted into a new  SEXTANTE algorithm that you can later call from the toolbox, the graphical modeler or any other SEXTANTE component, just like you do with any other SEXTANTE algorithm. In fact, some algorithms that you can find in the toolbox, like all the ones in the \emph{mmqgis} group, are simple scripts.
+
+In this chapter we will see how to use SEXTANTE from the QGIS Python console, and also how to write your own algorithms using Python.
+
+
+\section{Calling SEXTANTE from the Python console}
+
+The first thing you have to do is to import the \texttt{Sextante} class with the following line:
+
+\begin{\begin{verbatim}
+>>from sextnate.core.Sextante import Sextante
+\end{verbatim}
+
+Now, there is basically just one (interesting) thing you can do with SEXTANTE from the console: to execute an algorithm. That is done using the \texttt{runalg()} method, which takes the name of the algorithm to execute as its first parameter, and then a variable number of additional parameter depending on the requirements of the algorithm. So the first thing you need to know is the name of the algorithm to execute. That is not the name you see in the toolbox, but rather a unique command--line name. To find the right name for your algorithm, you can use the \texttt{algslist()} method. Type the following line in you console:
+
+
+
+You will see something like this. 
+
+****
+
+That's a list of all the available algorithms, alphabetically ordered, along with their corresponding command--line names.
+
+You can use a string as a parameter for this method. Instead of returning the full list of algorithm, it will only display those that include that string. If, for instance, you are looking for an algorithm to calculate slope from a DEM, type \texttt{alglist("slopeaspectcurvature")} to get the following result:
+
+****
+
+Once you know the command--line name of the algorithm, the next thing to do is to know the right syntax to execute it. That means knowing which parameters are needed and the order in which they have to be passed when calling the \texttt{runalg()} method. SEXTANTE has a method to describe an algorithm in detail, which can be used to get a list of the parameters that an algorithms require and the outputs that it will generate. To do it, you can use the \texttt{alghelp(name\_of\_the\_algorithm)} method. Use the command--line name of the algorithm, not the full descriptive name.
+
+Calling the method with \texttt{saga:slopeaspectcurvature} as parameter, you get the following description.
+
+\begin{verbatim}
+>Sextante.alghelp("saga:slopeaspectcurvature")
+ALGORITHM: Slope, Aspect, Curvature
+   ELEVATION <ParameterRaster>
+   METHOD <ParameterSelection>
+   SLOPE <OutputRaster>
+   ASPECT <OutputRaster>
+   CURV <OutputRaster>
+   HCURV <OutputRaster>
+   VCURV <OutputRaster>
+\end{verbatim}    
+
+Now you have everything you need to run any algorithm. As we have already mentioned, there is only one single command to execute algorithms: \texttt{runalg}. Its syntax is as follows:
+
+\begin{verbatim}
+> runalg{name_of_the_algorithm, param1, param2, ..., paramN)
+\end{verbatim}
+
+The list of parameters to add depends on the algorithm you want to run, and is exactly the list that the \texttt{describealg} method gives you, in the same order as shown.
+
+Depending on the type of parameter, values are introduced differently. The next one is a quick review of how to introduce values for each type of input parameter
+\begin{itemize}
+	\item Raster Layer, Vector Layer or  Table. Simply use a string with the name that identifies the data object to use (the name it has in the QGIS Table of Contents) or a filename (if the corresponding layer is not opened, it will be opened, but not added to the map canvas). If you have an instance of a QGIS object representing the layer, you can also pass it as parameter. If the input is optional and you do not want to use any data object, use \texttt{None}. 
+	\item Selection. If an algorithm has a selection parameter, the value of that parameter should be entered using an integer value. To know the available options, you can use the \texttt{algoptions} command, as shown in the following example:
+
+\begin{verbatim}
+>>Sextante.algoptions("saga:slopeaspectcurvature")
+METHOD(Method)
+	0 - [0] Maximum Slope (Travis et al. 1975)
+	1 - [1] Maximum Triangle Slope (Tarboton 1997)
+	2 - [2] Least Squares Fitted Plane (Horn 1981, Costa-Cabral & Burgess 1996)
+	3 - [3] Fit 2.Degree Polynom (Bauer, Rohdenburg, Bork 1985)
+	4 - [4] Fit 2.Degree Polynom (Heerdegen & Beran 1982)
+	5 - [5] Fit 2.Degree Polynom (Zevenbergen & Thorne 1987)
+	6 - [6] Fit 3.Degree Polynom (Haralick 1983)
+\end{verbatim}
+
+In this case, the algorithm has one of such such parameters, with 7. Notice that ordering is zero--based.
+
+	\item Multiple input. The value is a string with input descriptors separated by semicolons. As in the case of single layers or tables, each input descriptor can be the data object name, or its filepath.
+	
+\item \lbrack Table Field from XXX. Use a string with the name of the field to use. This parameter is case--sensitive.
+\item \lbrack Fixed Table. Type the list of all table values separated by commas and enclosed between quotes. Values start on the upper row and go from left to right. You can also use a 2D array of values representing the table.
+
+\end{itemize}
+
+Boolean, string and numerical parameters do not need any additional explanations.
+
+Input parameters such as strings or numerical values have default values. To use them, \texttt{None} in the corresponding parameter entry.
+
+For output data objects, type the filepath to be used to save it, just as it is done from the toolbox. If you want to save the result to a temporary file, use \texttt{None}. 
+
+Unlike when an algorithm is executed from the toolbox, outputs are not added to the map canvas if you execute that same algorithm from the Python console. If you want to add an output to it, you have to do it yourself after running the algorithm. To do so, you can use the 
+
+*****
+
+
+\section{Creating scripts and running them from the toolbox}
+
+You can create your own algorithms by writing the corresponding Python code and adding a few extra lines to supply additional information needed by SEXTANTE. Let's have the following code, which calculates the Topographic Wetness Index directly from a DEM
+
+
+****
+
+As you can see, it involves 3 algorithms, all of them coming from SAGA. The last one of them calculates several topographic indices, and it needs a slope layer and a flow accumulation layer. We do not have these ones, but since we have the DEM, we can calculate them calling the corresponding SAGA algorithms.
+
+The part of the code where this processing takes place is not difficult to understand if you have read the previous sections in this chapter. The first lines, however, need some additional explanation. They provide SEXTANTE the information it needs to turn your code into an algorithm that can be run from any of its components, like the toolbox or the graphical modeler.
+
+These lines start with a double Python comment symbol and have the following structure: \emph{[parameter\_name]=[parameter\_type] [optional\_values]}. Here is a list of all the parameter types that SEXTANTE support in its scripts, their syntax and some examples.
+
+\begin{itemize}
+	\item 
+\end{itemize}
+
