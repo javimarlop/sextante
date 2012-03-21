@@ -2,7 +2,15 @@
 
 \section{Introduction}
 
-SEXTANTE can be extended using additional applications, calling them from within SEXTANTE. Currently, SAGA and R are supported. This chapter will show you how to do it. Once you have configured the system, you will be able to execute external algorithms from any SEXTANTE component like the toolbox or the graphical modeler, just like you do with any other SEXTANTE geoalgorithm.
+SEXTANTE can be extended using additional applications, calling them from within SEXTANTE. Currently, SAGA, GRASS and R are supported. This chapter will show you how to do it. Once you have configured the system, you will be able to execute external algorithms from any SEXTANTE component like the toolbox or the graphical modeler, just like you do with any other SEXTANTE geoalgorithm.
+
+\subsection{A note on file formats}
+
+When using an external software, opening a file in QGIS does not mean that it can be opened and process as well on that other woftware. In most cases, it can read what you have opened in QGIS, but in some cases, that might not be the case. When using databases or uncommon file formats, whether for raster of vector layers, problems might arise. If that happens, try to use well known file formats that you are sure that are understood by both programs, and check to console output (in the history and log dialog) for knowing more about what is going wrong.
+
+Currently, if the layer you want to process comes from a remote service or a database connection, it cannot be processed by algorithms coming from SGA, GRASS or R, but we are working on solving this issue...(stay tuned for the next version, which might probably be able to do it)
+
+Regarding output formats, raster layers can be saved as TIFF (.tif) (the default format) or ESRI ASCII files (.asc), while vector layers are saved as shapefiles (.shp). These have been chosen as the \emph{lingua franca} between supported third party applications and QGIS. Providers not using external application can process anylayer that you can open in QGIS, since they open it for analysis trough QGIS.
 
 
 \section{SAGA}
@@ -39,12 +47,6 @@ For algorithms that do not use multiple raster layers, or for those that do not 
 By default, when a SAGA algorithm takes a vector layer, it will use all its features, even if a selection exist in QGIS. You can make SAGA aware of that seelction by checking the \emph{Use selected features} item in the SAGA settings group. When you do so, each time you execute a SAGA algorithm that uses a vector layer, the selected features of that layer will be exported to a new layer, and SAGA will work with that new layer instead.
 
 Notice that if you select this option, a layer with no selection will behave like a layer with all its features selected, not like an empty layer.
-
-\subsection{File formats}
-
-Since SAGA and QGIS are different software packages, opening a file in one of them does not mean that the other one can open and process it. In most cases, SAGA can read waht you have opened in QGIS, but in some cases, that might not be the case. When using databases or uncommon file formats, whether for raster of vector layers, problems might arise. If that happens, try to use well known file formats that you are sure that are understood by both programs, and check to SAGA console output (in the history and log dialog) for knowing more about what is going wrong.
-
-Regarding output formats, raster layers can be saves as TIFF (.tif) (the default format) or ESRI ASCII files (.asc), while vector layers are saved as shapefiles (.shp).
 
 \section{R. Creating R scripts}\label{rscripts}
 
