@@ -168,7 +168,7 @@ The parameter name is the name that will be shown to the user when executing the
 
 Layers and tables values are strings containing the filepath of the corresponding object. To turn them into a QGIS object, you can use the \texttt{getObject()} method in the \texttt{Sextante} class. Multiple inputs also have a string value, which contains the filepaths to all selected object, separated by semicolons.
 
-Output are defined in a similar manner, using the following tags:
+Outputs are defined in a similar manner, using the following tags:
 
 \begin{itemize}
 	\item \texttt{output raster}
@@ -178,7 +178,7 @@ Output are defined in a similar manner, using the following tags:
 
 The value asigned to the output variables is always a string with a filepath. It will correspond to a temporary filepath in case the user has not entered any output filename.
 
-When you declare an output, SEXTANTE will try to add it to QGIS once the algorithm is finished. That is the reason why, although the \textt{runalg()} method does not load the layers it produces, the final TWI layer will be loaded, since it is saved to the file entered by the user, which is the value of the corresponding output.
+When you declare an output, SEXTANTE will try to add it to QGIS once the algorithm is finished. That is the reason why, although the \texttt{runalg()} method does not load the layers it produces, the final TWI layer will be loaded, since it is saved to the file entered by the user, which is the value of the corresponding output.
 
 Do not use the \texttt{load()} method in your scripta algorithms, but just when working with the console line. If a layer is created as output of an algorithm, it should be declared as such. Otherwise, you will not be able to properly use the algorithm in the modeler, since its syntax (as defined by the tags explained above) will not match what the algorithm really creates.
 
