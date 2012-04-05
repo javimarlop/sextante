@@ -77,13 +77,6 @@ public class gvGUIFactory
    }
 
 
-   private URL getCEWarningWebpageURL() throws MalformedURLException {
-
-      return new File(SextanteGUI.getSextantePath() + File.separator + "ce_warning.html").toURL();
-
-   }
-
-
    private void showFirstTimeWarning() {
 
       final boolean b = new Boolean(SextanteGUI.getSettingParameterValue(IS_NOT_FIRST_TIME_USING_SEXTANTE
@@ -100,12 +93,7 @@ public class gvGUIFactory
          jEditorPane.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
          jEditorPane.setContentType("text/html");
          try {
-            if (VersionChecker.isGvSIGCE()) {
-               jEditorPane.setPage(getFirstTimeWebpageURL());
-            }
-            else {
-               jEditorPane.setPage(getCEWarningWebpageURL());
-            }
+        	 jEditorPane.setPage(getFirstTimeWebpageURL());
          }
          catch (final Exception e) {
             return;
@@ -253,24 +241,22 @@ public class gvGUIFactory
    public HashMap<NameAndIcon, ArrayList<ToolboxAction>> getToolboxActions() {
 
       final HashMap<NameAndIcon, ArrayList<ToolboxAction>> map = new HashMap<NameAndIcon, ArrayList<ToolboxAction>>();
-      if (VersionChecker.isGvSIGCE()) {
-         final NameAndIcon nai = new NameAndIcon("gvSIG", GVSIG_ICON);
-         final ArrayList<ToolboxAction> algs = new ArrayList<ToolboxAction>();
-         algs.add(new BufferToolboxAction());
-         algs.add(new DifferenceToolboxAction());
-         algs.add(new ClipToolboxAction());
-         algs.add(new DissolveToolboxAction());
-         algs.add(new MergeToolboxAction());
-         algs.add(new SpatialJoinToolboxAction());
-         algs.add(new IntersectionToolboxAction());
-         algs.add(new UnionToolboxAction());
-         algs.add(new MosaicToolboxAction());
-         algs.add(new DecisionTreeToolboxAction());
-         algs.add(new TransformationToolboxAction());
-         algs.add(new ClassificationToolboxAction());
-         algs.add(new VectorizeToolboxAction());
-         map.put(nai, algs);
-      }
+      final NameAndIcon nai = new NameAndIcon("gvSIG", GVSIG_ICON);
+      final ArrayList<ToolboxAction> algs = new ArrayList<ToolboxAction>();
+      algs.add(new BufferToolboxAction());
+      algs.add(new DifferenceToolboxAction());
+      algs.add(new ClipToolboxAction());
+      algs.add(new DissolveToolboxAction());
+      algs.add(new MergeToolboxAction());
+      algs.add(new SpatialJoinToolboxAction());
+      algs.add(new IntersectionToolboxAction());
+      algs.add(new UnionToolboxAction());
+      algs.add(new MosaicToolboxAction());
+      algs.add(new DecisionTreeToolboxAction());
+      algs.add(new TransformationToolboxAction());
+      algs.add(new ClassificationToolboxAction());
+      algs.add(new VectorizeToolboxAction());
+      map.put(nai, algs);
 
       return map;
 
