@@ -87,11 +87,6 @@ public class GlobalView
 
 
    @Override
-   protected void initComponents() {
-   }
-
-
-   @Override
    public void windowActivated() {
    }
 
