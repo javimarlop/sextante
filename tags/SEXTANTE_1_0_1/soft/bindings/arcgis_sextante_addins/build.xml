@@ -1,0 +1,86 @@
+<project name="" default="create-jars" basedir=".">
+    <description>
+        SEXTANTE bindings for ArcGIS
+    </description>
+
+  <property name="dist"  location="dist"/>
+  <property name="bin"  location="bin"/>
+
+  <target name="create-jars">
+  	<ant antfile="../sextante/build.xml" inheritall="no" />
+
+  	<mkdir dir="Install"/>
+  	<jar jarfile="Install/sextante_addins.jar">
+  	  		<fileset dir="bin">
+  	            <include name="**"/>
+  	 		</fileset>
+  	    	<fileset dir=".">
+  	           <include name="config.xml"/>
+  	 		</fileset>
+  	 	</jar>
+  	<jar jarfile="Install/sextante_addins.jar" update ="true">
+  	        <fileset dir=".">
+  	            <include name="images/**"/>
+  	        </fileset>
+  	    </jar>
+    <jar jarfile="C:\Users\volaya\Documents\ArcGIS\AddIns\Desktop10.0\sextante_addins.esriaddin">
+  		<fileset dir="bin">
+            <include name="**"/>
+ 		</fileset>
+    	<fileset dir=".">
+           <include name="config.xml"/>
+ 		</fileset>
+ 	</jar>
+  	<jar jarfile="C:\Users\volaya\Documents\ArcGIS\AddIns\Desktop10.0\sextante_addins.esriaddin" update ="true">
+  	        <fileset dir=".">
+  	            <include name="Install/**"/>
+  	        </fileset>
+  	    </jar>
+  	<delete dir="Install"/>
+  	<jar jarfile="C:\Users\volaya\Documents\ArcGIS\AddIns\Desktop10.0\sextante_addins.esriaddin" update ="true">
+  	        <fileset dir=".">
+  	            <include name="images/**"/>
+  	        </fileset>
+  	    </jar>
+	</target>
+
+	<target name="distribution">
+
+	  	<mkdir dir="Install"/>
+	  	<jar jarfile="Install/sextante_addins.jar">
+	  	  		<fileset dir="bin">
+	  	            <include name="**"/>
+	  	 		</fileset>
+	  	    	<fileset dir=".">
+	  	           <include name="config.xml"/>
+	  	 		</fileset>
+	  	 	</jar>
+	  	<jar jarfile="Install/sextante_addins.jar" update ="true">
+	  	        <fileset dir=".">
+	  	            <include name="images/**"/>
+	  	        </fileset>
+	  	    </jar>
+	    <jar jarfile="../../tmp/bindings/arcgis/sextante_addin.esriaddin">
+	  		<fileset dir="bin">
+	            <include name="**"/>
+	 		</fileset>
+	    	<fileset dir=".">
+	           <include name="config.xml"/>
+	 		</fileset>
+	 	</jar>
+	  	<jar jarfile="../../tmp/bindings/arcgis/sextante_addin.esriaddin" update ="true">
+	  	        <fileset dir=".">
+	  	            <include name="Install/**"/>
+	  	        </fileset>
+	  	    </jar>
+	  	<delete dir="Install"/>
+	  	<jar jarfile="../../tmp/bindings/arcgis/sextante_addin.esriaddin" update ="true">
+	  	        <fileset dir=".">
+	  	            <include name="images/**"/>
+	  	        </fileset>
+	  	    </jar>
+
+	</target>
+
+
+</project>

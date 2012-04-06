@@ -1,0 +1,9 @@
+v.mkgrid
+Vector (v.*)
+ParameterString|grid|grid|10,10
+ParameterSelection|position|position|region;coor
+ParameterString|coor|coor|
+ParameterString|box|box|
+ParameterString|angle|angle|0
+ParameterBoolean|-p|-p|True
+OutputVector|map|map

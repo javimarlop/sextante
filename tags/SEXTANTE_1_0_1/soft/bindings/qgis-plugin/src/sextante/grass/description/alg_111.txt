@@ -1,0 +1,8 @@
+v.to.points
+Vector (v.*)
+ParameterVector|input|input|-1|False
+ParameterString|dmax|dmax|100
+ParameterBoolean|-n|-n|True
+ParameterBoolean|-v|-v|True
+ParameterBoolean|-i|-i|True
+OutputVector|output|output

@@ -1,0 +1,112 @@
+\documentclass[11pt,a4paper]{book}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage{hyperref}
+\usepackage{makeidx}
+\makeindex
+
+\renewcommand{\v}[1]{\ensuremath{\overline{\mathbf{#1}}}}
+
+\makeatletter
+\def\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
+\def\@makechapterhead#1{%
+  \vspace*{10\p@}%
+  {\parindent \z@ 
+    {\raggedleft \reset@font
+      \scshape \@chapapp{} \thechapter\par\nobreak}%
+    \par\nobreak
+    \vspace*{30\p@}
+    \interlinepenalty\@M
+    {\raggedright \Huge \bfseries #1}%
+    \par\nobreak
+    \hrulefill
+    \par\nobreak
+    \vskip 100\p@
+  }}
+\def\@makeschapterhead#1{%
+  \vspace*{10\p@}%
+  {\parindent \z@ 
+    {\raggedleft \reset@font
+      \scshape \vphantom{\@chapapp{} \thechapter}\par\nobreak}%
+    \par\nobreak
+    \vspace*{30\p@}
+    \interlinepenalty\@M
+    {\raggedright \Huge \bfseries #1}%
+    \par\nobreak
+    \hrulefill
+    \par\nobreak
+    \vskip 100\p@
+  }}
+
+\addtolength{\textheight}{+3 cm}
+\voffset -1.6cm
+\addtolength{\textwidth}{+3.0cm}
+\addtolength{\evensidemargin}{-3.0cm}
+
+\date{}
+\title{
+{
+\begin{center}
+	\includegraphics[width=.4\columnwidth]{qgis.png}\\
+	\vspace*{0.5cm}
+	\includegraphics[width=.8\columnwidth]{sextante_logo.png}\\
+	\vspace*{0.5cm}
+\end{center}
+\LARGE \bfseries SEXTANTE for QGIS User's manual (v1.0)} 
+\vspace*{0.5cm}
+\rule{\textwidth}{1pt}
+}
+\author
+{Víctor Olaya\\
+Edition 1.0 --- Rev. \today{}
+}
+
+\begin{document}
+
+\setcounter{tocdepth}{5}
+ 
+\begin{frontmatter}
+%\pagestyle{empty}
+\maketitle
+
+\newpage
+
+\vspace*{90mm}
+\small
+\noindent
+SEXTANTE For QGIS User's manual\\ 
+Copyright \copyright  2012 Victor Olaya\\
+
+\vspace{20mm}
+\noindent Edición 1.0\\
+\noindent Rev. \today{}\\
+
+\vspace{6mm}
+\noindent
+Permision is granted to copy, distribute and modify this work according to the terms of the Creative Common Attritution license under which it is distributed. More information can be found at \url{http://www.creativecommons.org}. License applies to the text, as well as to the images created by the author, which are all the ones contained in this text except when otherwise stated.
+
+This text can be downloaded in several formats, including editable ones, at \url{http://www.sextantegis.com}.\\
+\vspace{4cm}
+\noindent \rule{\textwidth}{1pt}
+
+\normalsize
+\cleardoublepage
+
+\tableofcontents
+\printindex
+\end{frontmatter}
+
+\begin{mainmatter}
+\input{intro}
+\input{toolbox}
+\input{modeler}
+\input{batch}
+\input{console}
+\input{history}
+\input{3rdParty}
+\end{mainmatter}
+
+\end{document}

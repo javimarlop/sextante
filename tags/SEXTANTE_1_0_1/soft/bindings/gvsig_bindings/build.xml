@@ -1,0 +1,115 @@
+<project name="" default="generate-without-source" basedir=".">
+    <description>
+        SEXTANTE bindings for gvSIG
+    </description>
+  <!-- set global properties for this build -->
+  <property name="extensions-dir" location="../_fwAndami/gvSIG/extensiones"/>
+  <property name="gvSIG-lib-dir" location="${extensions-dir}/com.iver.cit.gvsig/lib"/>
+  <property name="dist"  location="dist"/>
+  <property name="bin"  location="bin"/>
+  <property name="build" location="bin"/>
+  <property name="without_src"  location="without_src"/>
+  <property name="plugin" value="es.unex.sextante"/>
+  <property name="version.number" value="1.0"/>
+
+  <target name="generate-without-source">
+    <mkdir dir="${without_src}"/>
+
+    <jar jarfile="${without_src}/${plugin}.jar" basedir="${bin}"/>
+
+    <copy todir="${without_src}">
+        <fileset dir="config/" includes="*"/>
+    </copy>
+    <copy todir="${without_src}/images">
+        <fileset dir="images" includes="**"/>
+    </copy>
+    <copy todir="${without_src}/data">
+        <fileset dir="data" includes="**"/>
+    </copy>
+
+    <mkdir dir="${extensions-dir}/${plugin}/"/>
+    <delete>
+        <fileset dir="${extensions-dir}/${plugin}/" includes="*"/>
+    </delete>
+    <move todir="${extensions-dir}/${plugin}/">
+        <fileset dir="${without_src}" includes="**/**"/>
+    </move>
+
+    <ant antfile="../sextante/build.xml" inheritall="no" />
+    <ant antfile="../gvSIGSpecificAlgs/build.xml" inheritall="no" />
+
+    <copy todir="${extensions-dir}/${plugin}/">
+       <fileset dir="../dist">
+          <include name="**"/>
+          <exclude name="jts*"/>
+        </fileset>
+     </copy>
+
+     <mkdir dir="${extensions-dir}/${plugin}/grass"/>
+     <mkdir dir="${extensions-dir}/${plugin}/grass/description"/>
+     <copy todir="${extensions-dir}/${plugin}/grass/description/">
+            <fileset dir="../sextante_gui/alg_descriptions/grass/description">
+               <include name="**"/>
+               <exclude name="**/.svn/**/"/>
+                </fileset>
+     </copy>
+
+     <mkdir dir="${extensions-dir}/${plugin}/saga"/>
+     <mkdir dir="${extensions-dir}/${plugin}/saga/description"/>
+     <copy todir="${extensions-dir}/${plugin}/saga/description/">
+            <fileset dir="../sextante_gui/alg_descriptions/saga/description">
+               <include name="**"/>
+               <exclude name="**/.svn/**/"/>
+                </fileset>
+     </copy>
+  </target>
+
+        <target name="distribution">
+                       <mkdir dir="${without_src}"/>
+
+                        <jar jarfile="${without_src}/${plugin}.jar" basedir="${bin}"/>
+
+                        <copy todir="${without_src}">
+                            <fileset dir="config/" includes="*"/>
+                        </copy>
+                        <copy todir="${without_src}/images">
+                            <fileset dir="images" includes="**"/>
+                        </copy>
+                        <copy todir="${without_src}/data">
+                            <fileset dir="data" includes="**"/>
+                        </copy>
+
+             <mkdir dir="${without_src}/grass"/>
+             <mkdir dir="${without_src}/grass/description"/>
+             <copy todir="${without_src}/grass/description/">
+                    <fileset dir="../sextante_gui/alg_descriptions/grass/description">
+                       <include name="**"/>
+                       <exclude name="**/.svn/**/"/>
+                        </fileset>
+             </copy>
+
+             <mkdir dir="${without_src}/saga"/>
+             <mkdir dir="${without_src}/saga/description"/>
+             <copy todir="${without_src}/saga/description/">
+                    <fileset dir="../sextante_gui/alg_descriptions/saga/description">
+                       <include name="**"/>
+                       <exclude name="**/.svn/**/"/>
+                        </fileset>
+             </copy>
+
+                        <mkdir dir="../../tmp/bindings/gvsig"/>
+                        <move todir="../../tmp/bindings/gvsig/">
+                            <fileset dir="${without_src}" includes="**/**"/>
+                        </move>
+
+                        <copy todir="../../tmp/bindings/gvsig">
+                            <fileset dir="." includes="readme.txt"/>
+                                                        <fileset dir="." includes="package.info"/>
+                        </copy>
+
+                        <ant antfile="../gvSIGSpecificAlgs/build.xml" target="distribution" inheritall="no" />
+
+        </target>
+
+
+</project>

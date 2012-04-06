@@ -1,0 +1,5 @@
+r.median
+Raster (r.*)
+ParameterRaster|base|base|False
+ParameterRaster|cover|cover|False
+OutputRaster|output|output

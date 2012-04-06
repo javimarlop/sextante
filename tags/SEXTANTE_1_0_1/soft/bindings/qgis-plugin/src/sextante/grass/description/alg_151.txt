@@ -1,0 +1,10 @@
+r.mapcalculator
+Raster (r.*)
+ParameterRaster|amap|amap|False
+ParameterRaster|bmap|bmap|False
+ParameterRaster|cmap|cmap|False
+ParameterRaster|dmap|dmap|False
+ParameterRaster|emap|emap|False
+ParameterRaster|fmap|fmap|False
+ParameterString|formula|formula|
+OutputRaster|outfile|outfile

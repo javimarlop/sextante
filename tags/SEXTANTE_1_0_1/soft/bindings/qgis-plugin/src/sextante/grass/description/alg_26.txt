@@ -1,0 +1,7 @@
+v.overlay
+Vector (v.*)
+ParameterVector|ainput|ainput|2|False
+ParameterVector|binput|binput|2|False
+ParameterSelection|operator|operator|and;or;not;xor
+ParameterBoolean|-t|-t|True
+OutputVector|output|output

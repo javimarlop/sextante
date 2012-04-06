@@ -1,0 +1,7 @@
+r.rescale.eq
+Raster (r.*)
+ParameterRaster|input|input|False
+ParameterRange|from|from
+ParameterRange|to|to
+ParameterBoolean|-q|-q|True
+OutputRaster|output|output

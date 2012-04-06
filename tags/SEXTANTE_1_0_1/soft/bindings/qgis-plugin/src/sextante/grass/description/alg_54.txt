@@ -1,0 +1,9 @@
+v.perturb
+Vector (v.*)
+ParameterVector|input|input|-1|False
+ParameterSelection|distribution|distribution|uniform;normal
+ParameterString|parameters|parameters|
+ParameterNumber|minimum|minimum|None|None|0.0
+ParameterNumber|seed|seed|None|None|0
+ParameterBoolean|-q|-q|True
+OutputVector|output|output

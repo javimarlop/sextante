@@ -1,0 +1,8 @@
+v.info
+Vector (v.*)
+ParameterVector|map|map|-1|False
+ParameterBoolean|-h|-h|True
+ParameterBoolean|-c|-c|True
+ParameterBoolean|-g|-g|True
+ParameterBoolean|-m|-m|True
+ParameterBoolean|-t|-t|True

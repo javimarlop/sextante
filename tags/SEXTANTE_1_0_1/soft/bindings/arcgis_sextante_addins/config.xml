@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ESRI.Configuration xmlns="http://schemas.esri.com/Desktop/AddIns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>SEXTANTE Add-ins</Name>
+  <AddInID>14f7f172-0132-1000-5000-9e31d79f0000</AddInID>
+  <Description>SEXTANTE Add-ins</Description>
+  <Version>1.0</Version>
+  <Image></Image>
+  <Author>Victor Olaya</Author>
+  <Company>UNEX</Company>
+  <Date>Mon Aug 29 11:56:26 CEST 2011</Date>
+  <Targets>
+    <Target name="Desktop" version="10.0"/>
+  </Targets>
+  <AddIn language="JAVA" library="sextante_addins.jar">
+    <ArcMap>
+      <Commands>
+        <Button caption="SEXTANTE Results" category="SEXTANTE Add-ins" class="es.unex.sextante.arcgis.results.SextanteResultsButton" id="sextanteresults" image="images/chart.gif" tip="SEXTANTE Results"/>
+      </Commands>
+      <Toolbars>
+        <Toolbar caption="SEXTANTE Toolbar" id="sextantetoolbar" showInitially="false">
+          <Items>
+            <Button refID="sextanteresults"/>
+          </Items>
+        </Toolbar>
+      </Toolbars>
+    </ArcMap>
+  </AddIn>
+</ESRI.Configuration>

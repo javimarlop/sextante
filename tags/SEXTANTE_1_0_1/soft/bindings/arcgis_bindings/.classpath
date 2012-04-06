@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/algorithms"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/sextante"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/sextante_gui"/>
+	<classpathentry kind="con" path="com.esri.arcgis.engine.core.EngineclasspathContainerInitializer"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

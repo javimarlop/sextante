@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/sextante"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/sextante_gui"/>
+	<classpathentry kind="lib" path="/libFMap/lib/driver-manager-1.1.jar" sourcepath="/libDriverManager"/>
+	<classpathentry kind="lib" path="/libFMap/lib/gdbms-0.8-SNAPSHOT.jar" sourcepath="/libGDBMS"/>
+	<classpathentry kind="lib" path="/libFMap/lib/org.cresques.cts.jar" sourcepath="/libProjection/src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/_fwAndami"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/appgvSIG"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libFMap"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libUIComponent"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libIverUtiles"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extRasterTools-SE"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libDriverManager"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libProjection"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libRaster"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extGeoProcessing"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extGeoprocessingExtensions"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/extRemoteSensing"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

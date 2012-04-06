@@ -1,0 +1,8 @@
+r.kappa
+Raster (r.*)
+ParameterRaster|classification|classification|False
+ParameterRaster|reference|reference|False
+ParameterString|output|output|/file
+ParameterString|title|title|ACCURACY ASSESSMENT
+ParameterBoolean|-w|-w|True
+ParameterBoolean|-h|-h|True

@@ -1,0 +1,18 @@
+r.slope.aspect
+Raster (r.*)
+ParameterRaster|elevation|elevation|False
+ParameterSelection|format|format|degrees;percent
+ParameterSelection|prec|prec|default;double;float;int
+ParameterNumber|zfactor|zfactor|None|None|1.0
+ParameterNumber|min_slp_allowed|min_slp_allowed|None|None|0.0
+ParameterBoolean|-q|-q|True
+ParameterBoolean|-a|-a|True
+OutputRaster|slope|slope
+OutputRaster|aspect|aspect
+OutputRaster|pcurv|pcurv
+OutputRaster|tcurv|tcurv
+OutputRaster|dx|dx
+OutputRaster|dy|dy
+OutputRaster|dxx|dxx
+OutputRaster|dyy|dyy
+OutputRaster|dxy|dxy

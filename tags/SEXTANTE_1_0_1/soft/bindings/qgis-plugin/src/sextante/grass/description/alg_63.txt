@@ -1,0 +1,10 @@
+v.extrude
+Vector (v.*)
+ParameterVector|input|input|-1|False
+ParameterNumber|zshift|zshift|None|None|0
+ParameterRaster|elevation|elevation|False
+ParameterNumber|height|height|None|None|0
+ParameterNumber|hcolumn|hcolumn|None|None|0
+ParameterString|type|type|point,line,boundary,area
+ParameterBoolean|-t|-t|True
+OutputVector|output|output

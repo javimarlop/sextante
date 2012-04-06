@@ -1,0 +1,10 @@
+v.distance
+Vector (v.*)
+ParameterVector|from|from|0|False
+ParameterVector|to|to|-1|False
+ParameterString|upload|upload|
+ParameterString|column|column|col_name
+ParameterString|to_column|to_column|to_col_name
+ParameterBoolean|-p|-p|True
+ParameterBoolean|-a|-a|True
+OutputVector|output|output

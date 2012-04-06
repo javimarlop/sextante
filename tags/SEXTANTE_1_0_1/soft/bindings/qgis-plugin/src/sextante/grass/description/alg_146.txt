@@ -1,0 +1,9 @@
+r.terraflow
+Raster (r.*)
+ParameterRaster|elevation|elevation|False
+ParameterBoolean|-s|-s|True
+OutputRaster|filled|filled
+OutputRaster|direction|direction
+OutputRaster|swatershed|swatershed
+OutputRaster|accumulation|accumulation
+OutputRaster|tci|tci

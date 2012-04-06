@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libMath"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/sextante"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/sextante_gui"/>
+	<classpathentry kind="lib" path="lib/gishur_core.jar"/>
+	<classpathentry kind="lib" path="lib/gishur_x.jar"/>
+	<classpathentry exported="true" kind="lib" path="/sextante_gui/lib/japura-1.14.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

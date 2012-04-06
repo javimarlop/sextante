@@ -1,0 +1,11 @@
+r.param.scale
+Raster (r.*)
+ParameterRaster|input|input|False
+ParameterNumber|s_tol|s_tol|None|None|1.0
+ParameterNumber|c_tol|c_tol|None|None|0.0001
+ParameterNumber|size|size|None|None|0.03
+ParameterSelection|param|param|elev;slope;aspect;profc;planc;longc;crosc;minic;maxic;feature
+ParameterNumber|exp|exp|None|None|0.0
+ParameterNumber|zscale|zscale|None|None|1.0
+ParameterBoolean|-c|-c|True
+OutputRaster|output|output

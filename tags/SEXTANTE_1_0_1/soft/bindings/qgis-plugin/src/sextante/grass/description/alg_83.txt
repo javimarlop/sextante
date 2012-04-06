@@ -1,0 +1,5 @@
+v.dissolve
+Vector (v.*)
+ParameterVector|input|input|-1|False
+ParameterTableField|column|column|input
+OutputVector|output|output

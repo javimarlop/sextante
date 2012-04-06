@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Class-Path: gishur_core.jar gishur_x.jar Jama-1.0.2.jar japura-1.14.0.jar jcommon-1.0.14.jar jep-2.4.0.jar jfreechart-1.0.11.jar jgraph.jar jts-1.12.jar kxml2.jar TableLayout-bin-jdk1.5-2007-04-21.jar trove-0.1.8.jar sextante.jar sextante_gui.jar libMath.jar sextante_algorithms.jar

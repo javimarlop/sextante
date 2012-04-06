@@ -1,0 +1,11 @@
+v.parallel
+Vector (v.*)
+ParameterVector|input|input|-1|False
+ParameterNumber|distance|distance|None|None|1
+ParameterNumber|minordistance|minordistance|None|None|1
+ParameterNumber|angle|angle|None|None|0
+ParameterSelection|side|side|left;right;both
+ParameterNumber|tolerance|tolerance|None|None|1
+ParameterBoolean|-r|-r|True
+ParameterBoolean|-b|-b|True
+OutputVector|output|output

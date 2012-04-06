@@ -1,0 +1,11 @@
+v.transform
+Vector (v.*)
+ParameterVector|input|input|-1|False
+ParameterNumber|xshift|xshift|None|None|0.0
+ParameterNumber|yshift|yshift|None|None|0.0
+ParameterNumber|zshift|zshift|None|None|0.0
+ParameterNumber|xscale|xscale|None|None|1.0
+ParameterNumber|yscale|yscale|None|None|1.0
+ParameterNumber|zscale|zscale|None|None|1.0
+ParameterNumber|zrot|zrot|None|None|0.0
+OutputVector|output|output

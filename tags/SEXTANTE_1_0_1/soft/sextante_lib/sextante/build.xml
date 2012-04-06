@@ -1,0 +1,43 @@
+<project name="SEXTANTE_LIB" default="create-jar" basedir=".">
+    <description>
+        SEXTANTE_LIB
+    </description>
+	<property name="version.number" value="0.7"/>
+
+  <target name="create-jar">
+
+	   <tstamp>
+	     <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+	   </tstamp>
+
+    <manifest file="MANIFEST.MF">
+        <attribute name="Implementation-Version"
+            value="${version.number}"/>
+        <attribute name="Built-Date" value="${TODAY}"/>
+   </manifest>
+
+  	<delete dir="../dist"/>
+  	<mkdir dir="../dist/"/>
+    <jar jarfile="../dist/sextante.jar" manifest="MANIFEST.MF">
+  		<fileset dir="bin">
+            <include name="**"/>
+ 		</fileset>
+ 	</jar>
+
+    <jar jarfile="../dist/sextante.jar" update ="true">
+        <fileset dir=".">
+            <include name="i18n/**"/>
+        </fileset>
+    </jar>
+
+    <copy todir="../dist">
+    	<fileset dir="lib" includes="**"/>
+    </copy>
+
+  	<ant antfile="../libMath/build.xml" inheritall="no" />
+  	<ant antfile="../sextante_gui/build.xml" inheritall="no" />
+        <ant antfile="../algorithms/build.xml" inheritall="no" />
+
+  </target>
+
+</project>

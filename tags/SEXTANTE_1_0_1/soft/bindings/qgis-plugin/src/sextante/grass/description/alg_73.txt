@@ -1,0 +1,7 @@
+r.mfilter.fp
+Raster (r.*)
+ParameterRaster|input|input|False
+ParameterString|filter|filter|/file
+ParameterNumber|repeat|repeat|None|None|1
+ParameterBoolean|-z|-z|True
+OutputRaster|output|output

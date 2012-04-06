@@ -1,0 +1,48 @@
+\chapter{Setting up Eclipse to work with SEXTANTE and gvSIG}
+
+\section{Introduction}
+
+All examples presented in this text are based on Geotools as the geodata library supporting SEXTANTE operations. However, SEXTANTE runs on several GIS, being linked to their underlying data handling libraries. GvSIG is one of them, and probably the most popular platform for using SEXTANTE, so developers might want to develop and test their algorithms in gvSIG instead of using the Geotools--based configuration shown in other chapters of this manual. Also, gvSIG has a graphical interface, so graphic elements of SEXTANTE can be tested as well.
+
+This chapter shows how to set up an Eclipse environment using the source code of gvSIG and the source code from SEXTANTE. From it, you will be able to develop and test your new geoalgorithms in gvSIG, and even to deploy a modified version of SEXTANTE including your own algorithms and enhancements.
+
+GvSIG fundamentals are not described in this chapter, and you are supposed to be familiar with them.
+
+\section{Setting up gvSIG}
+
+Although setting up gvSIG is not difficult, the process will not be describe here. To know more about how to to this, have a look at the documentation in gvSIG website\footnote{\url{gvsig.org}}. Following those instructions, you will get a working copy of gvSIG (you just need a minimum gvSIG to run SEXTANTE, so there is no need to download and set up all the extensions currently available). Once you are done with gvSIG, a few additional steps must be taken if we want to integrate SEXTANTE with it. 
+
+\section{Setting up SEXTANTE}
+
+The next step is to download the source code of SEXTANTE from the SVN repository. Select \emph{Import...} in the \emph{File} menu and then \emph{Checkout Project from SVN}.
+
+Use the following URL:
+
+\begin{verbatim}
+https://svn.forge.osor.edu/svn/sextante
+\end{verbatim}
+
+Expand the \emph{trunk} branch to work with the latest version, or \emph{tags} to work with the latest stable version (1.0 is the current one)
+
+Expand the \emph{soft} branch and select all the folders under \emph{sextante\_lib} and the \emph{gvsig\_1\_x} folder under \emph{bindings}. 
+
+\begin{center}
+ \includegraphics[width=.6\textwidth]{SVN.png} 
+\end{center}
+
+Press \emph{Finish}.
+
+To build SEXTANTE, you will find a \texttt{build.xml} in the \emph{gvsig\_1\_x} project (this project contains the gvSIG bindings). This build file will compile SEXTANTE (both the core and the algorithms), creating all necessary jar files and moving them to a new folder named \texttt{dist}. After that, it will move the content of that folder to the corresponding folder from which gvSIG can load them upon starting.  Also, it will compile the bindings needed to connect SEXTANTE and gvSIG, and copy them to a new folder under the \texttt{extensions} folder.
+
+Now you can run gvSIG and SEXTANTE icons will appear in the toolbar giving you full access to SEXTANTE. 
+
+\section{Developing and testing your algorithms}
+
+To develop a new algorithm you have two options:
+
+\begin{itemize}
+	\item To put it into one of the already existing projects. For instance, if you develop an algorithm for terrain analysis, you might find interesting to include it in the \emph{geomorphometry} project, along with others such as slope or aspect. In this case, once you have finished your algorithm, you just have to run then \texttt{build.xml} file once again, and it will be ready to use the next time you run gvSIG.
+	\item To put it into a new project. In this case, a little bit more of work os required. First, you have to create the project. Using one of the existing ones as a template is recommended. Second, running the \texttt{build.xml} file will not include your algorithm (or any one in that new project) in gvSIG. You have to make sure that the corresponding jar file is in the \texttt{dist} folder before running it. Create an ant build file to do this (once again, have a look at the build file in an existing project, they all do that), and call it manually before running the build file in the \emph{gvSIG} project, or modify the latter to do it automatically.
+\end{itemize}
+
+Developing the algorithm itself is done as it was explained in chapter \ref{ProgrammingGeoalgorithms}. There is no difference between creating a SEXTANTE geoalgorithm using a gvSIG--based workspace or any other one such as the GeoTools--based one that we used then.
