@@ -27,8 +27,8 @@
 \contentsline {chapter}{\numberline {7}Configuring external applications}{29}{chapter.7}
 \contentsline {section}{\numberline {7.1}Introduction}{29}{section.7.1}
 \contentsline {subsection}{\numberline {7.1.1}A note on file formats}{29}{subsection.7.1.1}
-\contentsline {section}{\numberline {7.2}SAGA}{29}{section.7.2}
+\contentsline {subsection}{\numberline {7.1.2}A note on vector layer selections}{30}{subsection.7.1.2}
+\contentsline {section}{\numberline {7.2}SAGA}{30}{section.7.2}
 \contentsline {subsection}{\numberline {7.2.1}About SAGA grid system limitations}{30}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2}About vector layer selections}{31}{subsection.7.2.2}
 \contentsline {section}{\numberline {7.3}R. Creating R scripts}{31}{section.7.3}
 \contentsline {section}{\numberline {7.4}GRASS}{33}{section.7.4}

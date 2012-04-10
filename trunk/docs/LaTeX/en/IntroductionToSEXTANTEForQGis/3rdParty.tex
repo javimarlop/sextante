@@ -8,9 +8,21 @@ SEXTANTE can be extended using additional applications, calling them from within
 
 When using an external software, opening a file in QGIS does not mean that it can be opened and processed as well on that other woftware. In most cases, it can read what you have opened in QGIS, but in some cases, that might not be the case. When using databases or uncommon file formats, whether for raster of vector layers, problems might arise. If that happens, try to use well known file formats that you are sure that are understood by both programs, and check to console output (in the history and log dialog) for knowing more about what is going wrong.
 
-Currently, if the layer you want to process comes from a remote service or a database connection, it cannot be processed by algorithms coming from SGA, GRASS or R, but we are working on solving this issue...(stay tuned for the next version, which might probably be able to do it)
+Using GRASS raster layers is, for instance, one case in which you might have trouble and not be able to complete your work if you call an external algorithm using such a layer as input. For this reason, these layers will not appear as available to SEXTANTE algorithms (We are currently working on solving this, and expect to have it ready soon).
 
-Regarding output formats, raster layers can be saved as TIFF (.tif) (the default format) or ESRI ASCII files (.asc), while vector layers are saved as shapefiles (.shp). These have been chosen as the \emph{lingua franca} between supported third party applications and QGIS. Providers not using external application can process anylayer that you can open in QGIS, since they open it for analysis trough QGIS.
+You should, however, find no problems at all with vector layers, since SEXTANTE automatically converts from the original file format to one accepted by the external application before passing the layer to it. This adds an extra processing time, which might be significant if the layer has a large size, so do not be surprised if it takes more to process a layer from a DB connection that one of a similar size stored in a shapefile.
+
+Providers not using external applications can process anylayer that you can open in QGIS, since they open it for analysis trough QGIS.
+
+Regarding output formats, raster layers can be saved as TIFF (.tif) files, while vector layers are saved as shapefiles (.shp). These have been chosen as the \emph{lingua franca} between supported third party applications and QGIS. If the output filename that you select is not one of the above, it will be modified, adding the corresponding suffix, and the default file format will be used.
+
+In the case of GDAL, the number of supported output formats is larger. When you open the file selection dialog, you will see that you have more formats (and their corresponding extensions available). For more information about which formats are supported, check the GDAL documentation.
+
+\subsection{A note on vector layer selections}
+
+By default, when an external algorithm takes a vector layer, it will use all its features, even if a selection exist in QGIS. You can make an external algorithm aware of that selection by checking the \emph{Use selected features in eternal applications} item in the \emph{General} settings group. When you do so, each time you execute an external algorithm that uses a vector layer, the selected features of that layer will be exported to a new layer, and the algorithm will work with that new layer instead.
+
+Notice that if you select this option, a layer with no selection will behave like a layer with all its features selected, not like an empty layer.
 
 
 \section{SAGA}
@@ -44,12 +56,6 @@ The definition of that common grid system is controlled by the user, and you wil
 
 For algorithms that do not use multiple raster layers, or for those that do not need a unique input grid system, no resampling is performed before calling SAGA, and those parameters are not used.
 
-\subsection{About vector layer selections}
-
-By default, when a SAGA algorithm takes a vector layer, it will use all its features, even if a selection exist in QGIS. You can make SAGA aware of that seelction by checking the \emph{Use selected features} item in the SAGA settings group. When you do so, each time you execute a SAGA algorithm that uses a vector layer, the selected features of that layer will be exported to a new layer, and SAGA will work with that new layer instead.
-
-Notice that if you select this option, a layer with no selection will behave like a layer with all its features selected, not like an empty layer.
-
 \section{R. Creating R scripts}\label{rscripts}
 
 R integration in SEXTANTE is different from that of SAGA in that there is not a predefined set of algorithms you can run (except for a few examples). Instead, you should write your scripts and call R commands, much like you would do from R, and in a very similar manner to what we saw in the chapter dedicated to SEXTANTE scripts. This chapter shows you the syntax to use to call those R commands from SEXTANTE and how to use SEXTANTE objects (layers, tables) in them.
@@ -81,6 +87,8 @@ When you declare an input parameter, SEXTANTE uses that information for two thin
 In the above example, we are declaring an input of type \texttt{vector polygon} named \texttt{polyg}. When executing the algorithm, SEXTANTE will open in R the layer selected by the user and store it in a variable also named \texttt{polyg}. So the name of a parameter is also the name of the variable that we can use in R for accesing the value of that parameter (thus, you should avoid using reserved R words as parameter names).
 
 Spatial elements such as vector and raster layers are read using the \texttt{readOGR()} and \texttt{readGDAL()} commands (you do not have to worry about adding those commands to your description file, SEXTANTE will do it) and stored as \texttt{Spatial*DataFrame} objects. Table fields are stored as strings containing the name of the selected field.
+
+Tables are opened using the \texttt{read.csv()} command. If a table entered by the user is not in CSV format, it will be converted prior to importing it in R.
 
 Knowing that, we can now understand the first line of our example script (the first line not starting with a Python comment).
 
@@ -119,7 +127,7 @@ Both graphics and console results will be shown in the SEXTANTE results manager.
 
 For more information, please check the script files provided with SEXTANTE. Most of them are rather simple and will greatly help you understand how to create your own ones.
 
-A note about libraries: \texttt{rgdal} and \texttt{maptools} libraries are loaded by default so you do not have to add the corresponding \emph{library()} commands. However, other additional libraries that you might need have to be explicitly loaded. Just add the necessary commands at the beginning of your script. You also have to make sure that the corresponding packages are installed in the R distribution used by SEXTANTE.
+A note about libraries: \texttt{rgdal} and \texttt{maptools} libraries are loaded by default so you do not have to add the corresponding \emph{library()} commands (you have to make sure, however, that those two packages are installed in your R distribution). However, other additional libraries that you might need have to be explicitly loaded. Just add the necessary commands at the beginning of your script. You also have to make sure that the corresponding packages are installed in the R distribution used by SEXTANTE.
 
 \section{GRASS}
 
