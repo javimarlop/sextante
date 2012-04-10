@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.3.15)  3 APR 2012 11:17
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.3.15)  6 APR 2012 10:32
 entering extended mode
 **D:/projects/sextante/docs/LaTeX/en/IntroductionToSEXTANTEForQGis/Introduction
 ToSEXTANTE.tex
@@ -655,10 +655,14 @@ Package pdftex.def Info: history.png used on input line 12.
 (D:\projects\sextante\docs\LaTeX\en\IntroductionToSEXTANTEForQGis\3rdParty.tex
 [28]
 Chapter 7.
-[29
 
-] [30] [31]
-Overfull \hbox (18.28065pt too wide) in paragraph at lines 94--95
+Underfull \vbox (badness 1057) has occurred while \output is active []
+
+ [29
+
+]
+[30] [31]
+Overfull \hbox (18.28065pt too wide) in paragraph at lines 100--101
 \OT1/cmr/m/n/10.95 named \OT1/cmtt/m/n/10.95 out \OT1/cmr/m/n/10.95 and store a
  \OT1/cmtt/m/n/10.95 Spatial*DataFrame \OT1/cmr/m/n/10.95 ob-ject in it (in thi
 s case, a \OT1/cmtt/m/n/10.95 SpatialPointsDataFrame\OT1/cmr/m/n/10.95 ).
@@ -673,31 +677,40 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 112.
 oSEXTANTE.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 112.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 112.
-Package rerunfilecheck Info: File `IntroductionToSEXTANTE.out' has not changed.
 
-(rerunfilecheck)             Checksum: 6C047259053BAC7E48F9F5AE871FD7F7;2389.
+
+Package rerunfilecheck Warning: File `IntroductionToSEXTANTE.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `IntroductionToSEXTANTE.out':
+(rerunfilecheck)             Before: 6C047259053BAC7E48F9F5AE871FD7F7;2389
+(rerunfilecheck)             After:  1EA0053436747A0F2E5961BC69CBBB19;2393.
  ) 
 Here is how much of TeX's memory you used:
- 6023 strings out of 494045
- 88300 string characters out of 3145966
+ 6024 strings out of 494045
+ 88316 string characters out of 3145966
  169735 words of memory out of 3000000
  9133 multiletter control sequences out of 15000+200000
  16042 words of font info for 66 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  29i,7n,28p,983b,501s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
-:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:
-/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Prog
-ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program
- Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program F
-iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Fil
-es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files
- (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on IntroductionToSEXTANTE.pdf (37 pages, 972619 bytes).
+pdfTeX warning (dest): name{subsection.7.2.2} has been referenced but does no
+t exist, replaced by a fixed one
+
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C
+:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/
+Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/P
+rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Pro
+gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program F
+iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Fil
+es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (
+x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on IntroductionToSEXTANTE.pdf (37 pages, 973763 bytes).
 PDF statistics:
- 418 PDF objects out of 1000 (max. 8388607)
- 73 named destinations out of 1000 (max. 500000)
+ 419 PDF objects out of 1000 (max. 8388607)
+ 74 named destinations out of 1000 (max. 500000)
  378 words of extra memory for PDF output out of 10000 (max. 10000000)
 
