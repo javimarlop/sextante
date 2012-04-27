@@ -201,7 +201,7 @@ The first lines, which start with a double Python comment sign (##),
 tell SEXTANTE the inputs of the algorithm described in the file and the
 outputs that it will generate. They work exactly with the same syntax as
 the SEXTANTE scripts that we have already seen, so they will not be
-described here again. Check the corresponding chapter for more
+described here again. Check the corresponding section for more
 information.
 
 When you declare an input parameter, SEXTANTE uses that information for
@@ -210,7 +210,7 @@ that parameter and creating a corresponding R variable that can be later
 used as input for R commands
 
 In the above example, we are declaring an input of type
-``vector polygon`` named ``polyg``. When executing the algorithm,
+``vector`` named ``polyg``. When executing the algorithm,
 SEXTANTE will open in R the layer selected by the user and store it in a
 variable also named ``polyg``. So the name of a parameter is also the
 name of the variable that we can use in R for accesing the value of that

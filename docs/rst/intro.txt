@@ -33,7 +33,7 @@ algorithms and will be explained later in this chapter).
 
 -  The SEXTANTE graphical modeler. Several algorithms can be combined
    graphically using the modeler to define a workflow, creating a single
-   process that involves several sub–processes
+   process that involves several sub-processes
 
    .. figure:: models.png
       :align: center
