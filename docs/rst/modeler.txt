@@ -207,6 +207,9 @@ You can document your models from SEXTANTE. Just click on the *Edit model help* 
    :align: center
    :alt: image
 
+On the right-hand side you will see a simple HTML page, created using the description of the input parameters and outputs of the algorithm, along with some additional items like a general description of the model or its author. The first time you open the help editor all those descriptions are empty, but you can edit them using the elements on the left-hand side of the dialog. Select an element on the upper part and the write its description in the texbox below.
+
+Model help is saved in a file in the same folder as the model itself. You do not have to worry about saving it, since it is done automatically.
 
 About available algorithms
 --------------------------
@@ -215,7 +218,7 @@ You might notice that some algorithms that can be be executed from the
 toolbox do not appear in the list of available ones when you are
 designing a model. To be included in a model, and algorithm must have a
 correct semantic, so as to be properly linked to other in the workflow.
-If an algorithm does not have such well–defined semantic (for instance,
+If an algorithm does not have such well-defined semantic (for instance,
 if the number of output layers cannot be know in advance), then it is
 not possible to use it within a model, and thus does not appear in the
 list of them that you can find in the modeler dialog.

@@ -18,13 +18,13 @@ inputs.
 
 The toolbox contains all the algorithms available, divided into groups.
 Each group represents a so-called algorithm provider, which is a set of
-algorithms coming from the same source, for instance, from a third–party
+algorithms coming from the same source, for instance, from a third-party
 application with geoprocessing capabilities. Some of this groups
 represent algorithms from one of such third-party applications
 (like SAGA, GRASS or R), while other contain algorithms directly coded
 along with SEXTANTE elements, not relying on any additional software.
 Currently, these providers all reuse code from already-existing QGIS
-plugins (more specifically, from the fTools vector library shiped along
+plugins (more specifically, from the *fTools* vector library shiped along
 with QGIS and the contributed mmqgis plugin that you can install using
 the plugin manager), making them more useful, since they can be executed
 from elements such as the modeler or the batch processing interface,
@@ -41,14 +41,14 @@ one you need, you can enter any word or phrase on the text box. Notice
 that, as you type, the number of algorithms in the toolbox is reduced to
 just those which contain the text you have entered in their names.
 
-To execute an algorithm, just double–click on its name in the toolbox.
+To execute an algorithm, just double-click on its name in the toolbox.
 
 The algorithm dialog
 --------------------
 
-Once you double–click on the name of the algorithm that you want to
+Once you double-click on the name of the algorithm that you want to
 execute, a dialog similar to the next one is shown (in this case, the
-dialog corresponds to the *SAGA–Convergence index* algorithm).
+dialog corresponds to the *SAGA-Convergence index* algorithm).
 
 .. figure:: parameters_dialog.png
    :align: center
@@ -104,16 +104,16 @@ parameters found on the table can be of one of the following types.
 -  A field, to choose from the attributes table of a vector layer or a
    single table selected in another parameter.
 
--  A Coordinate Reference System. You can select it directl
+-  A Coordinate Reference System. You can type the EPSG code directly in the text box, or select it from the CRS selection dialog that appear when you click on the button on the right-hand size
 
--  A extent, to be entered by for number representing its xmin, max, ymin, ymax limits. Clicking on the button on the right-hand side of the value selector, a pop-up menu will appear, giving you two option: to select the value from a layer or the current canvas extent, or to define it by dragging directly onto the map canvas. If you select the first option, you will see a window like the next one.
+-  A extent, to be entered by four number representing its xmin, max, ymin, ymax limits. Clicking on the button on the right-hand side of the value selector, a pop-up menu will appear, giving you two option: to select the value from a layer or the current canvas extent, or to define it by dragging directly onto the map canvas. If you select the first option, you will see a window like the next one.
 
    .. figure:: extent.png
       :align: center
       :alt: image
 
 
-If you select the second one, the parameters window will hide itself, so you can click and drag onto the canvas. Once you have defined the selected rectangle, the dialog will reappear, containing the values in the extent text box.
+  If you select the second one, the parameters window will hide itself, so you can click and drag onto the canvas. Once you have defined the selected rectangle, the dialog will reappear, containing the values in the extent text box.
 
 
    .. figure:: extent_drag.png
@@ -161,7 +161,7 @@ system and ready to be analized. Whenever you use more than one layer as
 input to an algorithm, whether vector or raster, it is up to you to make
 sure that they are all in the same coordinate system.
 
-Note that, due to QGIS’s on-the-fly reprojecting capabilities, although
+Note that, due to QGIS's on-the-fly reprojecting capabilities, although
 two layers might seem to overlap and match, that might not be true if
 their original coordinates are used without reprojecting them onto a
 common coordinate system. That reprojection should be done manually and

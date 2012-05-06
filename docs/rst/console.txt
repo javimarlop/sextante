@@ -7,12 +7,12 @@ Introduction
 The console allows advanced users to increase their productivity and
 perform complex operations that cannot be performed using any of the
 other elements of the SEXTANTE GUI. Models involving several algorithms
-can be defined using the command–line interface, and additional
+can be defined using the command-line interface, and additional
 operations such as loops and conditional sentences can be added to
 create more flexible and powerful workflows.
 
 There is not a SEXTANTE console in QGIS, but all SEXTANTE commands are
-available instead from QGIS built–in Python console. That means that you
+available instead from QGIS built-in Python console. That means that you
 can incorporate those command to your console work and connect SEXTANTE
 algorithms to all the other features (including methods from the QGIS
 API) available from there.
@@ -73,8 +73,8 @@ You will see something like this.
     .
     .
 
-That’s a list of all the available algorithms, alphabetically ordered,
-along with their corresponding command–line names.
+That's a list of all the available algorithms, alphabetically ordered,
+along with their corresponding command-line names.
 
 You can use a string as a parameter for this method. Instead of
 returning the full list of algorithm, it will only display those that
@@ -169,7 +169,7 @@ of input parameter
    each input descriptor can be the data object name, or its filepath.
 
 -  Table Field from XXX. Use a string with the name of the field to use.
-   This parameter is case–sensitive.
+   This parameter is case-sensitive.
 
 -  Fixed Table. Type the list of all table values separated by commas
    and enclosed between quotes. Values start on the upper row and go
@@ -215,7 +215,7 @@ You can create your own algorithms by writing the corresponding Python
 code and adding a few extra lines to supply additional information
 needed by SEXTANTE. You can find a *Create new script* under the tools
 group in the script algorithms block of the toolbox. Double click on it
-to open the script edition dialog. That’s where you should type your
+to open the script edition dialog. That's where you should type your
 code. Saving the script from there in the scripts folder (the default
 one when you open the save file dialog), with ``.py`` extension, will
 automatically create the corresponding algorithm.
@@ -224,7 +224,7 @@ The name of the algorithm (the one you will see in the toolbox) is
 created from the filename, removing its extension and replacing low
 hyphens with blank spaces.
 
-Let’s have the following code, which calculates the Topographic Wetness
+Let's have the following code, which calculates the Topographic Wetness
 Index(TWI) directly from a DEM
 
 ::
