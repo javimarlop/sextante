@@ -192,6 +192,41 @@ renders all the algorithms in that provider unusable by the modeler,
 which might cause problems when loading models. Keep that in mind when
 you have trouble loading or executing models.
 
+Editing a model
+---------------
+
+You can edit the model you are currently creating, redefining the workflow and the relationships between the algorithms and inputs that define the model itself.
+
+If you right-click on an algorithm in the canvas representing the model, you will see a context menu like the one shown next:
+
+.. figure:: modeler_right_click.png
+   :align: center
+
+
+Selecting the *Remove* option will cause the selected algorithm to be removed. An algorithm can be removed only if there are no other algorithms dependind on it. That is, if no output from the algorithm is used in a different one as input. If you try to remove an algorithm that has others depending on it, SEXTANTE will show you a warning message like the one you can see below:
+
+.. figure:: cannot_delete_alg.png
+   :align: center
+   
+Selecting the *Edit* option or simply double-clicking on the algorithm icon will show the parameters dialog of the algorithm, so you can change the inputs and parameter values. Not all input elements available in the model will appear in this case as available inputs. Layers or values generated at a more advanced step in the workflow defined by the model will not be available if they cause circular dependencies.
+
+Select the new values and then click on the *OK* button as usual. The connections between the model elements will change accordingly in the modeler canvas.
+
+Activating and deactivating algorithms
+--------------------------------------
+
+Algorithms can be deactivated in the modeler, so they will not be executed once the model is run. This can be used to test just a given part of the model, or when you do not need all the outputs it generates.
+
+To deactivate an algorithm, right--click on its icon in the model canvas and select the *Deactivate* option. You will see that the algorithm is represented now with a red label under its name indicating that is not active.
+
+.. figure:: deactivated.png
+   :align: center
+
+All algorithms depending (directly or undirectly) on that algorithm will also appear as inactive, since they cannot be executed now.
+
+To activate an algorithm, just right--click on its icon and select the *Activate* option.
+
+
 Editing model help files and meta-information
 ---------------------------------------------
 
@@ -228,6 +263,8 @@ make too much sense.
 
 SEXTANTE models as Python code
 ------------------------------
+
+*[This feature is temporarily unavailable]*
 
 Along with the tab that contains the graphical design of the model, you
 will find another one containing a Python script which performs the same
