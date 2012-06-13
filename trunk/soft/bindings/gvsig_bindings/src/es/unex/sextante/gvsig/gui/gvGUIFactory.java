@@ -251,11 +251,13 @@ public class gvGUIFactory
       algs.add(new SpatialJoinToolboxAction());
       algs.add(new IntersectionToolboxAction());
       algs.add(new UnionToolboxAction());
-      algs.add(new MosaicToolboxAction());
-      algs.add(new DecisionTreeToolboxAction());
-      algs.add(new TransformationToolboxAction());
-      algs.add(new ClassificationToolboxAction());
-      algs.add(new VectorizeToolboxAction());
+      if (PluginServices.getPluginServices("org.gvsig.remotesensing") != null){
+    	  algs.add(new MosaicToolboxAction());
+    	  algs.add(new DecisionTreeToolboxAction());
+    	  algs.add(new TransformationToolboxAction());
+    	  algs.add(new ClassificationToolboxAction());
+    	  algs.add(new VectorizeToolboxAction());
+      }
       map.put(nai, algs);
 
       return map;
