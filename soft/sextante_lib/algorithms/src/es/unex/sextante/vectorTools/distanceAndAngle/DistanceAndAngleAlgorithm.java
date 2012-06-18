@@ -197,7 +197,6 @@ public class DistanceAndAngleAlgorithm
          i++;
       }
       iter1.close();
-      driver.close();
 
       return !m_Task.isCanceled();
    }
