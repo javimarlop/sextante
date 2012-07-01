@@ -76,7 +76,7 @@ SAGA
 
 SAGA algorithms can be run from SEXTANTE if you have SAGA installed in
 your system and you configure SEXTANTE properly so it can find SAGA
-executables. In particular, the SAGA command–line executable is needed
+executables. In particular, the SAGA command-line executable is needed
 to run SAGA algorithms. SAGA binaries are not included with SEXTANTE, so
 you have to download and install the software yourself. Please check the
 SAGA website at for more information. SAGA 2.0.8 is needed.
@@ -147,6 +147,16 @@ to do so. There are two ways of setting the target grid system:
 For algorithms that do not use multiple raster layers, or for those that
 do not need a unique input grid system, no resampling is performed
 before calling SAGA, and those parameters are not used.
+
+Logging
+~~~~~~~~
+
+When SEXTANTE calls SAGA, it does it using its command-line interface, thus passing a set of commands to perform all the required operation. SAGA show its progress by writing information to the console, which includes the percentage of processing already done, along with additional content. This output is filtered by SEXTANTE and used to update the progress bar while the algorithm is running. 
+
+Both the commands sent by SEXTANTE and the additional information printed by SAGA can be logged along with other SEXTANTE log messages, and you might find them useful to track in detailed what is going on when SEXTANTE runs a SAGA algorithm. you will find two settings, namely *Log console output* and *Log execution commands*  to activate that logging mechanism. 
+
+Most other providers that use an external application and call it through the command-line have similar options, so you will find them as well in other places in the SEXTANTE settings list.
+
 
 R. Creating R scripts
 ---------------------
