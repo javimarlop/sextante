@@ -52,7 +52,7 @@ public class SextanteGrassSettingsPanel
    private JCheckBox          jCheckBox3DV;
    private JCheckBox          jCheckBoxLatLon;
    private JCheckBox          jCheckBoxInPolylines;
-   private JCheckBox          jCheckBoxTempMapset;
+   private JCheckBox          jCheckBoxCleanPolygons;   
    private JCheckBox          jActivateCheckBox;
 
 
@@ -82,56 +82,37 @@ public class SextanteGrassSettingsPanel
          //jLabelGrassFolder.setVisible(bCanConfigureGrass);
          //jGrassFolder.setVisible(bCanConfigureGrass);
 
-         jCheckBoxTempMapset = new JCheckBox();
-         jCheckBoxTempMapset.setText(Sextante.getText("GRASS_use_temp_mapset"));
-         jCheckBoxTempMapset.setSelected(new Boolean(
-                  SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_USE_TEMP_MAPSET)).booleanValue());
-         this.add(jCheckBoxTempMapset, "1, 3, 2, 3");
-         jCheckBoxTempMapset.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent evt) {
-               jCheckBoxTempMapsetActionPerformed(evt);
-            }
-         });
-         jCheckBoxTempMapset.setVisible(false);
-
          jCheckBoxLatLon = new JCheckBox();
          jLabelDescriptionLocation = new JLabel();
          jDescriptionLocation = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("GRASS_mapset"));
 
-         if (jCheckBoxTempMapset.isSelected()) {
-            this.add(jCheckBoxLatLon, "1, 5, 2, 5");
-            jCheckBoxLatLon.setText(Sextante.getText("GRASS_lat_lon_mode"));
-            jCheckBoxLatLon.setSelected(new Boolean(
-                     SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_LAT_LON_MODE)).booleanValue());
-         }
-         else {
-            this.add(jLabelDescriptionLocation, "1, 5");
-            jLabelDescriptionLocation.setText(Sextante.getText("GRASS_mapset"));
-            this.add(jDescriptionLocation, "2, 5");
-            jDescriptionLocation.setFilepath(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_MAPSET_FOLDER));
-         }
-
          jCheckBox3DV = new JCheckBox();
          jCheckBox3DV.setText(Sextante.getText("grass_input_3d"));
          jCheckBox3DV.setSelected(new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_3D_V_MODE)).booleanValue());
-         this.add(jCheckBox3DV, "1, 7, 2, 7");
-
+         this.add(jCheckBox3DV, "1, 7, 2, 7");   
+         
+         jCheckBoxCleanPolygons = new JCheckBox();
+         jCheckBoxCleanPolygons.setText(Sextante.getText("grass_clean_polygons"));
+         jCheckBoxCleanPolygons.setSelected(new Boolean(
+                  SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_CLEAN_POLYGONS)).booleanValue());
+         this.add(jCheckBoxCleanPolygons, "1, 8, 2, 8");         
+         
          jCheckBoxInPolylines = new JCheckBox();
          jCheckBoxInPolylines.setText(Sextante.getText("grass_import_polylines"));
          jCheckBoxInPolylines.setSelected(new Boolean(
                   SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_IN_POLYLINES)).booleanValue());
-         this.add(jCheckBoxInPolylines, "1, 8, 2, 8");
+         this.add(jCheckBoxInPolylines, "1, 9, 2, 9");
       }
 
       if (Sextante.isWindows()) {
          //On Windows, we need a shell interpreter for GRASS (sh.exe)
          jLabelDescriptionShell = new JLabel();
-         this.add(jLabelDescriptionShell, "1, 9");
+         this.add(jLabelDescriptionShell, "1, 10");
          jLabelDescriptionShell.setText(Sextante.getText("grass_windows_shell"));
          final String[] ext = new String[1];
          ext[0] = "sh.exe";
          jDescriptionShell = new FileSelectionPanel(false, true, ext, Sextante.getText("grass_windows_shell"));
-         this.add(jDescriptionShell, "2, 9");
+         this.add(jDescriptionShell, "2, 10");
          jDescriptionShell.setFilepath(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_WIN_SHELL));
          //jLabelDescriptionShell.setVisible(bCanConfigureGrass);
          //jDescriptionShell.setVisible(bCanConfigureGrass);
@@ -199,7 +180,6 @@ public class SextanteGrassSettingsPanel
       final String path = jGrassFolder.getFilepath();
       map.put(SextanteGrassSettings.GRASS_FOLDER, path);
       final String locationPath = jDescriptionLocation.getFilepath();
-      map.put(SextanteGrassSettings.GRASS_MAPSET_FOLDER, locationPath);
       if (Sextante.isWindows()) {
          final String shellPath = jDescriptionShell.getFilepath();
          if (shellPath != null) {
@@ -207,9 +187,9 @@ public class SextanteGrassSettingsPanel
          }
       }
       map.put(SextanteGrassSettings.GRASS_3D_V_MODE, new Boolean(jCheckBox3DV.isSelected()).toString());
+      map.put(SextanteGrassSettings.GRASS_CLEAN_POLYGONS, new Boolean(jCheckBoxCleanPolygons.isSelected()).toString());
       map.put(SextanteGrassSettings.GRASS_IN_POLYLINES, new Boolean(jCheckBoxInPolylines.isSelected()).toString());
       map.put(SextanteGrassSettings.GRASS_LAT_LON_MODE, new Boolean(jCheckBoxLatLon.isSelected()).toString());
-      map.put(SextanteGrassSettings.GRASS_USE_TEMP_MAPSET, new Boolean(jCheckBoxTempMapset.isSelected()).toString());
       map.put(SextanteGrassSettings.GRASS_ACTIVATE, new Boolean(jActivateCheckBox.isSelected()).toString());
       return map;
 
@@ -243,25 +223,7 @@ public class SextanteGrassSettingsPanel
       finally {
          this.setCursor(Cursor.getDefaultCursor());
       }
-      //2: GRASS Mapset folder
-      if (!jCheckBoxTempMapset.isSelected() && (failed == false)) {
-         try {
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            checkGrassMapsetFolder(jDescriptionLocation.getFilepath());
-            this.setCursor(Cursor.getDefaultCursor());
-         }
-         catch (final WrongGrassMapsetFolderException e) {
-            this.setCursor(Cursor.getDefaultCursor());
-            JOptionPane.showMessageDialog(null, Sextante.getText("grass_error_mapset_folder"),
-                     Sextante.getText("grass_error_title"), JOptionPane.ERROR_MESSAGE);
-            failed = true;
-            jDescriptionLocation.setFilepath("");
-         }
-         finally {
-            this.setCursor(Cursor.getDefaultCursor());
-         }
-      }
-      //3: On Windows: sh.exe
+      //2: On Windows: sh.exe
       if (Sextante.isWindows() && (failed == false)) {
          try {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -287,7 +249,7 @@ public class SextanteGrassSettingsPanel
          }
       }
 
-      //4: GRASS version
+      //3: GRASS version
       if (!isSupported() && (failed == false)) {
          this.setCursor(Cursor.getDefaultCursor());
          JOptionPane.showMessageDialog(null, Sextante.getText("grass_warning_version"), Sextante.getText("grass_warning_title"),
@@ -324,21 +286,6 @@ public class SextanteGrassSettingsPanel
 
 
    private void jCheckBoxTempMapsetActionPerformed(final ActionEvent evt) {
-
-      if (jCheckBoxTempMapset.isSelected()) {
-         this.remove(jLabelDescriptionLocation);
-         this.remove(jDescriptionLocation);
-         this.add(jCheckBoxLatLon, "1, 5, 2, 5");
-         jCheckBoxLatLon.setText(Sextante.getText("GRASS_lat_lon_mode"));
-         jCheckBoxLatLon.setSelected(new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_LAT_LON_MODE)).booleanValue());
-      }
-      else {
-         this.remove(jCheckBoxLatLon);
-         this.add(jLabelDescriptionLocation, "1, 5");
-         this.add(jDescriptionLocation, "2, 5");
-         jLabelDescriptionLocation.setText(Sextante.getText("GRASS_mapset"));
-         jDescriptionLocation.setFilepath(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_MAPSET_FOLDER));
-      }
       jCheckBoxLatLon.repaint();
       jLabelDescriptionLocation.repaint();
       jDescriptionLocation.repaint();
@@ -389,40 +336,6 @@ public class SextanteGrassSettingsPanel
             throw new WrongGrassFolderException();
          }
          i++;
-      }
-
-   }
-
-
-   /**
-    * Checks whether the GRASS mapset folder is valid.
-    * 
-    * @param grassMapsetFolder
-    *                the path to the GRASS mapset (folder)
-    */
-   private void checkGrassMapsetFolder(final String grassMapsetFolder) throws WrongGrassMapsetFolderException {
-
-      //Check if this is actually a valid mapset folder and throw an error, if it's not.
-      if (grassMapsetFolder == null) {
-         throw new WrongGrassMapsetFolderException();
-      }
-
-      if (grassMapsetFolder.length() < 2) {
-         throw new WrongGrassMapsetFolderException();
-      }
-
-      if (grassMapsetFolder.trim().equals("")) {
-         throw new WrongGrassMapsetFolderException();
-      }
-
-      File check = new File(grassMapsetFolder);
-      if (!check.exists()) {
-         throw new WrongGrassMapsetFolderException();
-      }
-
-      check = new File(grassMapsetFolder + File.separator + "WIND");
-      if (!check.exists()) {
-         throw new WrongGrassMapsetFolderException();
       }
 
    }
