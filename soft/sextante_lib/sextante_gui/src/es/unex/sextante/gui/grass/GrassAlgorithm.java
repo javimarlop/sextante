@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -24,8 +25,11 @@ import es.unex.sextante.core.OutputObjectsSet;
 import es.unex.sextante.core.ParametersSet;
 import es.unex.sextante.core.Sextante;
 import es.unex.sextante.dataObjects.IDataObject;
+import es.unex.sextante.dataObjects.IFeature;
+import es.unex.sextante.dataObjects.IFeatureIterator;
 import es.unex.sextante.dataObjects.IRasterLayer;
 import es.unex.sextante.dataObjects.IVectorLayer;
+import es.unex.sextante.dataObjects.vectorFilters.*;
 import es.unex.sextante.exceptions.GeoAlgorithmExecutionException;
 import es.unex.sextante.exceptions.RepeatedParameterNameException;
 import es.unex.sextante.gui.core.SextanteGUI;
@@ -925,9 +929,10 @@ public class GrassAlgorithm
 
 
    /**
-    * PROCESS THE GRASS ALGORITHM This method imports geodata from external sources in the GRASS mapset, runs the GRASS algorithm
-    * (module) on it and then exports the results back as new SEXTANTE layers.
-    * 
+    * PROCESS THE GRASS ALGORITHM 
+    * This method imports geodata from external sources in the GRASS mapset,
+    * runs the GRASS algorithm (module) on it and then exports the results back 
+    * as new SEXTANTE layers.
     */
    @Override
    public boolean processAlgorithm() throws GeoAlgorithmExecutionException {
@@ -1085,6 +1090,7 @@ public class GrassAlgorithm
       layers = m_Parameters.getParametersOfType(ParameterVectorLayer.class);
 
       for (int i = 0; i < layers.size(); i++) {
+         String sVeditCmd = new String("");
          final IVectorLayer layer = ((ParameterVectorLayer) layers.get(i)).getParameterValueAsVectorLayer();
          if (layer != null) {
             final IOutputChannel channel = layer.getOutputChannel();
@@ -1095,13 +1101,12 @@ public class GrassAlgorithm
                throw new GeoAlgorithmExecutionException(
                         Sextante.getText("Input_layers_are_not_compatible_with_GRASS_usage_\nMust_be_file-based_layers"));
             }
-
+			
             file = new File(sFilename);
             final String sName = file.getName().substring(0, file.getName().indexOf('.'));
 
             //Create a safe GRASS map name for the imported layer
             final String sGrassName = GrassUtils.getTempMapName();
-
             sCommand.append("v.in.ogr");
             String sParent = file.getParent();
             if (sParent.endsWith(File.separator)) {
@@ -1112,14 +1117,94 @@ public class GrassAlgorithm
             }
             sCommand.append(" min_area=-1");//Make sure to import every polygon
             sCommand.append(" dsn=\"" + sParent + "\"");
-            sCommand.append(" layer=" + sName);
+            sCommand.append(" layer=" + sName);            
             sCommand.append(" output=" + sGrassName);
             sCommand.append(" --overwrite -o");
+            final boolean bCleanPolygons = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_CLEAN_POLYGONS)).booleanValue();
+            if (!bCleanPolygons) {
+               sCommand.append(" -c");
+            }            
             final boolean bIs3DVMode = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_3D_V_MODE)).booleanValue();
             if (bIs3DVMode) {
                sCommand.append(" -z");
             }
             sCommand.append("\n");
+            
+            /* Try to duplicate any selection filters.
+             * This will translate the IDs of selected features (if the host GIS supports this)
+             * into ranges of the form "1-3","8-14", etc.
+             * We will then pass these to v.edit in order to delete all unselected features from
+             * the imported map _in place_
+             */
+            final List<IVectorLayerFilter> filterList = layer.getFilters(); 
+            String line = new String ();
+			int numFilters = filterList.size();
+			for ( int iFilter = 0; iFilter < numFilters; iFilter ++ ) {
+	            IVectorLayerFilter Filter = filterList.get(iFilter);
+				if ( Filter instanceof SelectionFilter ) {
+					List<String> rangesList = new ArrayList<String>();
+					int start=-2;
+					int end=-2;
+					boolean range_open = false;
+					for ( int iFeature = 0; iFeature < ((SelectionFilter)Filter).getLast(); iFeature ++ ) {
+						boolean selected;
+						selected = filterList.get(iFilter).accept(null, iFeature);
+            			if ( selected ) {
+            				if ( iFeature > (end+1) ) {
+            					if ( end != - 2 ) {
+            						/* create new range */
+                        			line = (start+1) + "-" + (end+1);
+                        			rangesList.add(line);
+                        			range_open = false;
+            						start = iFeature;
+            					} else {
+            						start = iFeature;
+            					}
+             					end = iFeature;
+            					range_open = true;
+            				} else {
+            					end = iFeature;
+            				}
+            			}
+            		}
+        			if ( range_open == true ) {
+						/* create new range */
+            			line = (start+1) + "-" + (end+1);
+            			rangesList.add(line);
+        			}
+    				/*
+    				 * Build the v.extract command line needed to remove all features except
+    				 * the selected ones
+    				 */
+    				if ( rangesList.size() > 0 ) {
+    					sVeditCmd = "v.extract --quiet --overwrite input=" + sGrassName + " output=" + sGrassName + "2" + " list=";
+        				for ( int iRange = 0; iRange < rangesList.size(); iRange ++ ) {
+        					if ( iRange < (rangesList.size()-1) )
+        						sVeditCmd += rangesList.get(iRange) + ",";
+        					else
+        						sVeditCmd += rangesList.get(iRange);
+        				}
+    				}
+				}
+			}            
+            /* if a selection was extracted: swap extraction with original data */
+            if ( sVeditCmd.length() > 1 ) {
+            	sCommand.append(sVeditCmd);
+            	sCommand.append("\n");
+            	sCommand.append("g.remove");
+            	sCommand.append(" vect=");
+            	sCommand.append(sGrassName);
+            	sCommand.append(" --quiet");
+            	sCommand.append("\n");
+            	sCommand.append("g.rename");
+            	sCommand.append(" vect=");
+            	sCommand.append(sGrassName + "2");
+            	sCommand.append(",");
+            	sCommand.append(sGrassName);
+            	sCommand.append(" --quiet");
+            	sCommand.append("\n");
+            }
+            
             vectorLayers.add(sGrassName);
 
             //Map relation between imported file and new GRASS map.
@@ -1137,6 +1222,7 @@ public class GrassAlgorithm
             for (int j = 0; j < layerList.size(); j++) {
                //Run the input procedure as many times as we have input maps for this multiple maps option...
                final IVectorLayer layer = ((IVectorLayer) layerList.get(j));
+               String sVeditCmd = new String("");
                if (layer != null) {
                   final IOutputChannel channel = layer.getOutputChannel();
                   if (channel instanceof FileOutputChannel) {
@@ -1164,7 +1250,92 @@ public class GrassAlgorithm
                   sCommand.append(" dsn=\"" + sParent + "\"");
                   sCommand.append(" layer=" + sName);
                   sCommand.append(" output=" + sGrassName);
-                  sCommand.append(" --overwrite -o -z\n");
+                  sCommand.append(" --overwrite -o");
+                  final boolean bCleanPolygons = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_CLEAN_POLYGONS)).booleanValue();
+                  if (!bCleanPolygons) {
+                     sCommand.append(" -c");
+                  }            
+                  final boolean bIs3DVMode = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_3D_V_MODE)).booleanValue();
+                  if (bIs3DVMode) {
+                     sCommand.append(" -z");
+                  }
+                  sCommand.append("\n");                  
+                  
+                  /* Try to duplicate any selection filters.
+                   * This will translate the IDs of selected features (if the host GIS supports this)
+                   * into ranges of the form "1-3","8-14", etc.
+                   * We will then pass these to v.edit in order to delete all unselected features from
+                   * the imported map _in place_
+                   */
+                  final List<IVectorLayerFilter> filterList = layer.getFilters(); 
+                  String line = new String ();
+      			  int numFilters = filterList.size();
+      			  for ( int iFilter = 0; iFilter < numFilters; iFilter ++ ) {
+      	            IVectorLayerFilter Filter = filterList.get(iFilter);
+      				if ( Filter instanceof SelectionFilter ) {
+      					List<String> rangesList = new ArrayList<String>();
+      					int start=-2;
+      					int end=-2;
+      					boolean range_open = false;
+      					for ( int iFeature = 0; iFeature < ((SelectionFilter)Filter).getLast(); iFeature ++ ) {
+      						boolean selected;
+      						selected = filterList.get(iFilter).accept(null, iFeature);
+                  			if ( selected ) {
+                  				if ( iFeature > (end+1) ) {
+                  					if ( end != - 2 ) {
+                  						/* create new range */
+                              			line = (start+1) + "-" + (end+1);
+                              			rangesList.add(line);
+                              			range_open = false;
+                  						start = iFeature;
+                  					} else {
+                  						start = iFeature;
+                  					}
+                   					end = iFeature;
+                  					range_open = true;
+                  				} else {
+                  					end = iFeature;
+                  				}
+                  			}
+                  		}
+              			if ( range_open == true ) {
+      						/* create new range */
+                  			line = (start+1) + "-" + (end+1);
+                  			rangesList.add(line);
+              			}
+          				/*
+          				 * Build the v.extract command line needed to remove all features except
+          				 * the selected ones
+          				 */
+          				if ( rangesList.size() > 0 ) {
+          					sVeditCmd = "v.extract --quiet --overwrite input=" + sGrassName + " output=" + sGrassName + "2" + " list=";
+              				for ( int iRange = 0; iRange < rangesList.size(); iRange ++ ) {
+              					if ( iRange < (rangesList.size()-1) )
+              						sVeditCmd += rangesList.get(iRange) + ",";
+              					else
+              						sVeditCmd += rangesList.get(iRange);
+              				}
+          				}
+      				}
+      			  }            
+                  /* if a selection was extracted: swap extraction with original data */
+                  if ( sVeditCmd.length() > 1 ) {
+                  	sCommand.append(sVeditCmd);
+                  	sCommand.append("\n");
+                  	sCommand.append("g.remove");
+                  	sCommand.append(" vect=");
+                  	sCommand.append(sGrassName);
+                  	sCommand.append(" --quiet");
+                  	sCommand.append("\n");
+                  	sCommand.append("g.rename");
+                  	sCommand.append(" vect=");
+                  	sCommand.append(sGrassName + "2");
+                  	sCommand.append(",");
+                  	sCommand.append(sGrassName);
+                  	sCommand.append(" --quiet");
+                  	sCommand.append("\n");
+                  }   
+                  
                   vectorLayers.add(sGrassName);
 
                   //Map relation between imported file and new GRASS map.
