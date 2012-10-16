@@ -288,7 +288,7 @@ public class GrassUtils {
             output.write("set HOME=" + System.getProperty("user.home") + "\n");
             output.write("set GISRC=" + gisrc.getAbsolutePath() + "\n");
             output.write("set GRASS_SH=" + sWinShell + "\n");
-            output.write("set PATH=" + shToolsPath + File.separator + "bin;" + shToolsPath + File.separator + "lib;" + "%PATH%\n");
+            output.write("set PATH=" + shToolsPath + File.separator + ";" + "%PATH%\n");
             output.write("set WINGISBASE=" + sFolder + "\n");
             output.write("set GISBASE=" + sFolder + "\n");
             output.write("set GRASS_PROJSHARE=" + sFolder + File.separator + "share" + File.separator + "proj" + "\n");
