@@ -174,11 +174,7 @@ public class GrassAlgorithmProvider
       }
 
       try {
-         final boolean bIsTempMapset = new Boolean(
-                  SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_USE_TEMP_MAPSET)).booleanValue();
-         if (bIsTempMapset) {
-            GrassUtils.createTempMapset();
-         }
+         GrassUtils.createTempMapset();
          GrassUtils.runGRASS(sb, "Creating GRASS algorithm descriptions", null);
       }
       catch (final Exception e) {
