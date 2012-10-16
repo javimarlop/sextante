@@ -1086,17 +1086,13 @@ public class GrassUtils {
     * Deletes the location and mapset(s) for GRASS data processing.
     */
    public static void deleteTempMapset() {
-
-      final boolean bIsTemp = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_USE_TEMP_MAPSET)).booleanValue();
-      if (bIsTemp) {
-         if ((getGrassMapsetFolder() != null) && (getGrassMapsetFolder().length() > 2)) {
-            String tmpFolder;
-            tmpFolder = new String(getGrassMapsetFolder().substring(0, getGrassMapsetFolder().lastIndexOf(File.separator)));
-            if (new File(tmpFolder).exists()) {
-               deleteDirectory(new File(tmpFolder));
-            }
-         }
-      }
+       if ((getGrassMapsetFolder() != null) && (getGrassMapsetFolder().length() > 2)) {
+          String tmpFolder;
+          tmpFolder = new String(getGrassMapsetFolder().substring(0, getGrassMapsetFolder().lastIndexOf(File.separator)));
+          if (new File(tmpFolder).exists()) {
+             deleteDirectory(new File(tmpFolder));
+          }
+       }
    }
 
 
@@ -1270,14 +1266,7 @@ public class GrassUtils {
     * @return the current grass mapset folder
     */
    public static String getGrassMapsetFolder() {
-
-      final boolean bIsTemp = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_USE_TEMP_MAPSET)).booleanValue();
-      if (bIsTemp) {
-         return m_sGrassTempMapsetFolder;
-      }
-      else {
-         return SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_MAPSET_FOLDER);
-      }
+       return m_sGrassTempMapsetFolder;
    }
 
 
