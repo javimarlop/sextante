@@ -25,6 +25,14 @@ public class SelectionFilter
    }
 
 
+   /**
+    * Returns the ID of the last feature in the dataset for which this filter is "true"
+    */
+   public int getLast() {
+	      return ( m_BitSet.length() );
+   }   
+
+   
    @Override
    public boolean accept(final IFeature feature,
                          final int iIndex) {
