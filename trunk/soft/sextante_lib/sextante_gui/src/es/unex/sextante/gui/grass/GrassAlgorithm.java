@@ -141,19 +141,6 @@ public class GrassAlgorithm
    }
 
 
-   /*
-    * Returns only the base name of this geoalgorithm by droppin
-    * any specifier within "()".
-    */
-   private String baseName() {
-      if (this.getName().contains("(")) {
-         final String name = new String(this.getName().substring(0, this.getName().indexOf("(") - 1));
-         return (name.trim());
-      }
-      return (this.getName().trim());
-   }
-
-
    /**
     * Registers a new "mapping", that is a relation of the form: external file <-> GRASS map. This is important for substituting
     * the INPUT map name values in the GRASS module to run. Note: Take care to always need associate a GRASS map with a full path
@@ -365,12 +352,12 @@ public class GrassAlgorithm
                }
             }
             else {//any other old string
-               if (baseName().equals("v.in.ogr")) {
+               if (getName().equals("v.in.ogr")) {
                   final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, ext_ogr_in);
                   param = new ParameterFilepath();
                   param.setParameterAdditionalInfo(aif);
                }
-               else if (baseName().equals("v.out.ogr")) {
+               else if (getName().equals("v.out.ogr")) {
                   final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, ext_ogr_out);
                   param = new ParameterFilepath();
                   param.setParameterAdditionalInfo(aif);
@@ -439,7 +426,7 @@ public class GrassAlgorithm
                         final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(true, true, null);
                         param.setParameterAdditionalInfo(aif);
                      }
-                     else if (baseName().equals("v.in.dxf")) {
+                     else if (getName().equals("v.in.dxf")) {
                         final String ext[] = { "dxf" };
                         final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, ext);
                         param = new ParameterFilepath();
@@ -548,7 +535,7 @@ public class GrassAlgorithm
          m_sTooltip = null;
 
          //modify some options that we are unable to support in their original form
-         if (baseName().equals("r.colors")) {
+         if (getName().equals("r.colors")) {
             if (param.getParameterName().equals("map")) {
                final AdditionalInfoRasterLayer airl = new AdditionalInfoRasterLayer(true);
                param.setParameterAdditionalInfo(airl);
@@ -557,7 +544,7 @@ public class GrassAlgorithm
          //drop some options that we are unable to support in their
          //TODO: use a helper function: dropParam ( sModuleName, sParamName[] );
          try {
-            if (baseName().equals("r.colors")) {
+            if (getName().equals("r.colors")) {
                if (param.getParameterName().equals("raster")) {
                   m_Parameters.removeParameter(param);
                }
@@ -571,7 +558,7 @@ public class GrassAlgorithm
                   m_Parameters.removeParameter(param);
                }
             }
-            if (baseName().equals("r.mapcalculator")) {
+            if (getName().equals("r.mapcalculator")) {
                if (param.getParameterName().equals("help")) {
                   m_Parameters.removeParameter(param);
                }
@@ -582,13 +569,13 @@ public class GrassAlgorithm
                   m_Parameters.removeParameter(param);
                }
             }
-            if (baseName().equals("r.null")) {
+            if (getName().equals("r.null")) {
                if (param.getParameterName().equals("-c") || param.getParameterName().equals("-n")
                    || param.getParameterName().equals("-r")) {
                   m_Parameters.removeParameter(param);
                }
             }
-            if (baseName().equals("v.what.vect")) {
+            if (getName().equals("v.what.vect")) {
                if (param.getParameterName().equals("qlayer")) {
                   m_Parameters.removeParameter(param);
                }
@@ -625,14 +612,14 @@ public class GrassAlgorithm
 
       try {
          //r.in.gdal: correct bogus default "0" for "band")
-         if (baseName().equals("r.in.gdal")) {
+         if (getName().equals("r.in.gdal")) {
             final Parameter band = m_Parameters.getParameter("band");
             if (band.getParameterValueAsInt() == 0) {
                m_Parameters.removeParameter("band");
             }
          }
          //r.in.srtm: drop file extension from input filename)
-         if (baseName().equals("r.in.srtm")) {
+         if (getName().equals("r.in.srtm")) {
             final Parameter input = m_Parameters.getParameter("input");
             String filename = new String(input.getParameterValueAsString().trim());
             if (filename.endsWith(".hgt")) {
@@ -643,7 +630,7 @@ public class GrassAlgorithm
             }
          }
          //r.out.gdal: make sure to wrap "metaopt=" and "createopt=" option values in quotation marks
-         if (baseName().equals("r.out.gdal")) {
+         if (getName().equals("r.out.gdal")) {
             final Parameter metaopt = m_Parameters.getParameter("metaopt");
             if ((metaopt.getParameterValueAsString() != null) && (metaopt.getParameterValueAsString().trim().length() > 1)) {
                if (!metaopt.getParameterValueAsString().trim().startsWith("\"")) {
@@ -664,7 +651,7 @@ public class GrassAlgorithm
             }
          }
          //v.in.ogr: handle DSN and LAYER name awkwardness
-         if (baseName().equals("v.in.ogr")) {
+         if (getName().equals("v.in.ogr")) {
             final Parameter dsn = m_Parameters.getParameter("dsn");
             if ((dsn.getParameterValueAsString() == null) || (dsn.getParameterValueAsString().trim().length() < 1)) {
                final Parameter layer = m_Parameters.getParameter("layer");
@@ -673,7 +660,7 @@ public class GrassAlgorithm
             }
          }
          //v.out.ogr: handle DSN and LAYER name awkwardness
-         if (baseName().equals("v.out.ogr")) {
+         if (getName().equals("v.out.ogr")) {
             final Parameter dsn = m_Parameters.getParameter("dsn");
             if ((dsn.getParameterValueAsString() == null) || (dsn.getParameterValueAsString().trim().length() < 1)) {
                final Parameter layer = m_Parameters.getParameter("olayer");
@@ -748,7 +735,7 @@ public class GrassAlgorithm
             }
          }
          //v.to.3d: circumvent SEXTANTE parsing problem ("height" must be set)
-         if (baseName().equals("v.to.3d")) {
+         if (getName().equals("v.to.3d")) {
             final Parameter column = m_Parameters.getParameter("column");
             if ((column.getParameterValueAsString() != null) && (column.getParameterValueAsString().trim().length() > 0)) {
                m_Parameters.removeParameter("height");
@@ -811,7 +798,7 @@ public class GrassAlgorithm
       try {
 
          //r.mapcalc: subsitute mapnames in formula
-         if (baseName().equals("r.mapcalculator")) {
+         if (getName().equals("r.mapcalculator")) {
             final Parameter formula = m_Parameters.getParameter("formula");
             if ((formula.getParameterValueAsString() != null) && (formula.getParameterValueAsString().trim().length() > 0)) {
                String expression = formula.getParameterValueAsString().trim();
@@ -853,7 +840,7 @@ public class GrassAlgorithm
    private void postProcessBeforeExport() {
       try {
          //v.distance: need to export values uploaded into existing attribute table field(s)
-         if (baseName().equals("v.distance")) {
+         if (getName().equals("v.distance")) {
             final Parameter column = m_Parameters.getParameter("column");
             if ((column.getParameterValueAsString() != null) && (column.getParameterValueAsString().trim().length() > 0)) {
                final Parameter from = m_Parameters.getParameter("from");
@@ -868,7 +855,7 @@ public class GrassAlgorithm
             }
          }
          //v.edit: directly manipulates input map
-         if (baseName().equals("v.edit")) {
+         if (getName().equals("v.edit")) {
             final Parameter map = m_Parameters.getParameter("map");
             final String filename = ((FileOutputChannel) map.getParameterValueAsVectorLayer().getOutputChannel()).getFilename();
             final String mapname = new String(getInFile(filename));
@@ -879,7 +866,7 @@ public class GrassAlgorithm
             tmpOut.setOutputChannel(this.getOutputChannel(tmpOut.getName()));
          }
          //v.what.vect: directly manipulates input map
-         if (baseName().equals("v.what.vect")) {
+         if (getName().equals("v.what.vect")) {
             final Parameter vector = m_Parameters.getParameter("vector");
             final String filename = ((FileOutputChannel) vector.getParameterValueAsVectorLayer().getOutputChannel()).getFilename();
             final String mapname = new String(getInFile(filename));
@@ -890,7 +877,7 @@ public class GrassAlgorithm
             tmpOut.setOutputChannel(this.getOutputChannel(tmpOut.getName()));
          }
          //r.null: directly manipulates input map
-         if (baseName().equals("r.null")) {
+         if (getName().equals("r.null")) {
             final Parameter map = m_Parameters.getParameter("map");
             final String filename = ((FileOutputChannel) map.getParameterValueAsRasterLayer().getOutputChannel()).getFilename();
             final String mapname = new String(getInFile(filename));
@@ -901,7 +888,7 @@ public class GrassAlgorithm
             tmpOut.setOutputChannel(this.getOutputChannel(tmpOut.getName()));
          }
          //r.colors: directly manipulates input map
-         if (baseName().equals("r.colors")) {
+         if (getName().equals("r.colors")) {
             final Parameter map = m_Parameters.getParameter("map");
             final String filename = ((FileOutputChannel) map.getParameterValueAsRasterLayer().getOutputChannel()).getFilename();
             final String mapname = new String(getInFile(filename));
@@ -912,7 +899,7 @@ public class GrassAlgorithm
             tmpOut.setOutputChannel(this.getOutputChannel(tmpOut.getName()));
          }
          //r.colors.stddev: directly manipulates input map
-         if (baseName().equals("r.colors.stddev")) {
+         if (getName().equals("r.colors.stddev")) {
             final Parameter input = m_Parameters.getParameter("input");
             final String filename = ((FileOutputChannel) input.getParameterValueAsRasterLayer().getOutputChannel()).getFilename();
             final String mapname = new String(getInFile(filename));
@@ -948,7 +935,6 @@ public class GrassAlgorithm
       final boolean bIsInPolylines = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_IN_POLYLINES)).booleanValue();
 
       StringBuffer sCommand = new StringBuffer();
-      String savedRegion;
 
       boolean gotKilled = false;
       GrassUtils.setInterruptible(true);
@@ -969,26 +955,18 @@ public class GrassAlgorithm
       GrassAlgorithmProvider.addMessage(decoration.toString());
       GrassAlgorithmProvider.addMessage("   ");
 
-      /* Create a temporary mapset if user wants it so */
-      final boolean bIsTempMapset = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_USE_TEMP_MAPSET)).booleanValue();
-      if (bIsTempMapset) {
-         try {
-            GrassUtils.createTempMapset();
-         }
-         catch (final IOException e) {
-            JOptionPane.showMessageDialog(null, Sextante.getText("GRASS_error_create_temp_mapset") + "\n" + e.getMessage(), "",
-                     JOptionPane.ERROR_MESSAGE);
-         }
+      /* Create a temporary GRASS mapset */
+      try {
+         GrassUtils.createTempMapset();
+      }
+      catch (final IOException e) {
+         JOptionPane.showMessageDialog(null, Sextante.getText("GRASS_error_create_temp_mapset") + "\n" + e.getMessage(), "",
+                  JOptionPane.ERROR_MESSAGE);
       }
 
       //Initialize "files<->GRASS maps" relations arrays
       m_FilesIn = new ArrayList<String>();
       m_MapsIn = new ArrayList<String>();
-
-      //Save existing GRASS region
-      savedRegion = GrassUtils.getTempMapName("saved_region_");
-      sCommand.append("g.region save=" + savedRegion);
-      sCommand.append("\n");
 
       //Set GRASS region
       if (getUserCanDefineAnalysisExtent()) {
@@ -1036,20 +1014,16 @@ public class GrassAlgorithm
             //Create a safe GRASS map name for the imported layer
             final String sGrassName = GrassUtils.getTempMapName();
 
+            //TODO: We import multiple bands here. But how are they handled?
             //Import raster layers via GDAL
             for (int iBand = 0; iBand < layer.getBandsCount(); iBand++) {
                sCommand.append("r.in.gdal");
                sCommand.append(" input=\"" + sFilename + "\"");
                sCommand.append(" band=" + Integer.toString(iBand + 1));
-               sCommand.append(" out=" + sGrassName);
+               sCommand.append(" output=" + sGrassName);
                sCommand.append(" --overwrite -o\n");
                rasterLayers.add(sGrassName);
             }
-
-            //Add NULL value mask
-            sCommand.append("r.null map=" + sGrassName);
-            sCommand.append(" setnull=\"" + Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue()) + "\"");
-            sCommand.append("\n");
 
             //Map relation between imported file and new GRASS map.
             //We will need this later to substitute the GRASS input options.
@@ -1084,15 +1058,15 @@ public class GrassAlgorithm
                      sCommand.append("r.in.gdal");
                      sCommand.append(" input=\"" + sFilename + "\"");
                      sCommand.append(" band=" + Integer.toString(iBand + 1));
-                     sCommand.append(" out=" + sGrassName);
+                     sCommand.append(" output=" + sGrassName);
                      sCommand.append(" --overwrite -o\n");
                      rasterLayers.add(sGrassName);
                   }
 
                   //Add NULL value mask
-                  sCommand.append("r.null map=" + sGrassName);
-                  sCommand.append(" setnull=\"" + Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue()) + "\"");
-                  sCommand.append("\n");
+                  //sCommand.append("r.null map=" + sGrassName);
+                  //sCommand.append(" setnull=\"" + Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue()) + "\"");
+                  //sCommand.append("\n");
 
                   //Map relation between imported file and new GRASS map.
                   //We will need this later to substitute the GRASS input options.
@@ -1250,13 +1224,7 @@ public class GrassAlgorithm
       preprocessBeforeExec();
 
       //Command for executing the algorithm
-      if (this.getName().contains("(")) {
-         //We have a sibling command: drop "()" specifier from name before trying to run!
-         sCommand.append(this.getName().substring(0, this.getName().indexOf("(") - 1));
-      }
-      else {
-         sCommand.append(this.getName());
-      }
+      sCommand.append(this.getName());
       for (int i = 0; i < m_Parameters.getNumberOfParameters(); i++) {
          final Parameter param = m_Parameters.getParameter(i);
          if (param.getParameterName().equals(PARAMETER_RESTRICT_VECTOR_OUTPUT_TYPE)) {
@@ -1612,9 +1580,7 @@ public class GrassAlgorithm
             else if (out instanceof OutputRasterLayer) {
                //Raster layer output: adjust region to layer before exporting
                sCommand.append("g.region rast=" + out.getName() + "\n");
-               //Raster layer output: just dump into a GeoTIFF, compressed using LZW and with a TFW
-               sCommand.append("r.out.gdal -c nodata=\""
-                               + Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue()) + "\"");
+               sCommand.append("r.out.gdal -c");               
                sCommand.append(" createopt=\"TFW=YES,COMPRESS=LZW\"");
                sCommand.append(" input=");
                sCommand.append(out.getName());
@@ -1651,68 +1617,9 @@ public class GrassAlgorithm
          }
       }
 
-      sCommand = new StringBuffer();
 
-      //Commands for deleting temporary grass files
-      if ((rasterLayers.size() != 0) || (vectorLayers.size() != 0)) {
-         sCommand.append("g.remove -f --q");
-         if (rasterLayers.size() != 0) {
-            sCommand.append(" rast=");
-            for (int j = 0; j < rasterLayers.size(); j++) {
-               if (j != 0) {
-                  sCommand.append(",");
-               }
-               sCommand.append(rasterLayers.get(j));
-            }
-         }
-         if (vectorLayers.size() != 0) {
-            sCommand.append(" vect=");
-            for (int j = 0; j < vectorLayers.size(); j++) {
-               if (j != 0) {
-                  sCommand.append(",");
-               }
-               sCommand.append(vectorLayers.get(j));
-            }
-         }
-         sCommand.append("\n");
-      }
-      //Restore original GRASS region and delete temporary region saving file
-      sCommand.append("g.region region=" + savedRegion);
-      sCommand.append("\n");
-      sCommand.append("g.remove -f --q region=" + savedRegion);
-      sCommand.append("\n");
-
-
-      //
-      //POSTPROCESSING: Clean up: Remove temporary maps, restore original GRASS region
-      //
-      GrassAlgorithmProvider.addMessage("   ");
-      GrassAlgorithmProvider.addMessage("[CLEANING up]");
-      GrassAlgorithmProvider.addMessage("   ");
-      setProgressText("Cleaning up...");
-      //The clean up will always attempt to and it is not interruptible
-      GrassUtils.setInterruptible(false);
-      final boolean wasCanceled = GrassUtils.isProcessCanceled();
-      try {
-         GrassUtils.runGRASS(sCommand, "Cleaning up:", this);
-         GrassUtils.setInterruptible(true);
-      }
-      catch (final Exception e) {
-         gotKilled = true;
-      }
-
-      /* Delete temporary mapset (if any) */
-      if (bIsTempMapset) {
-         GrassUtils.deleteTempMapset();
-      }
-
-      //Throw exception if any of the processing steps leading up
-      //to here died (unless the process was canceled by the user).
-      if (gotKilled) {
-         if (wasCanceled == false) {
-            throw new GrassExecutionException();
-         }
-      }
+      /* Delete temporary mapset */
+      GrassUtils.deleteTempMapset();
 
       GrassAlgorithmProvider.publishMessage("Executing GRASS Algorithm");
 
