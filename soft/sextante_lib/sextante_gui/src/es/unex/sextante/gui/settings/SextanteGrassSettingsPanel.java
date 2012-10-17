@@ -52,7 +52,8 @@ public class SextanteGrassSettingsPanel
    private JCheckBox          jCheckBox3DV;
    private JCheckBox          jCheckBoxLatLon;
    private JCheckBox          jCheckBoxInPolylines;
-   private JCheckBox          jCheckBoxCleanPolygons;   
+   private JCheckBox          jCheckBoxCleanPolygons;
+   private JCheckBox          jCheckBoxNoVectBBox;  
    private JCheckBox          jActivateCheckBox;
 
 
@@ -86,6 +87,11 @@ public class SextanteGrassSettingsPanel
          jLabelDescriptionLocation = new JLabel();
          jDescriptionLocation = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("GRASS_mapset"));
 
+         jCheckBoxNoVectBBox = new JCheckBox();
+         jCheckBoxNoVectBBox.setText(Sextante.getText("grass_no_vect_bbox"));
+         jCheckBoxNoVectBBox.setSelected(new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_NO_VECT_BBOX)).booleanValue());
+         this.add(jCheckBoxNoVectBBox, "1, 6, 2, 6");
+         
          jCheckBox3DV = new JCheckBox();
          jCheckBox3DV.setText(Sextante.getText("grass_input_3d"));
          jCheckBox3DV.setSelected(new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_3D_V_MODE)).booleanValue());
@@ -188,6 +194,7 @@ public class SextanteGrassSettingsPanel
       }
       map.put(SextanteGrassSettings.GRASS_3D_V_MODE, new Boolean(jCheckBox3DV.isSelected()).toString());
       map.put(SextanteGrassSettings.GRASS_CLEAN_POLYGONS, new Boolean(jCheckBoxCleanPolygons.isSelected()).toString());
+      map.put(SextanteGrassSettings.GRASS_NO_VECT_BBOX, new Boolean(jCheckBoxNoVectBBox.isSelected()).toString());      
       map.put(SextanteGrassSettings.GRASS_IN_POLYLINES, new Boolean(jCheckBoxInPolylines.isSelected()).toString());
       map.put(SextanteGrassSettings.GRASS_LAT_LON_MODE, new Boolean(jCheckBoxLatLon.isSelected()).toString());
       map.put(SextanteGrassSettings.GRASS_ACTIVATE, new Boolean(jActivateCheckBox.isSelected()).toString());
@@ -282,14 +289,6 @@ public class SextanteGrassSettingsPanel
          JOptionPane.showMessageDialog(null, Sextante.getText("grass_info_setup_success") + " " + iNumAlgs + ". ",
                   Sextante.getText("grass_info_title"), JOptionPane.INFORMATION_MESSAGE);
       }
-   }
-
-
-   private void jCheckBoxTempMapsetActionPerformed(final ActionEvent evt) {
-      jCheckBoxLatLon.repaint();
-      jLabelDescriptionLocation.repaint();
-      jDescriptionLocation.repaint();
-      this.repaint();
    }
 
 

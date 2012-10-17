@@ -18,6 +18,7 @@ public class SextanteGrassSettings
    public static final String GRASS_WIN_SHELL       = "GrassWinShell";
    public static final String GRASS_IN_POLYLINES    = "GrassInPolylines";
    public static final String GRASS_CLEAN_POLYGONS  = "GrassCleanPolygons";
+   public static final String GRASS_NO_VECT_BBOX    = "GrassNoVectBBox";
    public static final String GRASS_ACTIVATE        = "GrassActivate";
    public static final String CAN_CONFIGURE_GRASS   = "CanConfigureGrass";
 
@@ -32,6 +33,7 @@ public class SextanteGrassSettings
       map.put(GRASS_LAT_LON_MODE, Boolean.FALSE.toString());
       map.put(GRASS_IN_POLYLINES, Boolean.FALSE.toString());
       map.put(GRASS_CLEAN_POLYGONS, Boolean.FALSE.toString());
+      map.put(GRASS_NO_VECT_BBOX, Boolean.FALSE.toString());
       map.put(GRASS_ACTIVATE, Boolean.TRUE.toString());
       map.put(CAN_CONFIGURE_GRASS, Boolean.FALSE.toString());
 
