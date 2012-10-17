@@ -174,8 +174,8 @@ public class AlgorithmsPanel
                   try {
                      bMandatory = ((AdditionalInfoVectorLayer) pvl.getParameterAdditionalInfo()).getIsMandatory();
                      if (bMandatory) {
-                        menuItemExecuteIterative[m_iExecuteIterativeMenuCount].setText(Sextante.getText("Run_iterative") + "["
-                                                                                       + param.getParameterDescription() + "]");
+                        menuItemExecuteIterative[m_iExecuteIterativeMenuCount].setText(Sextante.getText("Run_iterative") + " ("
+                                                                                       + param.getParameterDescription() + ")");
                         menuItemExecuteIterative[m_iExecuteIterativeMenuCount].setVisible(true);
                         m_iExecuteIterativeMenuCount++;
                      }
