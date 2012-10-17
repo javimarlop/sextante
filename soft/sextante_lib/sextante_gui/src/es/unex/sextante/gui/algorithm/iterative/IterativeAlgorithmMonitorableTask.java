@@ -124,6 +124,7 @@ public class IterativeAlgorithmMonitorableTask
             final IFeature feature = m_Iterator.next();
             m_SFVL.setFeature(feature.getGeometry(), feature.getRecord().getValues());
             m_SFVL.setName(m_sLayerName + "[" + Integer.toString(iIteration) + "]");
+            m_SFVL.setID(iIteration);
             final Set<String> names = filenames.keySet();
             for (final Iterator iter = names.iterator(); iter.hasNext();) {
                final String sName = (String) iter.next();

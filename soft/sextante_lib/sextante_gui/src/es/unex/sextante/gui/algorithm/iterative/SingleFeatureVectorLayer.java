@@ -23,6 +23,7 @@ public class SingleFeatureVectorLayer
    private final Object   m_CRS;
    private IVectorLayer   m_OriginalLayer;
    private final int      m_iShapeType;
+   private int      	  m_ID;
 
 
    public SingleFeatureVectorLayer(final IVectorLayer layer) {
@@ -128,6 +129,26 @@ public class SingleFeatureVectorLayer
 
    }
 
+   
+   /*
+    * Sets an internal ID. Useful for keeping external algorithm
+    * providers such as GRASS informed which feature is being
+    * processed by an iterative processor.
+    * Use range 1..n.
+    */
+   public void setID (final int ID) {
+
+	      m_ID = ID;
+
+   }
+   
+   
+   public int getID () {
+
+	      return ( m_ID );
+
+  }
+   
 
    public IVectorLayer getOriginalLayer() {
 

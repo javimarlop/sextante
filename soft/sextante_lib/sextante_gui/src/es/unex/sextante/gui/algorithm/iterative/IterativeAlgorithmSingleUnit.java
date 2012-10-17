@@ -111,7 +111,7 @@ public class IterativeAlgorithmSingleUnit
       for (int i = 0; i < ooset.getOutputObjectsCount(); i++) {
          final Output out = ooset.getOutput(i);
          if (!(out instanceof OutputNumericalValue)) {
-            out.setDescription(out.getDescription() + "[" + m_sUnitName + "]");
+            out.setDescription(out.getDescription() + " <" + m_sUnitName + ">");
          }
       }
 
