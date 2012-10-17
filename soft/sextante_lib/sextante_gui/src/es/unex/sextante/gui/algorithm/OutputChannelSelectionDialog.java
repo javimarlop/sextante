@@ -56,7 +56,6 @@ public class OutputChannelSelectionDialog
       final JTabbedPane tabbedPane = new JTabbedPane();
 
       m_GeneralOptionsChannelSelectionPanel = new GeneralOptionsChannelSelectionPanel(m_Output, this);
-      tabbedPane.addTab(Sextante.getText("General"), m_GeneralOptionsChannelSelectionPanel);
 
       String[] sExt;
       String sDesc;
@@ -84,10 +83,12 @@ public class OutputChannelSelectionDialog
       m_FileOutputChannelSelectionPanel = new FileOutputChannelSelectionPanel(sDesc, sExt, this);
       tabbedPane.addTab(Sextante.getText("File"), m_FileOutputChannelSelectionPanel);
 
-      if (iType == TYPE_VECTOR) {
+      tabbedPane.addTab(Sextante.getText("General"), m_GeneralOptionsChannelSelectionPanel);      
+      
+      //if (iType == TYPE_VECTOR) {
          //m_DatabaseOutputChannelSelectionPanel = new DatabaseOutputChannelSelectionPanel(sDesc, this);
          //tabbedPane.addTab(Sextante.getText("Database"), m_DatabaseOutputChannelSelectionPanel);
-      }
+      //}
 
       this.getContentPane().add(tabbedPane);
 
