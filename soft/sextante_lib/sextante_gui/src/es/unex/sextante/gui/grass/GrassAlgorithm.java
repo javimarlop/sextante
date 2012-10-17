@@ -25,21 +25,15 @@ import es.unex.sextante.core.OutputObjectsSet;
 import es.unex.sextante.core.ParametersSet;
 import es.unex.sextante.core.Sextante;
 import es.unex.sextante.dataObjects.IDataObject;
-import es.unex.sextante.dataObjects.IFeature;
-import es.unex.sextante.dataObjects.IFeatureIterator;
 import es.unex.sextante.dataObjects.IRasterLayer;
 import es.unex.sextante.dataObjects.IVectorLayer;
 import es.unex.sextante.dataObjects.vectorFilters.*;
 import es.unex.sextante.exceptions.GeoAlgorithmExecutionException;
 import es.unex.sextante.exceptions.RepeatedParameterNameException;
+import es.unex.sextante.gui.algorithm.iterative.SingleFeatureVectorLayer;
 import es.unex.sextante.gui.core.SextanteGUI;
 import es.unex.sextante.gui.settings.SextanteGrassSettings;
-import es.unex.sextante.outputs.FileOutputChannel;
-import es.unex.sextante.outputs.IOutputChannel;
-import es.unex.sextante.outputs.NullOutputChannel;
-import es.unex.sextante.outputs.Output;
-import es.unex.sextante.outputs.OutputRasterLayer;
-import es.unex.sextante.outputs.OutputVectorLayer;
+import es.unex.sextante.outputs.*;
 import es.unex.sextante.parameters.Parameter;
 import es.unex.sextante.parameters.ParameterBoolean;
 import es.unex.sextante.parameters.ParameterDataObject;
@@ -1076,12 +1070,23 @@ public class GrassAlgorithm
 
       //Set GRASS region
       if (getUserCanDefineAnalysisExtent()) {
-         sCommand.append("g.region");
-         sCommand.append(" n=" + Double.toString(m_AnalysisExtent.getYMax()));
-         sCommand.append(" s=" + Double.toString(m_AnalysisExtent.getYMin()));
-         sCommand.append(" e=" + Double.toString(m_AnalysisExtent.getXMax()));
-         sCommand.append(" w=" + Double.toString(m_AnalysisExtent.getXMin()));
-         sCommand.append(" res=" + Double.toString(m_AnalysisExtent.getCellSize()) + "\n");
+    	 if ( 	(m_AnalysisExtent.getYMin() == m_AnalysisExtent.getYMax()) || 
+    			(m_AnalysisExtent.getXMin() == m_AnalysisExtent.getXMax()) ) {
+    		 // This can happen, if we are running in iterative execution mode.
+    		 sCommand.append("g.region");
+    		 sCommand.append(" n=1");
+    		 sCommand.append(" s=0");
+    		 sCommand.append(" e=1");
+    		 sCommand.append(" w=0");
+    		 sCommand.append(" res=1.0\n");    		 
+    	 } else {    		 
+    		 sCommand.append("g.region");
+    		 sCommand.append(" n=" + Double.toString(m_AnalysisExtent.getYMax()));
+    		 sCommand.append(" s=" + Double.toString(m_AnalysisExtent.getYMin()));
+    		 sCommand.append(" e=" + Double.toString(m_AnalysisExtent.getXMax()));
+    		 sCommand.append(" w=" + Double.toString(m_AnalysisExtent.getXMin()));
+    		 sCommand.append(" res=" + Double.toString(m_AnalysisExtent.getCellSize()) + "\n");
+    	 }
       }
 
       //
@@ -1120,16 +1125,16 @@ public class GrassAlgorithm
             //Create a safe GRASS map name for the imported layer
             final String sGrassName = GrassUtils.getTempMapName();
 
-            //TODO: We import multiple bands here. But how are they handled?
-            //Import raster layers via GDAL
-            for (int iBand = 0; iBand < layer.getBandsCount(); iBand++) {
-               sCommand.append("r.in.gdal");
-               sCommand.append(" input=\"" + sFilename + "\"");
-               sCommand.append(" band=" + Integer.toString(iBand + 1));
-               sCommand.append(" output=" + sGrassName);
-               sCommand.append(" --overwrite -o\n");
-               rasterLayers.add(sGrassName);
-            }
+            //Import raster layer via GDAL
+            //for (int iBand = 0; iBand < layer.getBandsCount(); iBand++) {
+            sCommand.append("r.in.gdal");
+            sCommand.append(" input=\"" + sFilename + "\"");
+            //sCommand.append(" band=" + Integer.toString(iBand + 1));
+            sCommand.append(" band=1");
+            sCommand.append(" output=" + sGrassName);
+            sCommand.append(" --overwrite -o\n");
+            rasterLayers.add(sGrassName);
+            //}
 
             //Map relation between imported file and new GRASS map.
             //We will need this later to substitute the GRASS input options.
@@ -1160,15 +1165,16 @@ public class GrassAlgorithm
                   final String sGrassName = GrassUtils.getTempMapName();
 
                   //Import raster layers via GDAL
-                  for (int iBand = 0; iBand < layer.getBandsCount(); iBand++) {
-                     sCommand.append("r.in.gdal");
-                     sCommand.append(" input=\"" + sFilename + "\"");
-                     sCommand.append(" band=" + Integer.toString(iBand + 1));
-                     sCommand.append(" output=" + sGrassName);
-                     sCommand.append(" --overwrite -o\n");
-                     rasterLayers.add(sGrassName);
-                  }
-
+                  //for (int iBand = 0; iBand < layer.getBandsCount(); iBand++) {
+                  sCommand.append("r.in.gdal");
+                  sCommand.append(" input=\"" + sFilename + "\"");
+                  //sCommand.append(" band=" + Integer.toString(iBand + 1));
+                  sCommand.append(" band=1");
+                  sCommand.append(" output=" + sGrassName);
+                  sCommand.append(" --overwrite -o\n");
+                  rasterLayers.add(sGrassName);
+                  //}
+                  
                   //Add NULL value mask
                   //sCommand.append("r.null map=" + sGrassName);
                   //sCommand.append(" setnull=\"" + Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue()) + "\"");
@@ -1184,29 +1190,51 @@ public class GrassAlgorithm
       }
 
       //Attaching vector layers as external OGR datasets is problematic, we will
-      //import them as a new GRASS map. This consumes extra time and diskspace,
+      //import them as a new GRASS map instead. This consumes extra time and diskspace,
       //but it is much more robust.
 
       //Import vector layers: single layer input options
       layers = m_Parameters.getParametersOfType(ParameterVectorLayer.class);
 
+      boolean bRunIteratively = false;
+      String sIterMap = null;
+      int iIteration = -1;
+      
       for (int i = 0; i < layers.size(); i++) {
-         final IVectorLayer layer = ((ParameterVectorLayer) layers.get(i)).getParameterValueAsVectorLayer();
+         IVectorLayer layer = ((ParameterVectorLayer) layers.get(i)).getParameterValueAsVectorLayer();
          if (layer != null) {
-            final IOutputChannel channel = layer.getOutputChannel();
+            IOutputChannel channel = layer.getOutputChannel();
+            
+            sFilename="";
+            
             if (channel instanceof FileOutputChannel) {
-               sFilename = ((FileOutputChannel) channel).getFilename();
-            }
+                sFilename = ((FileOutputChannel) channel).getFilename();
+            }            
             else {
-               throw new GeoAlgorithmExecutionException(
-                        Sextante.getText("Input_layers_are_not_compatible_with_GRASS_usage_\nMust_be_file-based_layers"));
+                if (channel == null) {
+                	//This can happen if we are running in iterative mode.
+                	if ( layer instanceof SingleFeatureVectorLayer ) {
+                		iIteration = ((SingleFeatureVectorLayer)layer).getID();
+                		layer = ((SingleFeatureVectorLayer)layer).getOriginalLayer();
+                		channel = layer.getOutputChannel();
+                		sFilename = ((FileOutputChannel) channel).getFilename();
+                		bRunIteratively = true;
+                	} else {
+                		//TODO: needs to be translatable!
+                		throw new GeoAlgorithmExecutionException(Sextante.getText("Output Channel is NULL."));
+                	}
+                }                        	
+
             }
-			
+            
             file = new File(sFilename);
             final String sName = file.getName().substring(0, file.getName().indexOf('.'));
 
             //Create a safe GRASS map name for the imported layer
             final String sGrassName = GrassUtils.getTempMapName();
+            if ( bRunIteratively ) {
+            	sIterMap = new String (sGrassName);
+            }
             sCommand.append("v.in.ogr");
             String sParent = file.getParent();
             if (sParent.endsWith(File.separator)) {
@@ -1219,7 +1247,13 @@ public class GrassAlgorithm
             sCommand.append(" dsn=\"" + sParent + "\"");
             sCommand.append(" layer=" + sName);            
             sCommand.append(" output=" + sGrassName);
-            sCommand.append (applyBBoxFilter(layer));
+            String sBoxFilter = applyBBoxFilter(layer);
+            //Apply a bounding box filter (bbox set to current region),
+            //only if we are not running in iterative mode,
+            //and the user has not set GRASS to ignore the region for vector input.
+            if ( ( sBoxFilter.length() > 1 ) || (!bRunIteratively == false ) ) {
+            	sCommand.append ( sBoxFilter );
+            }
             sCommand.append(" --overwrite -o");
             final boolean bCleanPolygons = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_CLEAN_POLYGONS)).booleanValue();
             if (!bCleanPolygons) {
@@ -1231,13 +1265,60 @@ public class GrassAlgorithm
             }
             sCommand.append("\n");
             
-            sCommand.append (applySelectionFilter(layer,sGrassName));
-                        
+            String sSelectionFilter = new String (applySelectionFilter(layer,sGrassName));
+            if ( sSelectionFilter.length() > 1 ) {
+            	sCommand.append ( sSelectionFilter );
+            }
+            
+            if (  ( sSelectionFilter.length() > 1 ) || ( sBoxFilter.length() > 1 ) ) {
+            	//If any filter has been applied to these features:
+            	//Reset cat index in current map to go from 1 to n in steps of 1
+            	sCommand.append("v.category option=del input=" + sIterMap);
+            	sCommand.append(" output=" + sIterMap + "2");
+            	sCommand.append(" --quiet");
+            	sCommand.append("\n");
+            	sCommand.append("g.remove vect=" + sIterMap);
+            	sCommand.append(" --quiet");
+            	sCommand.append("\n");
+            	sCommand.append("g.rename vect=" + sIterMap + "2");
+            	sCommand.append("," + sIterMap);
+            	sCommand.append(" --quiet");
+            	sCommand.append("\n");
+            	sCommand.append("v.category option=add step=1 input=" + sIterMap);
+            	sCommand.append(" output=" + sIterMap + "2");
+            	sCommand.append(" --quiet");
+            	sCommand.append("\n");            	
+            	sCommand.append("g.remove vect=" + sIterMap);
+            	sCommand.append(" --quiet");
+            	sCommand.append("\n");
+            	sCommand.append("g.rename vect=" + sIterMap + "2");
+            	sCommand.append("," + sIterMap);
+            	sCommand.append(" --quiet");            	
+            	sCommand.append("\n");
+            }
+            
+            //If running in iterative mode, we extract only the one feature needed
+            //for the present iteration and work on the resulting 1-feature map.
+            if ( bRunIteratively ) {
+            	sCommand.append("v.extract --quiet --overwrite");
+            	sCommand.append(" input=" + sIterMap);
+            	sCommand.append(" output=" + sIterMap + "2");
+            	sCommand.append(" list=" + iIteration);
+            	sCommand.append("\n");
+            	sCommand.append("g.remove vect=" + sIterMap);
+            	sCommand.append(" --quiet");
+            	sCommand.append("\n");
+            	sCommand.append("g.rename vect=" + sIterMap + "2");
+            	sCommand.append("," + sIterMap);
+            	sCommand.append(" --quiet");
+            	sCommand.append("\n");
+            }
+            
             vectorLayers.add(sGrassName);
-
+                        
             //Map relation between imported file and new GRASS map.
             //We will need this later to substitute the GRASS input options.
-            registerInMapping(sFilename, sGrassName);
+            registerInMapping(sFilename, sGrassName);            
          }
       }
 
@@ -1311,7 +1392,7 @@ public class GrassAlgorithm
          GrassAlgorithmProvider.addMessage("   ");
          setProgressText("Importing data...");
          if (!gotKilled && !GrassUtils.isProcessCanceled()) {
-            try {
+            try {            	
                GrassUtils.runGRASS(sCommand, "Importing data into GRASS:", this);
             }
             catch (final Exception e) {
@@ -1338,17 +1419,17 @@ public class GrassAlgorithm
             throw new GrassExecutionException();
          }
       }
-
+      
       //resolve temporary output files
       for (int i = 0; i < m_OutputObjects.getOutputDataObjectsCount(); i++) {
          final Output out = m_OutputObjects.getOutput(i);
          out.setOutputChannel(this.getOutputChannel(out.getName()));
       }
-
+      
       //Process some more parameters: after data was imported, but before it gets
       //processed.
       preprocessBeforeExec();
-
+      
       //Command for executing the algorithm
       sCommand.append(this.getName());
       for (int i = 0; i < m_Parameters.getNumberOfParameters(); i++) {
@@ -1359,7 +1440,7 @@ public class GrassAlgorithm
          if (param instanceof ParameterBoolean) {
             //GRASS processing flags
             if (param.getParameterValueAsBoolean()) {
-               sCommand.append(" " + param.getParameterName());//flag already contain the "-" as part of their names!
+               sCommand.append(" " + param.getParameterName());//flags already contain the "-" as part of their names!
             }
          }
          else {
@@ -1367,13 +1448,18 @@ public class GrassAlgorithm
                //GRASS input map(s)
                final IDataObject dataObject = (IDataObject) ((ParameterDataObject) param).getParameterValueAsObject();
                if (dataObject != null) {
+                   //Substitute option value with the name of the GRASS map that relates
+                   //to this input file.
                   sCommand.append(" ");
                   sCommand.append(param.getParameterName());
                   sCommand.append("=");
-                  file = new File(((FileOutputChannel) dataObject.getOutputChannel()).getFilename());
-                  //Substitute option value with the name of the GRASS map that relates
-                  //to this input file.
-                  sCommand.append(getInFile(((FileOutputChannel) dataObject.getOutputChannel()).getFilename()));
+                  if ( bRunIteratively ) {
+                	  file = new File (sIterMap);
+                	  sCommand.append(sIterMap);
+                  } else {
+                      file = new File(((FileOutputChannel) dataObject.getOutputChannel()).getFilename());
+                      sCommand.append(getInFile(((FileOutputChannel) dataObject.getOutputChannel()).getFilename()));
+                  }
                }
             }
             else {
@@ -1424,9 +1510,9 @@ public class GrassAlgorithm
                   }
                }
             }
-         }
+         }         
       }
-
+      
       for (int i = 0; i < m_OutputObjects.getOutputDataObjectsCount(); i++) {
          //All GRASS options that create output
          final Output out = m_OutputObjects.getOutput(i);
