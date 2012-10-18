@@ -953,7 +953,7 @@ public class GrassAlgorithm
     * the imported map. The string returned by this method contains a number of GRASS
     * command that must be run AFTER v.in.ogr.
     */
-   private String applySelectionFilter ( final IVectorLayer layer, final String mapname ) 
+   private String applySelectionFilter ( final IVectorLayer layer, final String mapname, List<Integer> keys )
    {
 	   String result = new String ("");
 	   final List<IVectorLayerFilter> filterList = layer.getFilters(); 
@@ -974,7 +974,14 @@ public class GrassAlgorithm
 					   if ( iFeature > (end+1) ) {
 						   if ( end != - 2 ) {
 							   /* create new range */
-							   line = (start+1) + "-" + (end+1);
+							   if ( start == end ) {
+								   line = (start+1) + "";
+							   } else {
+								   line = (start+1) + "-" + (end+1);
+							   }
+							   for ( int i = 0; i <= end-start; i ++ ) {
+								   keys.add(start+i);
+							   }
 							   rangesList.add(line);
 							   range_open = false;
 							   start = iFeature;
@@ -990,7 +997,14 @@ public class GrassAlgorithm
 			   }
 			   if ( range_open == true ) {
 				   /* create new range */
-				   line = (start+1) + "-" + (end+1);
+				   if ( start == end ) {
+					   line = (start+1) + "";
+				   } else {
+					   line = (start+1) + "-" + (end+1);
+				   }
+				   for ( int i = 0; i <= end-start; i ++ ) {
+					   keys.add(start+i);
+				   }				   
 				   rangesList.add(line);
 			   }
 			   /*
@@ -1078,8 +1092,8 @@ public class GrassAlgorithm
     		 sCommand.append(" s=0");
     		 sCommand.append(" e=1");
     		 sCommand.append(" w=0");
-    		 sCommand.append(" res=1.0\n");    		 
-    	 } else {    		 
+    		 sCommand.append(" res=" + Double.toString(m_AnalysisExtent.getCellSize()) + "\n");
+    	 } else {
     		 sCommand.append("g.region");
     		 sCommand.append(" n=" + Double.toString(m_AnalysisExtent.getYMax()));
     		 sCommand.append(" s=" + Double.toString(m_AnalysisExtent.getYMin()));
@@ -1126,15 +1140,12 @@ public class GrassAlgorithm
             final String sGrassName = GrassUtils.getTempMapName();
 
             //Import raster layer via GDAL
-            //for (int iBand = 0; iBand < layer.getBandsCount(); iBand++) {
             sCommand.append("r.in.gdal");
             sCommand.append(" input=\"" + sFilename + "\"");
-            //sCommand.append(" band=" + Integer.toString(iBand + 1));
             sCommand.append(" band=1");
             sCommand.append(" output=" + sGrassName);
             sCommand.append(" --overwrite -o\n");
             rasterLayers.add(sGrassName);
-            //}
 
             //Map relation between imported file and new GRASS map.
             //We will need this later to substitute the GRASS input options.
@@ -1165,15 +1176,12 @@ public class GrassAlgorithm
                   final String sGrassName = GrassUtils.getTempMapName();
 
                   //Import raster layers via GDAL
-                  //for (int iBand = 0; iBand < layer.getBandsCount(); iBand++) {
                   sCommand.append("r.in.gdal");
                   sCommand.append(" input=\"" + sFilename + "\"");
-                  //sCommand.append(" band=" + Integer.toString(iBand + 1));
                   sCommand.append(" band=1");
                   sCommand.append(" output=" + sGrassName);
                   sCommand.append(" --overwrite -o\n");
                   rasterLayers.add(sGrassName);
-                  //}
                   
                   //Add NULL value mask
                   //sCommand.append("r.null map=" + sGrassName);
@@ -1199,6 +1207,8 @@ public class GrassAlgorithm
       boolean bRunIteratively = false;
       String sIterMap = null;
       int iIteration = -1;
+      //"keys" is were we keep the original cat values in strictly increasing order
+      List<Integer> keys = new ArrayList<Integer>();
       
       for (int i = 0; i < layers.size(); i++) {
          IVectorLayer layer = ((ParameterVectorLayer) layers.get(i)).getParameterValueAsVectorLayer();
@@ -1220,11 +1230,13 @@ public class GrassAlgorithm
                 		sFilename = ((FileOutputChannel) channel).getFilename();
                 		bRunIteratively = true;
                 	} else {
-                		//TODO: needs to be translatable!
-                		throw new GeoAlgorithmExecutionException(Sextante.getText("Output Channel is NULL."));
+                		throw new GeoAlgorithmExecutionException(Sextante.getText("output_channel_null"));
                 	}
-                }                        	
-
+                } else {
+                	//TODO: implement support for PostGIS here!
+                    throw new GeoAlgorithmExecutionException(
+                            Sextante.getText("Input_layers_are_not_compatible_with_GRASS_usage_\nMust_be_file-based_layers"));
+                }
             }
             
             file = new File(sFilename);
@@ -1265,37 +1277,10 @@ public class GrassAlgorithm
             }
             sCommand.append("\n");
             
-            String sSelectionFilter = new String (applySelectionFilter(layer,sGrassName));
+            String sSelectionFilter = new String (applySelectionFilter(layer,sGrassName,keys));
             if ( sSelectionFilter.length() > 1 ) {
             	sCommand.append ( sSelectionFilter );
-            }
-            
-            if (  ( sSelectionFilter.length() > 1 ) || ( sBoxFilter.length() > 1 ) ) {
-            	//If any filter has been applied to these features:
-            	//Reset cat index in current map to go from 1 to n in steps of 1
-            	sCommand.append("v.category option=del input=" + sIterMap);
-            	sCommand.append(" output=" + sIterMap + "2");
-            	sCommand.append(" --quiet");
-            	sCommand.append("\n");
-            	sCommand.append("g.remove vect=" + sIterMap);
-            	sCommand.append(" --quiet");
-            	sCommand.append("\n");
-            	sCommand.append("g.rename vect=" + sIterMap + "2");
-            	sCommand.append("," + sIterMap);
-            	sCommand.append(" --quiet");
-            	sCommand.append("\n");
-            	sCommand.append("v.category option=add step=1 input=" + sIterMap);
-            	sCommand.append(" output=" + sIterMap + "2");
-            	sCommand.append(" --quiet");
-            	sCommand.append("\n");            	
-            	sCommand.append("g.remove vect=" + sIterMap);
-            	sCommand.append(" --quiet");
-            	sCommand.append("\n");
-            	sCommand.append("g.rename vect=" + sIterMap + "2");
-            	sCommand.append("," + sIterMap);
-            	sCommand.append(" --quiet");            	
-            	sCommand.append("\n");
-            }
+            }            
             
             //If running in iterative mode, we extract only the one feature needed
             //for the present iteration and work on the resulting 1-feature map.
@@ -1303,7 +1288,12 @@ public class GrassAlgorithm
             	sCommand.append("v.extract --quiet --overwrite");
             	sCommand.append(" input=" + sIterMap);
             	sCommand.append(" output=" + sIterMap + "2");
-            	sCommand.append(" list=" + iIteration);
+            	if ( sSelectionFilter.length() > 1 ) {
+            		//If we have a selection, then we need to retrieve the original keys
+            		sCommand.append(" list=" + keys.get(iIteration));
+            	} else {
+            		sCommand.append(" list=" + iIteration);
+            	}
             	sCommand.append("\n");
             	sCommand.append("g.remove vect=" + sIterMap);
             	sCommand.append(" --quiet");
@@ -1370,7 +1360,7 @@ public class GrassAlgorithm
                   }
                   sCommand.append("\n");                  
                   
-                  sCommand.append (applySelectionFilter(layer,sGrassName));
+                  sCommand.append (applySelectionFilter(layer,sGrassName,keys));
                   
                   vectorLayers.add(sGrassName);
 
@@ -1714,7 +1704,7 @@ public class GrassAlgorithm
                int num_lines = 0;
                int num_polygons = 0;
                int num_faces = 0;
-               //Query all output vector maps again. This time. At this point, we can
+               //Query all output vector maps again. At this point, we can
                //assume that they are all single geom type.
                if (m_bIsExecutedFromModeller) {
                   final int iType = m_Parameters.getParameter(PARAMETER_RESTRICT_VECTOR_OUTPUT_TYPE).getParameterValueAsInt();
@@ -1772,7 +1762,8 @@ public class GrassAlgorithm
                   optLCO = new String("\"SHPT=POLYGONZ\"");
                }
 
-               sCommand.append("v.out.ogr input=");
+               //TODO: GRASS 6.4 has support for "-s" to skip cat! 
+               sCommand.append("v.out.ogr -c input=");
                sCommand.append(out.getName());
                file = new File(foc.getFilename());
                sCommand.append(" dsn=\"" + file.getParent() + "\"");
