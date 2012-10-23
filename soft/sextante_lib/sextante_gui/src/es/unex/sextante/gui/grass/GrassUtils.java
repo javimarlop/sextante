@@ -283,7 +283,7 @@ public class GrassUtils {
             //m_ComFile.createNewFile();
             output = new BufferedWriter(new FileWriter(script));
             //Turn on/off verbose output
-            //output.write("@echo off\n");
+            output.write("@echo off\n");
             //Settings that would otherwise be done in grassXx.bat
             output.write("set HOME=" + System.getProperty("user.home") + "\n");
             output.write("set GISRC=" + gisrc.getAbsolutePath() + "\n");
@@ -294,8 +294,8 @@ public class GrassUtils {
             output.write("set GRASS_PROJSHARE=" + sFolder + File.separator + "share" + File.separator + "proj" + "\n");
             output.write("set GRASS_MESSAGE_FORMAT=gui\n");
             //Replacement code for etc/Init.bat
-            output.write("if \"%GRASS_ADDON_PATH%\"==\"\" set PATH=%WINGISBASE%\\bin;%WINGISBASE%\\lib;%PATH%\n");
-            output.write("if not \"%GRASS_ADDON_PATH%\"==\"\" set PATH=%WINGISBASE%\\bin;%WINGISBASE%\\lib;%GRASS_ADDON_PATH%;%PATH%\n");
+            output.write("if \"%GRASS_ADDON_PATH%\"==\"\" set PATH=%WINGISBASE%\\bin;%WINGISBASE%\\scripts;%WINGISBASE%\\lib;%PATH%\n");
+            output.write("if not \"%GRASS_ADDON_PATH%\"==\"\" set PATH=%WINGISBASE%\\bin;%WINGISBASE%\\scripts;%WINGISBASE%\\lib;%GRASS_ADDON_PATH%;%PATH%\n");
             output.write("\n");
             output.write("set GRASS_VERSION=" + getGrassVersion() + "\n");
             output.write("if not \"%LANG%\"==\"\" goto langset\n");
