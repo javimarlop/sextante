@@ -1014,17 +1014,19 @@ public class GrassAlgorithm
 			   if ( rangesList.size() > 0 ) {
 				   result = "v.extract --quiet --overwrite input=" + mapname + " output=" + mapname + "2" + " list=";
 				   for ( int iRange = 0; iRange < rangesList.size(); iRange ++ ) {
-					   if ( iRange < (rangesList.size()-1) )
+					   if ( iRange < (rangesList.size()-1) ) {
 						   result += rangesList.get(iRange) + ",";
-					   else
+					   }
+					   else {
 						   result += rangesList.get(iRange);
+					   }					   
 				   }
+				   result += "\n";				   
 			   }
 		   }
 	   }
 	   /* if a selection was extracted: swap extraction with original data */
-	   if ( result.length() > 1 ) {
-		   result += "\n";
+	   if ( result.length() > 1 ) {		   
 		   result += "g.remove vect=" + mapname + " --quiet\n";
 		   result += "g.rename vect=" + mapname + "2," + mapname +" --quiet\n";
 	   }
@@ -1082,11 +1084,24 @@ public class GrassAlgorithm
       m_FilesIn = new ArrayList<String>();
       m_MapsIn = new ArrayList<String>();
 
+      //Get GISDBASE, LOCATION and MAPSET from String parameter
+      final String mapset = new String(GrassUtils.getGrassMapsetFolder().substring(GrassUtils.getGrassMapsetFolder().lastIndexOf(File.separator) + 1,
+    		  GrassUtils.getGrassMapsetFolder().length()));
+      final String path = new String(GrassUtils.getGrassMapsetFolder().substring(0, GrassUtils.getGrassMapsetFolder().lastIndexOf(File.separator)));
+      final String location = new String(path.substring(path.lastIndexOf(File.separator) + 1, path.length()));
+      final String gisdbase = new String(path.substring(0, path.lastIndexOf(File.separator)));      
+      
+      //Default DB driver is SQLite, but if it is not supported, then DBF will
+      //be the fallback choice.
+      sCommand.append("db.connect driver=sqlite database='"+gisdbase+File.separator+location+File.separator+mapset+File.separator+"sqlite.db'\n");
+      //Sextante.addInfoToLog("*** SQLITE INIT:\n");
+      //Sextante.addInfoToLog(sCommand.toString());
+      
       //Set GRASS region
       if (getUserCanDefineAnalysisExtent()) {
     	 if ( 	(m_AnalysisExtent.getYMin() == m_AnalysisExtent.getYMax()) || 
     			(m_AnalysisExtent.getXMin() == m_AnalysisExtent.getXMax()) ) {
-    		 // This can happen, if we are running in iterative execution mode.
+    		 // This can happen if we are running in iterative execution mode.
     		 sCommand.append("g.region");
     		 sCommand.append(" n=1");
     		 sCommand.append(" s=0");
@@ -1140,7 +1155,8 @@ public class GrassAlgorithm
             final String sGrassName = GrassUtils.getTempMapName();
 
             //Import raster layer via GDAL
-            sCommand.append("r.in.gdal");
+            //sCommand.append("r.in.gdal");
+            sCommand.append("r.external");
             sCommand.append(" input=\"" + sFilename + "\"");
             sCommand.append(" band=1");
             sCommand.append(" output=" + sGrassName);
@@ -1176,7 +1192,8 @@ public class GrassAlgorithm
                   final String sGrassName = GrassUtils.getTempMapName();
 
                   //Import raster layers via GDAL
-                  sCommand.append("r.in.gdal");
+                  //sCommand.append("r.in.gdal");
+                  sCommand.append("r.external");
                   sCommand.append(" input=\"" + sFilename + "\"");
                   sCommand.append(" band=1");
                   sCommand.append(" output=" + sGrassName);
@@ -1241,12 +1258,15 @@ public class GrassAlgorithm
             
             file = new File(sFilename);
             final String sName = file.getName().substring(0, file.getName().indexOf('.'));
-
+            
             //Create a safe GRASS map name for the imported layer
             final String sGrassName = GrassUtils.getTempMapName();
             if ( bRunIteratively ) {
             	sIterMap = new String (sGrassName);
             }
+            //Check for selection filter
+            String sSelectionFilter = new String (applySelectionFilter(layer,sGrassName,keys));
+            //build v.in.ogr command
             sCommand.append("v.in.ogr");
             String sParent = file.getParent();
             if (sParent.endsWith(File.separator)) {
@@ -1262,8 +1282,9 @@ public class GrassAlgorithm
             String sBoxFilter = applyBBoxFilter(layer);
             //Apply a bounding box filter (bbox set to current region),
             //only if we are not running in iterative mode,
-            //and the user has not set GRASS to ignore the region for vector input.
-            if ( ( sBoxFilter.length() > 1 ) || (!bRunIteratively == false ) ) {
+            //and the user has not set GRASS to ignore the region for vector input,
+            //and there is no active selection filter
+            if ( ( sBoxFilter.length() > 1 ) && (bRunIteratively == false ) && ( sSelectionFilter.length() < 1 ) ) {
             	sCommand.append ( sBoxFilter );
             }
             sCommand.append(" --overwrite -o");
@@ -1277,10 +1298,10 @@ public class GrassAlgorithm
             }
             sCommand.append("\n");
             
-            String sSelectionFilter = new String (applySelectionFilter(layer,sGrassName,keys));
+            //If there is a selection filter: apply it now!
             if ( sSelectionFilter.length() > 1 ) {
             	sCommand.append ( sSelectionFilter );
-            }            
+            }
             
             //If running in iterative mode, we extract only the one feature needed
             //for the present iteration and work on the resulting 1-feature map.
@@ -1762,8 +1783,8 @@ public class GrassAlgorithm
                   optLCO = new String("\"SHPT=POLYGONZ\"");
                }
 
-               //TODO: GRASS 6.4 has support for "-s" to skip cat! 
-               sCommand.append("v.out.ogr -c input=");
+               //GRASS 6.4.3 has support for "-s" to skip "cat" field export! 
+               sCommand.append("v.out.ogr -s -c input=");
                sCommand.append(out.getName());
                file = new File(foc.getFilename());
                sCommand.append(" dsn=\"" + file.getParent() + "\"");
