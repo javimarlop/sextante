@@ -979,8 +979,8 @@ public class GrassAlgorithm
 							   } else {
 								   line = (start+1) + "-" + (end+1);
 							   }
-							   for ( int i = 0; i <= end-start; i ++ ) {
-								   keys.add(start+i);
+							   for ( int i = start+1; i <= end+1; i ++ ) {
+								   keys.add(i);
 							   }
 							   rangesList.add(line);
 							   range_open = false;
@@ -1002,8 +1002,8 @@ public class GrassAlgorithm
 				   } else {
 					   line = (start+1) + "-" + (end+1);
 				   }
-				   for ( int i = 0; i <= end-start; i ++ ) {
-					   keys.add(start+i);
+				   for ( int i = start+1; i <= end+1; i ++ ) {
+					   keys.add(i);
 				   }				   
 				   rangesList.add(line);
 			   }
@@ -1311,7 +1311,7 @@ public class GrassAlgorithm
             	sCommand.append(" output=" + sIterMap + "2");
             	if ( sSelectionFilter.length() > 1 ) {
             		//If we have a selection, then we need to retrieve the original keys
-            		sCommand.append(" list=" + keys.get(iIteration));
+            		sCommand.append(" list=" + keys.get(iIteration-1));
             	} else {
             		sCommand.append(" list=" + iIteration);
             	}
