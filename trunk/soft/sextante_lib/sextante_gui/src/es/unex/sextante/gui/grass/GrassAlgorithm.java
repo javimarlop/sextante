@@ -1356,7 +1356,9 @@ public class GrassAlgorithm
 
                   //Create a safe GRASS map name for the imported layer
                   final String sGrassName = GrassUtils.getTempMapName();
-
+                  //Check for selection filter
+                  String sSelectionFilter = new String (applySelectionFilter(layer,sGrassName,keys));
+                //build v.in.ogr command
                   sCommand.append("v.in.ogr");
                   String sParent = file.getParent();
                   if (sParent.endsWith(File.separator)) {
@@ -1369,7 +1371,13 @@ public class GrassAlgorithm
                   sCommand.append(" dsn=\"" + sParent + "\"");
                   sCommand.append(" layer=" + sName);
                   sCommand.append(" output=" + sGrassName);
-                  sCommand.append (applyBBoxFilter(layer));                  
+                  String sBoxFilter = applyBBoxFilter(layer);
+                  //Apply a bounding box filter (bbox set to current region),
+                  //only if the user has not set GRASS to ignore the region for vector input,
+                  //and there is no active selection filter
+                  if ( ( sBoxFilter.length() > 1 ) && ( sSelectionFilter.length() < 1 ) ) {
+                  	sCommand.append ( sBoxFilter );
+                  }                  
                   sCommand.append(" --overwrite -o");
                   final boolean bCleanPolygons = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_CLEAN_POLYGONS)).booleanValue();
                   if (!bCleanPolygons) {
@@ -1380,8 +1388,11 @@ public class GrassAlgorithm
                      sCommand.append(" -z");
                   }
                   sCommand.append("\n");                  
-                  
-                  sCommand.append (applySelectionFilter(layer,sGrassName,keys));
+
+                  //If there is a selection filter: apply it now!
+                  if ( sSelectionFilter.length() > 1 ) {
+                  	sCommand.append ( sSelectionFilter );
+                  }
                   
                   vectorLayers.add(sGrassName);
 
