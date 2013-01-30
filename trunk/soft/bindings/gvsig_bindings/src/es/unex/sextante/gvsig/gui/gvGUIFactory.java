@@ -86,9 +86,9 @@ public class gvGUIFactory
          final JEditorPane jEditorPane = new JEditorPane();
          jEditorPane.setEditable(false);
          final JScrollPane scrollPane = new JScrollPane();
-         scrollPane.setPreferredSize(new Dimension(1000, 800));
-         scrollPane.setSize(new Dimension(1000, 800));
-         scrollPane.setMaximumSize(new Dimension(1000, 800));
+         scrollPane.setPreferredSize(new Dimension(800, 500));
+         scrollPane.setSize(new Dimension(800, 500));
+         scrollPane.setMaximumSize(new Dimension(800, 500));
          scrollPane.setViewportView(jEditorPane);
          jEditorPane.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
          jEditorPane.setContentType("text/html");
