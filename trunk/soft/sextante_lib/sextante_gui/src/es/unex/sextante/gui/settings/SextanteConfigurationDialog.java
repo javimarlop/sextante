@@ -19,6 +19,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.JLabel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -42,6 +43,7 @@ public class SextanteConfigurationDialog
    private JTree                         jTree;
    private JSplitPane                    jSplitPane;
    private JButton                       jButtonOk;
+   private JLabel						 jLabelVersion;
 
    public static final double SPACER_SMALL = 3.0;
    public static final double SPACER_MEDIUM = 6.0;
@@ -60,7 +62,7 @@ public class SextanteConfigurationDialog
 
       super(parent, "SEXTANTE - " + Sextante.getText("Settings"), true);
 
-      final Setting[] settings = new Setting[] { new SextanteGeneralSettings(), new SextanteFolderSettings() };
+      final Setting[] settings = new Setting[] { new SextanteGeneralSettings() };
       final ArrayList<IAlgorithmProvider> providers = SextanteGUI.getAlgorithmProviders();
       m_Settings = new Setting[settings.length + providers.size()];
       System.arraycopy(settings, 0, m_Settings, 0, settings.length);
@@ -86,7 +88,7 @@ public class SextanteConfigurationDialog
 
       super(SextanteGUI.getMainFrame(), "SEXTANTE - " + Sextante.getText("Settings"), true);
 
-      final Setting[] settings = new Setting[] { new SextanteGeneralSettings(), new SextanteFolderSettings() };
+      final Setting[] settings = new Setting[] { new SextanteGeneralSettings() }; // add more Setting objects here if required
       final ArrayList<IAlgorithmProvider> providers = SextanteGUI.getAlgorithmProviders();
       m_Settings = new Setting[settings.length + providers.size()];
       System.arraycopy(settings, 0, m_Settings, 0, settings.length);
@@ -146,12 +148,20 @@ public class SextanteConfigurationDialog
 
    private void initGUI() {
 
-      final TableLayout thisLayout = new TableLayout(new double[][] { { TableLayoutConstants.FILL, 100.0, 3.0, 100.0, 3.0 },
+      final TableLayout thisLayout = new TableLayout(new double[][] { { 3.0, 200.0, TableLayoutConstants.FILL, 100.0, 3.0, 100.0, 3.0 },
                { TableLayoutConstants.FILL, 3.0, 30.0, 3.0 } });
       thisLayout.setHGap(5);
       thisLayout.setVGap(5);
       getContentPane().setLayout(thisLayout);
       this.setResizable(false);
+      {
+    	  jLabelVersion = new JLabel();
+    	  jLabelVersion.setText("<html><i>" + Sextante.getText("version") + 
+    			  " " + Sextante.VERSION_MAJOR + 
+    			  "." + Sextante.VERSION_MINOR +
+    			  "." + Sextante.VERSION_REVISION + "</i></html>");
+    	  getContentPane().add(jLabelVersion, "1, 2");
+      }
       {
          jButtonCancel = new JButton();
          getContentPane().add(jButtonCancel, "3, 2");
@@ -164,7 +174,7 @@ public class SextanteConfigurationDialog
       }
       {
          jButtonOk = new JButton();
-         getContentPane().add(jButtonOk, "1, 2");
+         getContentPane().add(jButtonOk, "5, 2");
          jButtonOk.setText(Sextante.getText("OK"));
          jButtonOk.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent evt) {
@@ -174,7 +184,7 @@ public class SextanteConfigurationDialog
       }
       {
          jSplitPane = new JSplitPane();
-         getContentPane().add(jSplitPane, "0, 0, 3, 1");
+         getContentPane().add(jSplitPane, "0, 0, 6, 1");
          {
             jTree = new JTree();
             jTree.setPreferredSize(new java.awt.Dimension(164, 422));

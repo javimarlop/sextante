@@ -18,6 +18,11 @@ public class Sextante {
    private static HashMap<String, HashMap<String, GeoAlgorithm>> m_Algorithms;
 
 
+   public static int VERSION_MAJOR = 1;
+   public static int VERSION_MINOR = 0;
+   public static int VERSION_REVISION = 0;
+   
+   
    /**
     * initializes the library, loading algorithms and properties. Algorithms and properties are loaded from files in the
     * classpath.
