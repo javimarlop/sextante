@@ -212,7 +212,7 @@ public abstract class GeoAlgorithm {
 
       m_lEndTime = System.currentTimeMillis();
       sb.append("Finished algorithm execution:" + formatter.format(new Date(m_lEndTime)) + "\n");
-      sb.append("Execution time (milisecs):" + Long.toString(m_lEndTime - m_lInitTime) + "\n");
+      sb.append("Execution time (millisecs):" + Long.toString(m_lEndTime - m_lInitTime) + "\n");
 
       Sextante.addInfoToLog(sb.toString());
 
