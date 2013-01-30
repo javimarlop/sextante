@@ -166,7 +166,30 @@ public class FileSelectionPanel
 
    }
 
+   /**
+    * Returns this panel's JTextField widget.
+    * 
+    * @return the text field widget used to input/store the selected file's path and name
+    */
+   public JTextField getTextField() {
 
+      return (this.textField);
+
+   }
+   
+   
+   /**
+    * Returns this panel's JButton widget.
+    * 
+    * @return the button widget used to pop up the file selector widget
+    */
+   public JButton getButton() {
+
+      return (this.button);
+
+   }   
+
+   
    private void btnActionPerformed() {
 
       int returnVal;

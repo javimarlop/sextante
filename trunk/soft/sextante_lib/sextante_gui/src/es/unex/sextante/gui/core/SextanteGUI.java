@@ -27,9 +27,10 @@ import es.unex.sextante.core.Sextante;
 import es.unex.sextante.gui.cmd.ScriptAlgorithmProvider;
 import es.unex.sextante.gui.help.HelpIO;
 import es.unex.sextante.gui.modeler.ModelerAlgorithmProvider;
+import es.unex.sextante.gui.r.RAlgorithmProvider;
 import es.unex.sextante.gui.settings.Setting;
-import es.unex.sextante.gui.settings.SextanteFolderSettings;
 import es.unex.sextante.gui.settings.SextanteGeneralSettings;
+import es.unex.sextante.gui.settings.SextanteRSettings;
 
 
 /**
@@ -279,6 +280,19 @@ public class SextanteGUI {
       setDefaultSettings();
       readConfigFile();
 
+      //adjust portable folder paths
+      if ( Boolean.parseBoolean(SextanteGUI.getSettingParameterValue(SextanteRSettings.R_PORTABLE)) == true ) {
+    	  //Set portable R bin dir and update algorithm provider's library
+          //TODO: Issue a _warning_ if a valid (readable) directory does not exist in "r"
+          String sPath = new String (SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_FOLDER);             
+          SextanteGUI.setSettingParameterValue(SextanteRSettings.R_FOLDER, sPath);
+          //Set portable scripts dir
+          sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_SCRIPTS_FOLDER;
+          SextanteGUI.setSettingParameterValue(SextanteRSettings.R_SCRIPTS_FOLDER, sPath);
+          //TODO: check if writable dir "r_scripts" exists, if not: attempt to create it
+          //TODO: issue a _warning_ if that is not the case. 
+      }
+      
       //this loads built-in SEXTANTE algorithms and resources
       loadResources();
 
@@ -292,13 +306,19 @@ public class SextanteGUI {
             addCustomParametersPanel(provider.getCustomParameterPanels());
          }
       }
+      
+      /* Make sure that libraries of algorithms are correctly updated for portable cases. */
+      //TODO: is this really necessary???
+      if ( Boolean.parseBoolean(SextanteGUI.getSettingParameterValue(SextanteRSettings.R_PORTABLE)) == true ) {
+    	  SextanteGUI.updateAlgorithmProvider(RAlgorithmProvider.class);
+      }
 
    }
 
 
    private static void setDefaultSettings() {
 
-      final Setting[] baseSettings = new Setting[] { new SextanteGeneralSettings(), new SextanteFolderSettings() };
+      final Setting[] baseSettings = new Setting[] { new SextanteGeneralSettings() };
       final ArrayList<IAlgorithmProvider> providers = SextanteGUI.getAlgorithmProviders();
       final Setting[] settings = new Setting[baseSettings.length + providers.size()];
       System.arraycopy(baseSettings, 0, settings, 0, baseSettings.length);
@@ -410,7 +430,7 @@ public class SextanteGUI {
    public static String getOutputFolder() {
 
       if ((m_sOutputFolder == null) || m_sOutputFolder.trim().equals("")) {
-         return System.getProperty("user.dir");
+         return System.getProperty("user.home");
       }
       else {
          return m_sOutputFolder;

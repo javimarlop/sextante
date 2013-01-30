@@ -64,12 +64,25 @@ public class SextanteGrassSettingsPanel
                SextanteGUI.getSettingParameterValue(SextanteGrassSettings.CAN_CONFIGURE_GRASS)).booleanValue();
 
       final TableLayout thisLayout = new TableLayout(new double[][] {
-               { 3.0, TableLayoutConstants.FILL, TableLayoutConstants.FILL, 3.0 },
-               { 3.0, TableLayoutConstants.MINIMUM, TableLayoutConstants.MINIMUM, TableLayoutConstants.MINIMUM,
-                        TableLayoutConstants.MINIMUM, TableLayoutConstants.MINIMUM, TableLayoutConstants.MINIMUM,
-                        TableLayoutConstants.MINIMUM, TableLayoutConstants.MINIMUM, TableLayoutConstants.MINIMUM,
-                        TableLayoutConstants.MINIMUM, TableLayoutConstants.MINIMUM, TableLayoutConstants.FILL, 33.0,
-                        TableLayoutConstants.FILL } });
+               { SextanteConfigurationDialog.SPACER_SMALL,
+            	   TableLayoutConstants.FILL,
+            	   TableLayoutConstants.FILL,
+            	   SextanteConfigurationDialog.SPACER_SMALL },
+               { SextanteConfigurationDialog.SPACER_SMALL, 
+            		   TableLayoutConstants.MINIMUM, // row 1
+            		   TableLayoutConstants.MINIMUM, // row 2
+            		   TableLayoutConstants.MINIMUM,
+                       TableLayoutConstants.MINIMUM,
+                       TableLayoutConstants.MINIMUM,
+                       TableLayoutConstants.MINIMUM,
+                       TableLayoutConstants.MINIMUM,
+                       TableLayoutConstants.MINIMUM,
+                       TableLayoutConstants.MINIMUM,
+                       TableLayoutConstants.MINIMUM,
+                       TableLayoutConstants.MINIMUM,
+                       TableLayoutConstants.FILL,
+                       TableLayoutConstants.MINIMUM,
+                       SextanteConfigurationDialog.SPACER_SMALL } });
       thisLayout.setHGap(5);
       thisLayout.setVGap(5);
       this.setLayout(thisLayout);

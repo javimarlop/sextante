@@ -12,6 +12,7 @@ public class SextanteRSettings
 
    public static final String R_FOLDER         = "RFolder";
    public static final String R_ACTIVATE       = "RActivate";
+   public static final String R_PORTABLE       = "RPortable";
    public static final String R_SCRIPTS_FOLDER = "RScriptsFolder";
 
 
@@ -37,7 +38,8 @@ public class SextanteRSettings
       final HashMap<String, String> map = new HashMap<String, String>();
       map.put(R_FOLDER, SextanteGUI.getSextantePath() + File.separator + "r");
       map.put(R_ACTIVATE, Boolean.FALSE.toString());
-      map.put(R_SCRIPTS_FOLDER, SextanteGUI.getHelpPath());
+      map.put(R_PORTABLE, Boolean.FALSE.toString());
+      map.put(R_SCRIPTS_FOLDER, System.getProperty("user.home"));
 
       return map;
 
