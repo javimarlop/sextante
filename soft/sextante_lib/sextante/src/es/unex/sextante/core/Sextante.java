@@ -22,6 +22,9 @@ public class Sextante {
    public static int VERSION_MINOR = 0;
    public static int VERSION_REVISION = 0;
    
+   public static String PORTABLE_R_FOLDER = "r";
+   public static String PORTABLE_R_SCRIPTS_FOLDER = "r_scripts";
+   
    
    /**
     * initializes the library, loading algorithms and properties. Algorithms and properties are loaded from files in the

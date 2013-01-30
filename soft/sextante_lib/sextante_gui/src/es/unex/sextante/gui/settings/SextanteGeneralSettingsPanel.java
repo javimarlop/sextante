@@ -2,6 +2,8 @@
 
 package es.unex.sextante.gui.settings;
 
+import javax.swing.SwingConstants;
+
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
@@ -11,9 +13,11 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import es.unex.sextante.core.Sextante;
+import es.unex.sextante.gui.algorithm.FileSelectionPanel;
 import es.unex.sextante.gui.core.SextanteGUI;
 import es.unex.sextante.gui.exceptions.WrongSettingValuesException;
 import es.unex.sextante.gui.toolbox.AlgorithmGroupConfiguration;
@@ -26,6 +30,8 @@ public class SextanteGeneralSettingsPanel
 
 
    private JCheckBox  jCheckBoxChangeNames;
+   private JLabel     jLabelResults;
+   private FileSelectionPanel jFolderResults;
    private JLabel     jLabelNoDataValue;
    private JLabel     jLabelToolboxSettings;
    private JLabel     jLabelConfigPath;
@@ -47,11 +53,13 @@ public class SextanteGeneralSettingsPanel
             	   TableLayout.MINIMUM, // row 2
             	   TableLayout.MINIMUM, // row 3
             	   TableLayout.MINIMUM, // row 4
-            	   SextanteConfigurationDialog.SPACER_MEDIUM, // row 5
-                   TableLayout.MINIMUM, // row 6
-                   TableLayout.FILL, // row 7
-                   TableLayout.MINIMUM, // row 8
-                   SextanteConfigurationDialog.SPACER_SMALL } }); //row 9
+            	   TableLayout.MINIMUM, // row 5
+            	   TableLayout.MINIMUM, // row 6
+            	   TableLayout.MINIMUM, // row 7
+            	   TableLayout.MINIMUM, // row 8
+                   TableLayout.FILL, // row 9
+                   TableLayout.MINIMUM, // row 10
+                   SextanteConfigurationDialog.SPACER_SMALL } }); //row 11
       thisLayout.setHGap(5);
       thisLayout.setVGap(5);
       this.setLayout(thisLayout);
@@ -62,37 +70,56 @@ public class SextanteGeneralSettingsPanel
                   SextanteGUI.getSettingParameterValue(SextanteGeneralSettings.MODIFY_NAMES)).booleanValue();
          final boolean bShowMostRecent = new Boolean(
                   SextanteGUI.getSettingParameterValue(SextanteGeneralSettings.SHOW_MOST_RECENT)).booleanValue();
+
+         jLabelResults = new JLabel();
+         this.add(jLabelResults, "1, 1");
+         jLabelResults.setText(Sextante.getText("Output_folder"));
+         jFolderResults = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("Output_folder"));
+         this.add(jFolderResults, "2,1");
+         jFolderResults.setFilepath(SextanteGUI.getOutputFolder());         
+         
          jCheckBoxChangeNames = new JCheckBox();
          jCheckBoxChangeNames.setText(Sextante.getText("Modify_output_names"));
          jCheckBoxChangeNames.setSelected(bModiFyResultsNames);
-         this.add(jCheckBoxChangeNames, "1, 1, 2, 1");
+         this.add(jCheckBoxChangeNames, "1, 2, 2, 2");
+         
          jCheckBoxUseInternalNames = new JCheckBox();
          jCheckBoxUseInternalNames.setText(Sextante.getText("Use_internal_names_for_outputs"));
          jCheckBoxUseInternalNames.setSelected(bUseInternalNames);
-         this.add(jCheckBoxUseInternalNames, "1, 2, 2, 2");
-         jCheckBoxShowMostRecent = new JCheckBox(Sextante.getText("ShowMostRecent"));
-         jCheckBoxShowMostRecent.setSelected(bShowMostRecent);
-         this.add(jCheckBoxShowMostRecent, "1, 3, 2, 3");         
+         this.add(jCheckBoxUseInternalNames, "1, 3, 2, 3");
+         
+         this.add(new JSeparator(SwingConstants.HORIZONTAL), "1, 4, 2, 4");
+         /* -----------------------------------------------------------*/
+         
          jLabelNoDataValue = new JLabel();
          jLabelNoDataValue.setText(Sextante.getText("Default_no_data_value"));
-         this.add(jLabelNoDataValue, "1, 4");
+         this.add(jLabelNoDataValue, "1, 5");
          jTextFieldNoData = new JTextField();
          final String sNoDataValue = Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue());
          jTextFieldNoData.setText(sNoDataValue);
-         this.add(jTextFieldNoData, "2, 4");
-         jButtonConfigureGroups = new JButton("<html><i>" + Sextante.getText("ConfigureAlgGroups") + "</i></html>");
+         this.add(jTextFieldNoData, "2, 5");
+
+         this.add(new JSeparator(SwingConstants.HORIZONTAL), "1, 6, 2, 6");
+         /* -----------------------------------------------------------*/                  
+                  
+         jButtonConfigureGroups = new JButton(Sextante.getText("ConfigureAlgGroups"));
          jButtonConfigureGroups.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent arg0) {
                configureGroups();
             }
          });
-         this.add(jButtonConfigureGroups, "2, 6, 2, 6");
+         this.add(jButtonConfigureGroups, "2, 7, 2, 7");
          jLabelToolboxSettings = new JLabel();
          jLabelToolboxSettings.setText(Sextante.getText("SEXTANTE_toolbox"));
-         this.add(jLabelToolboxSettings, "1, 6");
+         this.add(jLabelToolboxSettings, "1, 7");
+         
+         jCheckBoxShowMostRecent = new JCheckBox(Sextante.getText("ShowMostRecent"));
+         jCheckBoxShowMostRecent.setSelected(bShowMostRecent);
+         this.add(jCheckBoxShowMostRecent, "1, 8, 2, 8");                  
+         
          jLabelConfigPath = new JLabel();
          jLabelConfigPath.setText("<html><i>" + Sextante.getText("Config_path_label") + " " + SextanteGUI.getUserFolder() + "</i></html>");
-         this.add(jLabelConfigPath, "1, 8");
+         this.add(jLabelConfigPath, "1, 10");
       }
 
    }
