@@ -27,6 +27,8 @@ public class SextanteGeneralSettingsPanel
 
    private JCheckBox  jCheckBoxChangeNames;
    private JLabel     jLabelNoDataValue;
+   private JLabel     jLabelToolboxSettings;
+   private JLabel     jLabelConfigPath;
    private JTextField jTextFieldNoData;
    private JCheckBox  jCheckBoxUseInternalNames;
    private JButton    jButtonConfigureGroups;
@@ -37,9 +39,19 @@ public class SextanteGeneralSettingsPanel
    protected void initGUI() {
 
       final TableLayout thisLayout = new TableLayout(new double[][] {
-               { 5.0, TableLayout.FILL, TableLayout.FILL, 5.0 },
-               { 7.0, TableLayout.MINIMUM, 5.0, TableLayout.MINIMUM, 6.0, TableLayout.MINIMUM, 50, TableLayout.MINIMUM, 50,
-                        TableLayout.MINIMUM, TableLayout.FILL } });
+               { SextanteConfigurationDialog.SPACER_SMALL, 
+            	   TableLayout.FILL, TableLayout.FILL,
+            	   SextanteConfigurationDialog.SPACER_SMALL },
+               { SextanteConfigurationDialog.SPACER_SMALL, // row 0 (spacer)
+            	   TableLayout.MINIMUM, // row 1
+            	   TableLayout.MINIMUM, // row 2
+            	   TableLayout.MINIMUM, // row 3
+            	   TableLayout.MINIMUM, // row 4
+            	   SextanteConfigurationDialog.SPACER_MEDIUM, // row 5
+                   TableLayout.MINIMUM, // row 6
+                   TableLayout.FILL, // row 7
+                   TableLayout.MINIMUM, // row 8
+                   SextanteConfigurationDialog.SPACER_SMALL } }); //row 9
       thisLayout.setHGap(5);
       thisLayout.setVGap(5);
       this.setLayout(thisLayout);
@@ -57,24 +69,30 @@ public class SextanteGeneralSettingsPanel
          jCheckBoxUseInternalNames = new JCheckBox();
          jCheckBoxUseInternalNames.setText(Sextante.getText("Use_internal_names_for_outputs"));
          jCheckBoxUseInternalNames.setSelected(bUseInternalNames);
-         this.add(jCheckBoxUseInternalNames, "1, 3, 2, 3");
+         this.add(jCheckBoxUseInternalNames, "1, 2, 2, 2");
+         jCheckBoxShowMostRecent = new JCheckBox(Sextante.getText("ShowMostRecent"));
+         jCheckBoxShowMostRecent.setSelected(bShowMostRecent);
+         this.add(jCheckBoxShowMostRecent, "1, 3, 2, 3");         
          jLabelNoDataValue = new JLabel();
          jLabelNoDataValue.setText(Sextante.getText("Default_no_data_value"));
-         this.add(jLabelNoDataValue, "1, 5");
+         this.add(jLabelNoDataValue, "1, 4");
          jTextFieldNoData = new JTextField();
          final String sNoDataValue = Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue());
          jTextFieldNoData.setText(sNoDataValue);
-         this.add(jTextFieldNoData, "2, 5");
-         jButtonConfigureGroups = new JButton(Sextante.getText("ConfigureAlgGroups"));
+         this.add(jTextFieldNoData, "2, 4");
+         jButtonConfigureGroups = new JButton("<html><i>" + Sextante.getText("ConfigureAlgGroups") + "</i></html>");
          jButtonConfigureGroups.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent arg0) {
                configureGroups();
             }
          });
-         this.add(jButtonConfigureGroups, "1, 9, 2, 9");
-         jCheckBoxShowMostRecent = new JCheckBox(Sextante.getText("ShowMostRecent"));
-         jCheckBoxShowMostRecent.setSelected(bShowMostRecent);
-         this.add(jCheckBoxShowMostRecent, "1, 7, 2, 7");
+         this.add(jButtonConfigureGroups, "2, 6, 2, 6");
+         jLabelToolboxSettings = new JLabel();
+         jLabelToolboxSettings.setText(Sextante.getText("SEXTANTE_toolbox"));
+         this.add(jLabelToolboxSettings, "1, 6");
+         jLabelConfigPath = new JLabel();
+         jLabelConfigPath.setText("<html><i>" + Sextante.getText("Config_path_label") + " " + SextanteGUI.getUserFolder() + "</i></html>");
+         this.add(jLabelConfigPath, "1, 8");
       }
 
    }

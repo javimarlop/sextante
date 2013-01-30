@@ -505,13 +505,13 @@ public class SextanteGUI {
 
 
    /**
-    * Returns the path to the SEXTANTE config file
+    * Returns the path to the SEXTANTE config file.
     * 
-    * @return the path to the SEXTANTE config file
+    * @return A string with the full the path and name of the SEXTANTE config file.
     */
    private static String getConfigFile() {
 
-      final String sPath = System.getProperty("user.home") + File.separator + "sextante";
+      final String sPath = getUserFolder();
 
       return sPath + File.separator + "sextante.settings";
 
@@ -519,20 +519,43 @@ public class SextanteGUI {
 
 
    /**
-    * Returns the config folder
+    * Returns the folder in which the SEXTANTE config file is stored.
+    * By default, this is the folder "sextante" in the user's home folder.
+    * But it is also possible to set a different folder through the
+    * Java property "SEXTANTE.confDir" when launching the VM:
     * 
-    * @return the config folder
+    *   java -DSEXTANTE.confDir=<path>
+    * 
+    * @return A string with the full path and name of the config folder.
     */
    public static String getUserFolder() {
 
-      final String sPath = System.getProperty("user.home") + File.separator + "sextante";
+      String sPath;
+      String sConfDir;
+
+      
+      // default is to use system's home folder setting
+      sPath = System.getProperty("user.home") + File.separator + "sextante"; 
+      
+      // check if SEXTANTE.confDir has been set
+      sConfDir = System.getProperty("SEXTANTE.confDir");    	
+      if ( sConfDir != null ) {
+    	  sConfDir = sConfDir.trim();
+    	  	if ( sConfDir.length() > 0 ) {
+    	  		// check if we have to append a separator char
+    	  		if ( sConfDir.endsWith(File.separator) ) {
+    	  			sPath = sConfDir;
+    	  		} else {
+    	  			sPath = sConfDir + File.separator;
+				}
+			}
+      }
 
       final File sextanteFolder = new File(sPath);
       if (!sextanteFolder.exists()) {
-         sextanteFolder.mkdir();
+    	  sextanteFolder.mkdir();
       }
       return sPath;
-
 
    }
 

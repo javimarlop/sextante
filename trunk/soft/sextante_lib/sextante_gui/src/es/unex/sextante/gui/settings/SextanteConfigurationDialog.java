@@ -43,6 +43,9 @@ public class SextanteConfigurationDialog
    private JSplitPane                    jSplitPane;
    private JButton                       jButtonOk;
 
+   public static final double SPACER_SMALL = 3.0;
+   public static final double SPACER_MEDIUM = 6.0;
+   public static final double SPACER_LARGE = 9.0;
 
    /**
     * Constructor
@@ -55,7 +58,7 @@ public class SextanteConfigurationDialog
    public SextanteConfigurationDialog(final ToolboxPanel panel,
                                       final JDialog parent) {
 
-      super(parent, Sextante.getText("Settings"), true);
+      super(parent, "SEXTANTE - " + Sextante.getText("Settings"), true);
 
       final Setting[] settings = new Setting[] { new SextanteGeneralSettings(), new SextanteFolderSettings() };
       final ArrayList<IAlgorithmProvider> providers = SextanteGUI.getAlgorithmProviders();
@@ -81,7 +84,7 @@ public class SextanteConfigurationDialog
     */
    public SextanteConfigurationDialog(final ToolboxPanel panel) {
 
-      super(SextanteGUI.getMainFrame(), Sextante.getText("Settings"), true);
+      super(SextanteGUI.getMainFrame(), "SEXTANTE - " + Sextante.getText("Settings"), true);
 
       final Setting[] settings = new Setting[] { new SextanteGeneralSettings(), new SextanteFolderSettings() };
       final ArrayList<IAlgorithmProvider> providers = SextanteGUI.getAlgorithmProviders();
