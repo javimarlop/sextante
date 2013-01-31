@@ -24,6 +24,11 @@ public class Sextante {
    
    public static String PORTABLE_R_FOLDER = "r";
    public static String PORTABLE_R_SCRIPTS_FOLDER = "r_scripts";
+   public static String PORTABLE_GRASS_FOLDER = "grass";
+   public static String PORTABLE_MSYS_FOLDER = "msys";
+   public static String PORTABLE_SAGA_FOLDER = "saga";
+   public static String PORTABLE_MODELS_FOLDER = "models";
+   public static String PORTABLE_SCRIPTS_FOLDER = "scripts";
    
    
    /**
@@ -475,7 +480,7 @@ public class Sextante {
 
    public static String getVersionNumber() {
 
-      return "1.0";
+      return ( Sextante.VERSION_MAJOR + "." + Sextante.VERSION_MINOR + "." + Sextante.VERSION_REVISION );
 
    }
 

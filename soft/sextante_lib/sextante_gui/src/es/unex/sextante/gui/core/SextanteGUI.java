@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import es.unex.sextante.core.GeoAlgorithm;
 import es.unex.sextante.core.IInputFactory;
@@ -31,6 +32,10 @@ import es.unex.sextante.gui.r.RAlgorithmProvider;
 import es.unex.sextante.gui.settings.Setting;
 import es.unex.sextante.gui.settings.SextanteGeneralSettings;
 import es.unex.sextante.gui.settings.SextanteRSettings;
+import es.unex.sextante.gui.settings.SextanteGrassSettings;
+import es.unex.sextante.gui.settings.SextanteSagaSettings;
+import es.unex.sextante.gui.settings.SextanteModelerSettings;
+import es.unex.sextante.gui.settings.SextanteScriptsSettings;
 
 
 /**
@@ -232,6 +237,112 @@ public class SextanteGUI {
 
 
    /**
+    * Checks if a portable directory exists and has the required access privileges.
+    * Non-existing directories will be created if possible.
+    * Displays a GUI warning message if there are problems, and exits with a corresponding error code. 
+    * 
+    * @param dir String with name of folder/directory to be checked. Use only a relative path here.
+    * @param read_only set to "true" if only read access is required
+    * @param provider is the name
+    * @return "0" if all is OK, "1" if directory does not exist and could not be created, "2" if access is forbidden, "3" if a _file_ with that name already exists
+    */
+   public static int checkDir ( String dir, boolean read_only, String provider ) {
+	   
+	  final File f = new File ( SextanteGUI.getSextantePath() + File.separator + dir ); 
+	   
+	  if ( f.exists() ) {
+		  if ( f.isFile() ) {
+			  JOptionPane.showMessageDialog(null, 
+					  Sextante.getText("portable_dir_error") + " " + f.getAbsolutePath() + ".\n" + 
+					  Sextante.getText("portable_dir_is_file") + "\n" +
+					  Sextante.getText("portable_provider_not_usable") + " <html></i>" + provider + "+</i>+</html>."
+					  , "Inane warning", JOptionPane.WARNING_MESSAGE);
+			  return ( 3 );
+		  }
+		  if ( read_only ) {
+			  if ( f.canRead() ) {
+				  return ( 0 );
+			  }				  
+		  }
+		  if ( f.canWrite() ) {
+			  return ( 0 );
+		  }
+		  if ( read_only ) {
+			  JOptionPane.showMessageDialog(null, 
+					  Sextante.getText("portable_dir_error") + " " + f.getAbsolutePath() +
+					  Sextante.getText("portable_dir_error_ro") + "\n" + ":" +
+					  Sextante.getText("portable_dir_no_access") + "\n" +
+					  Sextante.getText("portable_provider_not_usable") + " <html></i>" + provider + "+</i>+</html>."
+					  , "Inane warning", JOptionPane.WARNING_MESSAGE);
+		  } else {
+			  JOptionPane.showMessageDialog(null, 
+					  Sextante.getText("portable_dir_error") + " " + f.getAbsolutePath() +
+					  Sextante.getText("portable_dir_error_rw") + "\n" + ":" +
+					  Sextante.getText("portable_dir_no_access") + "\n" +
+					  Sextante.getText("portable_provider_not_usable") + " <html></i>" + provider + "+</i>+</html>."
+					  , "Inane warning", JOptionPane.WARNING_MESSAGE);			  
+		  }
+		  return ( 2 );		  
+	  }
+	  
+	  /* directory does not exist: attempt to create it */
+	  if ( f.mkdir() == false ) {
+		  JOptionPane.showMessageDialog(null, 
+				  Sextante.getText("portable_dir_error") + " " + f.getAbsolutePath() + ".\n" + 
+				  Sextante.getText("portable_dir_no_create") + "\n" +
+				  Sextante.getText("portable_provider_not_usable") + " <html></i>" + provider + "+</i>+</html>."
+				  , "Inane warning", JOptionPane.WARNING_MESSAGE);		  
+		  return ( 1 );
+	  }
+	  
+	  return ( 0 );
+   }
+   
+   
+   /**
+    * Portable SEXTANTE requires that external providers' (e.g. GRASS) algorithms
+    * and user-editable scripts are stored in folders within the SEXTANTE extension
+    * folder. In some case, read access to these folders is fine, in others r/w is required.
+    * This method checks whether an algorithm provider has been set to be portable and
+    * if so, it makes sure that the required folder(s) is/are present with the required
+    * access rights. It will attempt to create any missing folders and will display a
+    * warning if anythign goes wrong.
+    */
+   public static void checkPortableFolders () {
+	   
+	   String sPath;
+	   int result;
+	   
+	   
+	   sPath = new String ("");
+
+	   if ( Boolean.parseBoolean(SextanteGUI.getSettingParameterValue(SextanteRSettings.R_PORTABLE)) == true ) {
+		   /* set R binaries folder */
+		   result = checkDir ( Sextante.PORTABLE_R_FOLDER, true, "R" );
+		   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_FOLDER;             
+		   SextanteGUI.setSettingParameterValue(SextanteRSettings.R_FOLDER, sPath);		   
+		   
+		   /* set R user scripts folder */
+		   result = checkDir ( Sextante.PORTABLE_R_SCRIPTS_FOLDER, false, "R user scripts" );
+		   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_SCRIPTS_FOLDER;
+		   SextanteGUI.setSettingParameterValue(SextanteRSettings.R_SCRIPTS_FOLDER, sPath);
+	   }
+	   if ( Boolean.parseBoolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_PORTABLE)) == true ) {
+		   /* set GRASS binaries folder */
+		   result = checkDir ( Sextante.PORTABLE_GRASS_FOLDER, true, "GRASS GIS" );
+		   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_GRASS_FOLDER;             
+		   SextanteGUI.setSettingParameterValue(SextanteGrassSettings.GRASS_FOLDER, sPath);
+		   /* set GRASS shell support (MSYS) binaries folder (Windows only) */
+		   if ( Sextante.isWindows() ) {
+			   result = checkDir ( Sextante.PORTABLE_MSYS_FOLDER, true, "GRASS GIS shell scripts" );
+			   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_MSYS_FOLDER;             
+			   SextanteGUI.setSettingParameterValue(SextanteGrassSettings.GRASS_WIN_SHELL, sPath);
+		   }
+	   }	   
+   }
+   
+   
+   /**
     * Initializes the GUI parameters and resources. It takes GUI resources (custom panels, etc.) from classpath jars. Should be
     * called before setting parameters using other methods from this class, except for the setSextantePath() and
     * setCustomDefaultSettings() methods.
@@ -280,18 +391,7 @@ public class SextanteGUI {
       setDefaultSettings();
       readConfigFile();
 
-      //adjust portable folder paths
-      if ( Boolean.parseBoolean(SextanteGUI.getSettingParameterValue(SextanteRSettings.R_PORTABLE)) == true ) {
-    	  //Set portable R bin dir and update algorithm provider's library
-          //TODO: Issue a _warning_ if a valid (readable) directory does not exist in "r"
-          String sPath = new String (SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_FOLDER);             
-          SextanteGUI.setSettingParameterValue(SextanteRSettings.R_FOLDER, sPath);
-          //Set portable scripts dir
-          sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_SCRIPTS_FOLDER;
-          SextanteGUI.setSettingParameterValue(SextanteRSettings.R_SCRIPTS_FOLDER, sPath);
-          //TODO: check if writable dir "r_scripts" exists, if not: attempt to create it
-          //TODO: issue a _warning_ if that is not the case. 
-      }
+      checkPortableFolders();
       
       //this loads built-in SEXTANTE algorithms and resources
       loadResources();
@@ -307,12 +407,6 @@ public class SextanteGUI {
          }
       }
       
-      /* Make sure that libraries of algorithms are correctly updated for portable cases. */
-      //TODO: is this really necessary???
-      if ( Boolean.parseBoolean(SextanteGUI.getSettingParameterValue(SextanteRSettings.R_PORTABLE)) == true ) {
-    	  SextanteGUI.updateAlgorithmProvider(RAlgorithmProvider.class);
-      }
-
    }
 
 

@@ -157,9 +157,7 @@ public class SextanteConfigurationDialog
       {
     	  jLabelVersion = new JLabel();
     	  jLabelVersion.setText("<html><i>" + Sextante.getText("version") + 
-    			  " " + Sextante.VERSION_MAJOR + 
-    			  "." + Sextante.VERSION_MINOR +
-    			  "." + Sextante.VERSION_REVISION + "</i></html>");
+    			  " " + Sextante.getVersionNumber() + "</i></html>");
     	  getContentPane().add(jLabelVersion, "1, 2");
       }
       {
