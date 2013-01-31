@@ -1,94 +1,118 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <plugin-config>
-  <depends plugin-name="com.iver.cit.gvsig"/>
-  <depends plugin-name="com.iver.cit.gvsig.geoprocess"/>
-   <depends plugin-name="org.gvsig.remotesensing"/>
-   <depends plugin-name="org.gvsig.rastertools"/>
-  <libraries library-dir="."/>
-  <resourceBundle name="text"/>
-  <extensions>
-    <extension class-name="es.unex.sextante.gvsig.extensions.SextanteToolboxExtension"
-	       description="SEXTANTE Toolbox"
-	       active="true">
-        <menu text="SEXTANTE/SEXTANTE_Toolbox"
-                                tooltip="SEXTANTE_Toolbox"
-                                icon="images/sextante.gif"
-                                position="1"/>
-      <tool-bar name="SEXTANTE" position="2">
-	<action-tool icon="images/sextante.gif" tooltip="SEXTANTE_Toolbox" position="1"/>
-      </tool-bar>
-    </extension>
-    <extension class-name="es.unex.sextante.gvsig.extensions.SextanteModelerExtension"
-               description="Modeler"
-               active="true">
-        <menu text="SEXTANTE/SEXTANTE_Modeler"
-                                tooltip="SEXTANTE_Modeler"
-                                icon="images/model.png"
-                                position="2"/>
-      <tool-bar name="SEXTANTE" position="2">
-        <action-tool icon="images/model.png" tooltip="SEXTANTE_Modeler" position="2"/>
-      </tool-bar>
-    </extension>
+	<depends plugin-name="com.iver.cit.gvsig" />
+	<depends plugin-name="com.iver.cit.gvsig.geoprocess" />
+	<depends plugin-name="org.gvsig.remotesensing" />
+	<depends plugin-name="org.gvsig.rastertools" />
+	<libraries library-dir="." />
+	<resourceBundle name="text" />
+	<extensions>
 
-    <extension class-name="es.unex.sextante.gvsig.extensions.SextanteHistoryExtension"
-               description="History"
-               active="true">
-        <menu text="SEXTANTE/SEXTANTE_History"
-                                tooltip="SEXTANTE_History"
-                                icon="images/history.gif"
-                                position="3"/>
-      <tool-bar name="SEXTANTE" position="2">
-        <action-tool icon="images/history.gif" tooltip="SEXTANTE_History" position="4"/>
-      </tool-bar>
-    </extension>
-    <extension class-name="es.unex.sextante.gvsig.extensions.SextanteCommandLineExtension"
-               description="SEXTANTE_command_line"
-               active="true">
-      <menu text="SEXTANTE/SEXTANTE_command_line"
-                                tooltip="SEXTANTE_command_line"
-                                icon="images/terminal.png"
-                                position="4"/>
-      <tool-bar name="SEXTANTE" position="2">
-        <action-tool icon="images/terminal.png" tooltip="SEXTANTE_command_line" position="3"/>
-      </tool-bar>
-    </extension>
-    <extension class-name="es.unex.sextante.gvsig.extensions.SextanteAdditionalResultsExtension"
-               description="Results"
-               active="true">
-        <menu text="SEXTANTE/SEXTANTE_Results"
-                                tooltip="SEXTANTE_Results"
-                                icon="images/chart.gif"
-                                position="5"/>
-      <tool-bar name="SEXTANTE" position="2">
-        <action-tool icon="images/chart.gif" tooltip="SEXTANTE_Results" position="5"/>
-      </tool-bar>
-    </extension>
-    <extension class-name="es.unex.sextante.gvsig.extensions.SextanteDataExplorerExtension" description="SEXTANTE Data Explorer" active="true">
-      <menu text="SEXTANTE/SEXTANTE_Data_Explorer"
-                                tooltip="SEXTANTE_Data_Explorer"
-                                icon="images/documenter.png"
-                                position="6"/>
-      <tool-bar name="SEXTANTE" position="2">
-        <action-tool icon="images/documenter.png" tooltip="SEXTANTE_Data_Explorer" position="7"/>
-      </tool-bar>
-    </extension>
+		<extension
+			class-name="es.unex.sextante.gvsig.extensions.SextanteToolboxExtension"
+			description="SEXTANTE_Toolbox" priority="10000" active="true">
+			<menu text="SEXTANTE/SEXTANTE_Toolbox" tooltip="SEXTANTE_Toolbox"
+				icon="images/sextante.gif" position="10001" />
+			<tool-bar name="SEXTANTE" position="10002">
+				<action-tool icon="images/sextante.gif" tooltip="SEXTANTE_Toolbox"
+					position="1" />
+			</tool-bar>
+		</extension>
 
-        <extension class-name="es.unex.sextante.gvsig.extensions.SextanteHelpExtension" description="SEXTANTE Help" active="true">
-      <menu text="SEXTANTE/SEXTANTE_Help"
-                                tooltip="SEXTANTE_Help"
-                                icon="images/help.png"
-                                position="7"/>
-      <tool-bar name="SEXTANTE" position="2">
-        <action-tool icon="images/help.png" tooltip="SEXTANTE_Help" position="8"/>
-      </tool-bar>
-    </extension>
+		<extension
+			class-name="es.unex.sextante.gvsig.extensions.SextanteModelerExtension"
+			description="SEXTANTE_Modeler" priority="10001" active="true">
+			<menu text="SEXTANTE/SEXTANTE_Modeler" tooltip="SEXTANTE_Modeler"
+				icon="images/model.png" position="10002" />
+			<tool-bar name="SEXTANTE" position="10002">
+				<action-tool icon="images/model.png" tooltip="SEXTANTE_Modeler"
+					position="2" />
+			</tool-bar>
+		</extension>
 
-    <extension class-name="es.unex.sextante.gvsig.extensions.SextantePointCollectorExtension" description="Catch coordinates" active="true">
-      <tool-bar name="SEXTANTE" position="2">
-        <action-tool icon="images/bullseye.gif" tooltip="Catch coordinates" position="8"/>
-      </tool-bar>
-    </extension>
-    <extension class-name="es.unex.sextante.gvsig.extensions.SextanteAboutExtension" description="" active="true">
-    </extension>
-  </extensions>
+		<extension
+			class-name="es.unex.sextante.gvsig.extensions.SextanteCommandLineExtension"
+			description="SEXTANTE_command_line" priority="10002" active="true">
+			<menu text="SEXTANTE/SEXTANTE_command_line" tooltip="SEXTANTE_command_line"
+				icon="images/terminal.png" position="10003" />
+			<tool-bar name="SEXTANTE" position="10002">
+				<action-tool icon="images/terminal.png" tooltip="SEXTANTE_command_line"
+					position="3" />
+			</tool-bar>
+		</extension>
+
+		<extension
+			class-name="es.unex.sextante.gvsig.extensions.SextantePointCollectorExtension"
+			description="SEXTANTE_Picker" priority="10003" active="true">
+			<menu text="SEXTANTE/SEXTANTE_Picker" tooltip="SEXTANTE_Picker"
+				icon="images/bullseye.gif" position="10004" />
+			<menu text="SEXTANTE" position="10005" is_separator="true" />
+			<tool-bar name="SEXTANTE" position="10002">
+				<action-tool icon="images/bullseye.gif" tooltip="SEXTANTE_Picker"
+					position="4" />
+			</tool-bar>
+		</extension>
+
+		<extension
+			class-name="es.unex.sextante.gvsig.extensions.SextanteAdditionalResultsExtension"
+			description="SEXTANTE_Results" priority="10004" active="true">
+			<menu text="SEXTANTE/SEXTANTE_Results" tooltip="SEXTANTE_Results"
+				icon="images/chart.gif" position="10006" />
+			<tool-bar name="SEXTANTE" position="10002">
+				<action-tool icon="images/chart.gif" tooltip="SEXTANTE_Results"
+					position="5" />
+			</tool-bar>
+		</extension>
+
+		<extension
+			class-name="es.unex.sextante.gvsig.extensions.SextanteDataExplorerExtension"
+			description="SEXTANTE_Data_Explorer" priority="10005" active="true">
+			<menu text="SEXTANTE/SEXTANTE_Data_Explorer" tooltip="SEXTANTE_Data_Explorer"
+				icon="images/documenter.png" position="10007" />
+			<tool-bar name="SEXTANTE" position="21000">
+				<action-tool icon="images/documenter.png" tooltip="SEXTANTE_Data_Explorer"
+					position="6" />
+			</tool-bar>
+		</extension>
+
+		<extension
+			class-name="es.unex.sextante.gvsig.extensions.SextanteHistoryExtension"
+			description="SEXTANTE_History" priority="10006" active="true">
+			<menu text="SEXTANTE/SEXTANTE_History" tooltip="SEXTANTE_History"
+				icon="images/history.gif" position="10008" />
+			<menu text="SEXTANTE" position="10009" is_separator="true" />
+			<tool-bar name="SEXTANTE" position="10002">
+				<action-tool icon="images/history.gif" tooltip="SEXTANTE_History"
+					position="7" />
+			</tool-bar>
+		</extension>
+
+		<extension
+			class-name="es.unex.sextante.gvsig.extensions.SextanteSettingsExtension"
+			description="SEXTANTE_Settings" priority="10007" active="true">
+			<menu text="SEXTANTE/SEXTANTE_Settings" tooltip="SEXTANTE_Settings"
+				icon="images/config.png" position="10010" />
+			<menu text="SEXTANTE" position="10011" is_separator="true" />
+			<tool-bar name="SEXTANTE" position="10002">
+				<action-tool icon="images/config.png" tooltip="SEXTANTE_Settings"
+					position="8" />
+			</tool-bar>
+		</extension>
+
+
+		<extension class-name="es.unex.sextante.gvsig.extensions.SextanteHelpExtension"
+			description="SEXTANTE_Help" priority="10008" active="true">
+			<menu text="SEXTANTE/SEXTANTE_Help" tooltip="SEXTANTE_Help"
+				icon="images/help.png" position="10012" />
+			<tool-bar name="SEXTANTE" position="10002">
+				<action-tool icon="images/help.png" tooltip="SEXTANTE_Help"
+					position="9" />
+			</tool-bar>
+		</extension>
+
+		<extension class-name="es.unex.sextante.gvsig.extensions.SextanteAboutExtension"
+			description="" active="true">
+		</extension>
+
+	</extensions>
 </plugin-config>
