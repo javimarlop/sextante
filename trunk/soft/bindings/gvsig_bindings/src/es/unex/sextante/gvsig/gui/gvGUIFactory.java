@@ -101,7 +101,7 @@ public class gvGUIFactory
          jEditorPane.setPreferredSize(new Dimension(600, 500));
          jEditorPane.setCaretPosition(0);
 
-         showGenericInfoDialog(scrollPane, "SEXTANTE");
+         showGenericInfoDialog(scrollPane, Sextante.getText ("SEXTANTE_Welcome"));
          SextanteGUI.setSettingParameterValue(IS_NOT_FIRST_TIME_USING_SEXTANTE + Sextante.getVersionNumber(),
                   Boolean.TRUE.toString());
          SextanteGUI.saveSettings();
