@@ -159,18 +159,16 @@ public class SextanteRSettingsPanel
              setCursor(new Cursor(Cursor.WAIT_CURSOR));
              SextanteGUI.setSettingParameterValue(SextanteRSettings.R_PORTABLE,
                       new Boolean(jPortableCheckBox.isSelected()).toString());             
-             //Set portable R bin dir and update algorithm provider's library
-             //TODO: Issue a _warning_ if a valid (readable) directory does not exist in "r"
+             //Set portable R bin dir
+             SextanteGUI.checkDir ( Sextante.PORTABLE_R_FOLDER, true, "R" );
              String sPath = new String (SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_FOLDER);             
              SextanteGUI.setSettingParameterValue(SextanteRSettings.R_FOLDER, sPath);
              jRFolder.setFilepath(sPath);
-             SextanteGUI.updateAlgorithmProvider(RAlgorithmProvider.class);
              //Set portable scripts dir
+             SextanteGUI.checkDir ( Sextante.PORTABLE_R_SCRIPTS_FOLDER, false, "R" );
              sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_SCRIPTS_FOLDER;
              SextanteGUI.setSettingParameterValue(SextanteRSettings.R_SCRIPTS_FOLDER, sPath);
              jRScriptsFolder.setFilepath(sPath);
-             //TODO: check if writable dir "r_scripts" exists, if not: attempt to create it
-             //TODO: issue a _warning_ if that is not the case. 
              //Activate/deactivate the remaining widgets on this page
              final boolean active = jPortableCheckBox.isSelected();
              if ( active == true ) {

@@ -71,12 +71,12 @@ public class SextanteGrassSettingsPanel
                { SextanteConfigurationDialog.SPACER_SMALL, 
             		   TableLayoutConstants.MINIMUM, // row 1
             		   TableLayoutConstants.MINIMUM, // row 2
-            		   TableLayoutConstants.MINIMUM,
-                       TableLayoutConstants.MINIMUM,
-                       TableLayoutConstants.MINIMUM,
-                       TableLayoutConstants.MINIMUM,
-                       TableLayoutConstants.MINIMUM,
-                       TableLayoutConstants.MINIMUM,
+            		   TableLayoutConstants.MINIMUM, // row 3
+                       TableLayoutConstants.MINIMUM, // row 4
+                       TableLayoutConstants.MINIMUM, // row 5
+                       TableLayoutConstants.MINIMUM, // row 6
+                       TableLayoutConstants.MINIMUM, // row 7
+                       TableLayoutConstants.MINIMUM, // row 8
                        TableLayoutConstants.MINIMUM,
                        TableLayoutConstants.MINIMUM,
                        TableLayoutConstants.MINIMUM,
