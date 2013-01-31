@@ -74,7 +74,7 @@ public class SextanteGeneralSettingsPanel
          jLabelResults = new JLabel();
          this.add(jLabelResults, "1, 1");
          jLabelResults.setText(Sextante.getText("Output_folder"));
-         jFolderResults = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("Output_folder"));
+         jFolderResults = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("selector_choose_folder"));
          this.add(jFolderResults, "2,1");
          jFolderResults.setFilepath(SextanteGUI.getOutputFolder());         
          

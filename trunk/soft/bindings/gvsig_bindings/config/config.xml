@@ -93,10 +93,12 @@
 			<menu text="SEXTANTE/SEXTANTE_Settings" tooltip="SEXTANTE_Settings"
 				icon="images/config.png" position="10010" />
 			<menu text="SEXTANTE" position="10011" is_separator="true" />
+			<!--
 			<tool-bar name="SEXTANTE" position="10002">
 				<action-tool icon="images/config.png" tooltip="SEXTANTE_Settings"
 					position="8" />
 			</tool-bar>
+			-->
 		</extension>
 
 
@@ -104,10 +106,12 @@
 			description="SEXTANTE_Help" priority="10008" active="true">
 			<menu text="SEXTANTE/SEXTANTE_Help" tooltip="SEXTANTE_Help"
 				icon="images/help.png" position="10012" />
+			<!--
 			<tool-bar name="SEXTANTE" position="10002">
 				<action-tool icon="images/help.png" tooltip="SEXTANTE_Help"
 					position="9" />
 			</tool-bar>
+			-->
 		</extension>
 
 		<extension class-name="es.unex.sextante.gvsig.extensions.SextanteAboutExtension"

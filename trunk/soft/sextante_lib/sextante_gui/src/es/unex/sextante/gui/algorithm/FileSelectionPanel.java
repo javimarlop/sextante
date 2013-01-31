@@ -193,7 +193,9 @@ public class FileSelectionPanel
    private void btnActionPerformed() {
 
       int returnVal;
-      final JFileChooser fc = new JFileChooser();
+      JFileChooser fc = new JFileChooser();
+      
+      fc.setDialogTitle(m_sDescription);
 
       if (m_bFolder) {
          fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
