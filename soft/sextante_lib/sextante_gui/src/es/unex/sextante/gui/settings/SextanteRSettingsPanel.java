@@ -71,7 +71,7 @@ public class SextanteRSettingsPanel
       final boolean bActivatePortable = Boolean.parseBoolean(sActivatePortable);
       jPortableCheckBox.setEnabled(bActivate);
       jPortableCheckBox.setSelected(bActivatePortable);      
-      this.add(jPortableCheckBox, "1,3");      
+      this.add(jPortableCheckBox, "1,3");
       
       jLabelFolder = new JLabel();
       jLabelFolder.setEnabled(bActivate);
@@ -80,17 +80,17 @@ public class SextanteRSettingsPanel
       }
       this.add(jLabelFolder, "1, 4");
       jLabelFolder.setText(Sextante.getText("R_folder"));
-      jRFolder = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("R_folder"));
+      jRFolder = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("selector_choose_folder"));
       jRFolder.getTextField().setEnabled(bActivate);
       jRFolder.getButton().setEnabled(bActivate);
       if ( bActivatePortable == true ) {
     	  jRFolder.getTextField().setEnabled(false);
           jRFolder.getButton().setEnabled(false);    	  
       }
+      final String sFolder = SextanteGUI.getSettingParameterValue(SextanteRSettings.R_FOLDER);
+      jRFolder.setFilepath(sFolder);
       this.add(jRFolder, "2, 4");
       
-      final String sFolder = SextanteGUI.getSettingParameterValue(SextanteRSettings.R_FOLDER);
-      jRFolder.setFilepath(sFolder);      
       jLabelScriptsFolder = new JLabel();
       jLabelScriptsFolder.setEnabled(bActivate);
       if ( bActivatePortable == true ) {
@@ -98,16 +98,16 @@ public class SextanteRSettingsPanel
       }
       this.add(jLabelScriptsFolder, "1, 5");
       jLabelScriptsFolder.setText(Sextante.getText("R_Scripts_folder"));
-      jRScriptsFolder = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("R_Scripts_folder"));
+      jRScriptsFolder = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("selector_choose_folder"));
       jRScriptsFolder.getTextField().setEnabled(bActivate);
       jRScriptsFolder.getButton().setEnabled(bActivate);
       if ( bActivatePortable == true ) {
     	  jRScriptsFolder.getTextField().setEnabled(false);
-          jRScriptsFolder.getButton().setEnabled(false);    	  
-      }      
-      this.add(jRScriptsFolder, "2, 5");      
+          jRScriptsFolder.getButton().setEnabled(false);
+      }
       final String sScriptsFolder = SextanteGUI.getSettingParameterValue(SextanteRSettings.R_SCRIPTS_FOLDER);
       jRScriptsFolder.setFilepath(sScriptsFolder);
+      this.add(jRScriptsFolder, "2, 5");
       
       this.add(new JSeparator(SwingConstants.HORIZONTAL), "1, 6, 2, 6");
       /* -----------------------------------------------------------*/            
@@ -121,17 +121,7 @@ public class SextanteRSettingsPanel
       this.add(jButton, "2, 7");
 
       /* Action listeners for widgets */
-      
-      jButton.addActionListener(new ActionListener() {
-          public void actionPerformed(final ActionEvent arg0) {
-             SextanteGUI.setSettingParameterValue(SextanteRSettings.R_SCRIPTS_FOLDER, jRScriptsFolder.getFilepath());
-             SextanteGUI.updateAlgorithmProvider(RAlgorithmProvider.class);
-             final int iNumAlgs = Sextante.getAlgorithms().get(new RAlgorithmProvider().getName()).size();
-             JOptionPane.showMessageDialog(null, Sextante.getText("ScriptsLoaded") + " " + iNumAlgs + ". ",
-                      Sextante.getText("Scripts"), JOptionPane.INFORMATION_MESSAGE);
-          }
-       });      
-      
+            
       jActivateCheckBox.addActionListener(new ActionListener() {
           public void actionPerformed(final ActionEvent arg0) {        	 
              setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -139,7 +129,7 @@ public class SextanteRSettingsPanel
                       new Boolean(jActivateCheckBox.isSelected()).toString());               
              SextanteGUI.updateAlgorithmProvider(RAlgorithmProvider.class);             
              //Activate/deactivate the remaining widgets on this page
-             final boolean active = jActivateCheckBox.isSelected();
+             boolean active = jActivateCheckBox.isSelected();
              jPortableCheckBox.setEnabled(active);
         	 jLabelFolder.setEnabled(active);
         	 jRFolder.getTextField().setEnabled(active);
@@ -150,6 +140,15 @@ public class SextanteRSettingsPanel
              jLabelLoadRScripts.setEnabled(active);
              jButton.setEnabled(active);
              jActivateCheckBox.getParent().repaint();
+             active = jPortableCheckBox.isSelected();
+             if ( active == true ) {
+            	 jLabelFolder.setEnabled(false);
+            	 jRFolder.getTextField().setEnabled(false);
+                 jRFolder.getButton().setEnabled(false);
+                 jLabelScriptsFolder.setEnabled(false);
+                 jRScriptsFolder.getTextField().setEnabled(false);
+                 jRScriptsFolder.getButton().setEnabled(false);
+             }           
              setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
           }
        });
@@ -165,7 +164,7 @@ public class SextanteRSettingsPanel
              SextanteGUI.setSettingParameterValue(SextanteRSettings.R_FOLDER, sPath);
              jRFolder.setFilepath(sPath);
              //Set portable scripts dir
-             SextanteGUI.checkDir ( Sextante.PORTABLE_R_SCRIPTS_FOLDER, false, "R" );
+             SextanteGUI.checkDir ( Sextante.PORTABLE_R_SCRIPTS_FOLDER, false, "R user scripts" );
              sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_SCRIPTS_FOLDER;
              SextanteGUI.setSettingParameterValue(SextanteRSettings.R_SCRIPTS_FOLDER, sPath);
              jRScriptsFolder.setFilepath(sPath);
@@ -188,7 +187,18 @@ public class SextanteRSettingsPanel
              }
              setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
           }
-       });      
+       });
+
+      /* this one refreshes the registry of R scripts */
+      jButton.addActionListener(new ActionListener() {
+          public void actionPerformed(final ActionEvent arg0) {
+             SextanteGUI.setSettingParameterValue(SextanteRSettings.R_SCRIPTS_FOLDER, jRScriptsFolder.getFilepath());
+             SextanteGUI.updateAlgorithmProvider(RAlgorithmProvider.class);
+             final int iNumAlgs = Sextante.getAlgorithms().get(new RAlgorithmProvider().getName()).size();
+             JOptionPane.showMessageDialog(null, Sextante.getText("ScriptsLoaded") + " " + iNumAlgs + ". ",
+                      Sextante.getText("Scripts"), JOptionPane.INFORMATION_MESSAGE);
+          }
+       });
       
    }
 

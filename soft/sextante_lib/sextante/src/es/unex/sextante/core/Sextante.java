@@ -1,5 +1,6 @@
 package es.unex.sextante.core;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public class Sextante {
    public static String PORTABLE_R_FOLDER = "r";
    public static String PORTABLE_R_SCRIPTS_FOLDER = "r_scripts";
    public static String PORTABLE_GRASS_FOLDER = "grass";
-   public static String PORTABLE_MSYS_FOLDER = "msys";
+   public static String PORTABLE_MSYS_FILE = "msys" + File.separator + "bin" + File.separator + "sh.exe";
    public static String PORTABLE_SAGA_FOLDER = "saga";
    public static String PORTABLE_MODELS_FOLDER = "models";
    public static String PORTABLE_SCRIPTS_FOLDER = "scripts";

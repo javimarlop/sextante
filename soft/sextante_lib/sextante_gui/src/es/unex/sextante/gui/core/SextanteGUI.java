@@ -243,7 +243,7 @@ public class SextanteGUI {
     * 
     * @param dir String with name of folder/directory to be checked. Use only a relative path here.
     * @param read_only set to "true" if only read access is required
-    * @param provider is the name
+    * @param provider name of the algorithm provider for which this folder is being checked.
     * @return "0" if all is OK, "1" if directory does not exist and could not be created, "2" if access is forbidden, "3" if a _file_ with that name already exists
     */
    public static int checkDir ( String dir, boolean read_only, String provider ) {
@@ -300,6 +300,58 @@ public class SextanteGUI {
    
    
    /**
+    * Checks if a file exists in one of the portable folders, and if it has the required access privileges.
+    * Displays a GUI warning message if there are problems, and exits with a corresponding error code. 
+    * 
+    * @param file String with name of file to be checked. Use only a relative path here.
+    * @param read_only set to "true" if only read access is required
+    * @param provider name of the algorithm provider for which this file is being checked.
+    * @return "0" if all is OK, "1" if file does not exist, "2" if access is forbidden, "3" if a _directory_ with that name already exists
+    */
+   public static int checkFile ( String file, boolean read_only, String provider ) {
+	   
+	  final File f = new File ( SextanteGUI.getSextantePath() + File.separator + file ); 
+	   
+	  if ( f.exists() ) {
+		  if ( f.isDirectory() ) {
+			  JOptionPane.showMessageDialog(null, 
+					  Sextante.getText("portable_file_error") + " " + f.getAbsolutePath() + ".\n" + 
+					  Sextante.getText("portable_file_is_dir") + "\n" +
+					  Sextante.getText("portable_provider_not_usable") + " <html></i>" + provider + "+</i>+</html>."
+					  , "Inane warning", JOptionPane.WARNING_MESSAGE);
+			  return ( 3 );
+		  }
+		  if ( read_only ) {
+			  if ( f.canRead() ) {
+				  return ( 0 );
+			  }				  
+		  }
+		  if ( f.canWrite() ) {
+			  return ( 0 );
+		  }
+		  if ( read_only ) {
+			  JOptionPane.showMessageDialog(null, 
+					  Sextante.getText("portable_file_error") + " " + f.getAbsolutePath() +
+					  Sextante.getText("portable_file_error_ro") + "\n" + ":" +
+					  Sextante.getText("portable_file_no_access") + "\n" +
+					  Sextante.getText("portable_provider_not_usable") + " <html></i>" + provider + "+</i>+</html>."
+					  , "Inane warning", JOptionPane.WARNING_MESSAGE);
+		  } else {
+			  JOptionPane.showMessageDialog(null, 
+					  Sextante.getText("portable_file_error") + " " + f.getAbsolutePath() +
+					  Sextante.getText("portable_file_error_rw") + "\n" + ":" +
+					  Sextante.getText("portable_file_no_access") + "\n" +
+					  Sextante.getText("portable_provider_not_usable") + " <html></i>" + provider + "+</i>+</html>."
+					  , "Inane warning", JOptionPane.WARNING_MESSAGE);			  
+		  }
+		  return ( 2 );		  
+	  }
+	  
+	  return ( 1 );
+   }   
+   
+   
+   /**
     * Portable SEXTANTE requires that external providers' (e.g. GRASS) algorithms
     * and user-editable scripts are stored in folders within the SEXTANTE extension
     * folder. In some case, read access to these folders is fine, in others r/w is required.
@@ -334,8 +386,8 @@ public class SextanteGUI {
 		   SextanteGUI.setSettingParameterValue(SextanteGrassSettings.GRASS_FOLDER, sPath);
 		   /* set GRASS shell support (MSYS) binaries folder (Windows only) */
 		   if ( Sextante.isWindows() ) {
-			   result = checkDir ( Sextante.PORTABLE_MSYS_FOLDER, true, "GRASS GIS shell scripts" );
-			   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_MSYS_FOLDER;             
+			   result = checkFile ( Sextante.PORTABLE_MSYS_FILE, true, "GRASS GIS shell scripts" );
+			   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_MSYS_FILE;             
 			   SextanteGUI.setSettingParameterValue(SextanteGrassSettings.GRASS_WIN_SHELL, sPath);
 		   }
 	   }	   
