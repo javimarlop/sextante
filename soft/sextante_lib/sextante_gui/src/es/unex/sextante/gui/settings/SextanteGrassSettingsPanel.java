@@ -80,7 +80,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 						TableLayoutConstants.MINIMUM, // row 13
 						TableLayoutConstants.MINIMUM, // row 14
 						TableLayoutConstants.FILL,
-						TableLayoutConstants.MINIMUM,
+						TableLayoutConstants.MINIMUM, // row 16
 						SextanteConfigurationDialog.SPACER_SMALL } });
 		thisLayout.setHGap(5);
 		thisLayout.setVGap(5);
@@ -128,7 +128,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 			}
 			this.add(jLabelWinShell, "1, 5");
 			jLabelWinShell.setText("Windows " + Sextante.getText("grass_windows_shell"));
-			jWinShellFile = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("selector_choose_file"));
+			jWinShellFile = new FileSelectionPanel(true, true, new String[] {"sh.exe", null}, Sextante.getText("selector_choose_file"));
 			jWinShellFile.getTextField().setEnabled(bActivate && Sextante.isWindows());
 			jWinShellFile.getButton().setEnabled(bActivate && Sextante.isWindows());
 			if (bActivatePortable == true) {
@@ -306,8 +306,11 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 		final HashMap<String, String> map = new HashMap<String, String>();
 
 		map.put(SextanteGrassSettings.GRASS_ACTIVATE, new Boolean(jActivateCheckBox.isSelected()).toString());
-		map.put(SextanteGrassSettings.GRASS_PORTABLE, new Boolean(jPortableCheckBox.isSelected()).toString());		
-		map.put(SextanteGrassSettings.GRASS_FOLDER, jGrassFolder.getFilepath());
+		map.put(SextanteGrassSettings.GRASS_PORTABLE, new Boolean(jPortableCheckBox.isSelected()).toString());
+		final String GrassPath = jWinShellFile.getFilepath();
+		if (GrassPath != null) {
+			map.put(SextanteGrassSettings.GRASS_FOLDER, jGrassFolder.getFilepath());
+		}
 		if (Sextante.isWindows()) {
 			final String shellPath = jWinShellFile.getFilepath();
 			if (shellPath != null) {

@@ -390,7 +390,13 @@ public class SextanteGUI {
 			   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_MSYS_FILE;             
 			   SextanteGUI.setSettingParameterValue(SextanteGrassSettings.GRASS_WIN_SHELL, sPath);
 		   }
-	   }	   
+	   }
+	   if ( Boolean.parseBoolean(SextanteGUI.getSettingParameterValue(SextanteSagaSettings.SAGA_PORTABLE)) == true ) {
+		   /* set SAGA binaries folder */
+		   result = checkDir ( Sextante.PORTABLE_SAGA_FOLDER, true, "SAGA GIS" );
+		   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_SAGA_FOLDER;             
+		   SextanteGUI.setSettingParameterValue(SextanteSagaSettings.SAGA_FOLDER, sPath);
+	   }
    }
    
    
