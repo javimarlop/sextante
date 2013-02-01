@@ -195,7 +195,7 @@ public class SextanteRSettingsPanel
              SextanteGUI.setSettingParameterValue(SextanteRSettings.R_SCRIPTS_FOLDER, jRScriptsFolder.getFilepath());
              SextanteGUI.updateAlgorithmProvider(RAlgorithmProvider.class);
              final int iNumAlgs = Sextante.getAlgorithms().get(new RAlgorithmProvider().getName()).size();
-             JOptionPane.showMessageDialog(null, Sextante.getText("ScriptsLoaded") + " " + iNumAlgs + ". ",
+             JOptionPane.showMessageDialog(null, Sextante.getText("RScriptsLoaded") + " " + iNumAlgs + ". ",
                       Sextante.getText("Scripts"), JOptionPane.INFORMATION_MESSAGE);
           }
        });
