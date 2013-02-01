@@ -161,7 +161,7 @@ SettingPanel {
 				//Activate/deactivate the remaining widgets on this page
 				final boolean active = jPortableCheckBox.isSelected();
 				if ( active == true ) {
-					jSagaFolder.setEnabled(false);
+					jLabelSagaFolder.setEnabled(false);
 					jSagaFolder.getTextField().setEnabled(false);
 					jSagaFolder.getButton().setEnabled(false);
 

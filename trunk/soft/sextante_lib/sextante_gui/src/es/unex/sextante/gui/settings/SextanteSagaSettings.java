@@ -5,6 +5,7 @@ package es.unex.sextante.gui.settings;
 import java.io.File;
 import java.util.HashMap;
 
+import es.unex.sextante.core.Sextante;
 import es.unex.sextante.gui.core.SextanteGUI;
 
 
@@ -39,7 +40,7 @@ Setting {
 		final HashMap<String, String> map = new HashMap<String, String>();
 		map.put(SAGA_ACTIVATE, Boolean.FALSE.toString());
 		map.put(SAGA_PORTABLE, Boolean.FALSE.toString());		
-		map.put(SAGA_FOLDER, SextanteGUI.getSextantePath() + File.separator + "saga");
+		map.put(SAGA_FOLDER, SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_SAGA_FOLDER);
 		return map;
 
 	}
