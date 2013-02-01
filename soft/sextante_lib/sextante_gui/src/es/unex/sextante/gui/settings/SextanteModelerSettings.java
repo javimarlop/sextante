@@ -1,41 +1,44 @@
 package es.unex.sextante.gui.settings;
 
+import java.io.File;
 import java.util.HashMap;
 
 import es.unex.sextante.core.Sextante;
 import es.unex.sextante.gui.core.SextanteGUI;
 
 public class SextanteModelerSettings
-         extends
-            Setting {
+extends
+Setting {
 
-   public static final String MODELS_FOLDER = "ModelsFolder";
-
-
-   @Override
-   public void createPanel() {
-
-      panel = new SextanteModelerSettingsPanel();
-
-   }
+	public static final String MODELS_PORTABLE	= "ModelsPortable";
+	public static final String MODELS_FOLDER 	= "ModelsFolder";
 
 
-   @Override
-   public String getName() {
+	@Override
+	public void createPanel() {
 
-      return Sextante.getText("Models");
+		panel = new SextanteModelerSettingsPanel();
 
-   }
+	}
 
 
-   @Override
-   public HashMap<String, String> getInitValues() {
+	@Override
+	public String getName() {
 
-      final HashMap<String, String> map = new HashMap<String, String>();
-      map.put(MODELS_FOLDER, SextanteGUI.getHelpPath());
+		return Sextante.getText("Models");
 
-      return map;
+	}
 
-   }
+
+	@Override
+	public HashMap<String, String> getInitValues() {
+
+		final HashMap<String, String> map = new HashMap<String, String>();
+		map.put(MODELS_PORTABLE, Boolean.FALSE.toString());
+		map.put(MODELS_FOLDER, SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_MODELS_FOLDER);
+
+		return map;
+
+	}
 
 }

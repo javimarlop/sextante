@@ -397,6 +397,18 @@ public class SextanteGUI {
 		   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_SAGA_FOLDER;             
 		   SextanteGUI.setSettingParameterValue(SextanteSagaSettings.SAGA_FOLDER, sPath);
 	   }
+	   if ( Boolean.parseBoolean(SextanteGUI.getSettingParameterValue(SextanteScriptsSettings.SCRIPTS_PORTABLE)) == true ) {
+		   /* set user scripts folder */
+		   result = checkDir ( Sextante.PORTABLE_SCRIPTS_FOLDER, true, "SEXTANTE user scripts" );
+		   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_SCRIPTS_FOLDER;             
+		   SextanteGUI.setSettingParameterValue(SextanteScriptsSettings.SCRIPTS_FOLDER, sPath);
+	   }
+	   if ( Boolean.parseBoolean(SextanteGUI.getSettingParameterValue(SextanteModelerSettings.MODELS_PORTABLE)) == true ) {
+		   /* set user models folder */
+		   result = checkDir ( Sextante.PORTABLE_MODELS_FOLDER, true, "SEXTANTE user models" );
+		   sPath = SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_MODELS_FOLDER;             
+		   SextanteGUI.setSettingParameterValue(SextanteModelerSettings.MODELS_FOLDER, sPath);
+	   }	   
    }
    
    
