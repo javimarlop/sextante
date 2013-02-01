@@ -82,7 +82,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 		thisLayout.setVGap(5);
 		this.setLayout(thisLayout);
 		{
-			jActivateCheckBox = new JCheckBox(Sextante.getText("ActivateProvider") + "GRASS GIS");
+			jActivateCheckBox = new JCheckBox(Sextante.getText("ActivateProvider") + " GRASS GIS");
 			final String sActivate = SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_ACTIVATE);
 			final boolean bActivate = Boolean.parseBoolean(sActivate);
 			jActivateCheckBox.setSelected(bActivate);
@@ -123,7 +123,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 				jLabelWinShell.setEnabled(false);
 			}
 			this.add(jLabelWinShell, "1, 5");
-			jLabelWinShell.setText("Windows: " + Sextante.getText("grass_windows_shell"));
+			jLabelWinShell.setText("Windows " + Sextante.getText("grass_windows_shell"));
 			jWinShellFile = new FileSelectionPanel(true, true, (String[]) null, Sextante.getText("selector_choose_file"));
 			jWinShellFile.getTextField().setEnabled(bActivate && Sextante.isWindows());
 			jWinShellFile.getButton().setEnabled(bActivate && Sextante.isWindows());
@@ -274,26 +274,17 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 				}
 	            setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	          }
-	       });		
-		
-		{
-			//TODO: CONTINUE HERE!
-			// jLabelSetupGRASSHelp = new JLabel();
-			// this.add(jLabelSetupGRASSHelp, "1,10");
-			// jLabelSetupGRASSHelp.setText(Sextante.getText("grass_setup_help"));
-			// jButtonSetupGRASS = new JButton();
-			// this.add(jButtonSetupGRASS, "2,10");
-			// jButtonSetupGRASS.setText(Sextante.getText("grass_setup"));
-			// jButtonSetupGRASS.addActionListener(new ActionListener() {
-			// public void actionPerformed(final ActionEvent evt) {
-			// jButtonSetupGRASSActionPerformed(evt);
-			// }
-			// });
-			// jLabelSetupGRASSHelp.setVisible(bCanConfigureGrass);
-			// jButtonSetupGRASS.setVisible(bCanConfigureGrass);
-		}		
+	       });
+	      
+	      /* trigger update of GRASS modules registry */
+	      jButtonUpdate.addActionListener(new ActionListener() {
+	    	  public void actionPerformed(final ActionEvent evt) {
+	    		  jButtonSetupGRASSActionPerformed(evt);
+	    	  }
+	      });	      
 	}
 
+	
 	@Override
 	public HashMap<String, String> getValues() {
 
@@ -320,7 +311,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 	// Attempt to setup GRASS
 	private void jButtonSetupGRASSActionPerformed(final ActionEvent evt) {
 
-		// we set this values here in advance, since they are needed to perform
+		// we set these values here in advance, since they are needed to perform
 		// grass initialization. Have to look for a workaround to avoid this...
 		final HashMap<String, String> map = getValues();
 		SextanteGUI.setSettings(map);
