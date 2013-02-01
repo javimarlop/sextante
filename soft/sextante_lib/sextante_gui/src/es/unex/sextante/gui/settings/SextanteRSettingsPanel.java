@@ -7,8 +7,10 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -52,7 +54,10 @@ public class SextanteRSettingsPanel
             		   TableLayoutConstants.MINIMUM, // row 4
             		   TableLayoutConstants.MINIMUM, // row 5
             		   TableLayoutConstants.MINIMUM, // row 6
-            		   TableLayoutConstants.MINIMUM } }); // row 7
+            		   TableLayoutConstants.MINIMUM, // row 7
+            		   TableLayoutConstants.FILL,
+					   TableLayoutConstants.MINIMUM,
+					   SextanteConfigurationDialog.SPACER_SMALL } });
       thisLayout.setHGap(5);
       thisLayout.setVGap(5);
       this.setLayout(thisLayout);
@@ -120,6 +125,18 @@ public class SextanteRSettingsPanel
       jButton.setEnabled(bActivate);
       this.add(jButton, "2, 7");
 
+      /* add provider logo and URL */
+      final URL res = getClass().getClassLoader().getResource("images/Rlogo.gif");
+      if (res != null) {
+    	  final ImageIcon logo = new ImageIcon(res);
+    	  JLabel logoLabel = new JLabel(logo);
+    	  logoLabel.setIconTextGap(4);
+    	  logoLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+    	  logoLabel.setText("<html><i><a href=http://www.r-project.org/>http://www.r-project.org/</a></i></html>");
+    	  this.add(logoLabel,"1, 9, 1, 9");
+      }      
+
+      
       /* Action listeners for widgets */
             
       jActivateCheckBox.addActionListener(new ActionListener() {
