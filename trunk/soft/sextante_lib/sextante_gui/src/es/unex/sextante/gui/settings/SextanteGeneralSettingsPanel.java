@@ -143,9 +143,13 @@ public class SextanteGeneralSettingsPanel
    public HashMap<String, String> getValues() throws WrongSettingValuesException {
 
       final HashMap<String, String> map = new HashMap<String, String>();
+      String path = jFolderResults.getFilepath();
+      if (path != null) {
+         map.put(SextanteGeneralSettings.RESULTS_FOLDER, path);
+      }
       map.put(SextanteGeneralSettings.MODIFY_NAMES, new Boolean(jCheckBoxChangeNames.isSelected()).toString());
-      map.put(SextanteGeneralSettings.SHOW_MOST_RECENT, new Boolean(jCheckBoxShowMostRecent.isSelected()).toString());
       map.put(SextanteGeneralSettings.USE_INTERNAL_NAMES, new Boolean(jCheckBoxUseInternalNames.isSelected()).toString());
+      map.put(SextanteGeneralSettings.SHOW_MOST_RECENT, new Boolean(jCheckBoxShowMostRecent.isSelected()).toString());      
       try {
          final double dValue = Double.parseDouble(jTextFieldNoData.getText());
          SextanteGUI.getOutputFactory().setDefaultNoDataValue(dValue);
