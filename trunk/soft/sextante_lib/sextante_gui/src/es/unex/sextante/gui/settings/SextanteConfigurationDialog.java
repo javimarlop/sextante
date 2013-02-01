@@ -148,7 +148,7 @@ public class SextanteConfigurationDialog
 
    private void initGUI() {
 
-      final TableLayout thisLayout = new TableLayout(new double[][] { { 3.0, 200.0, TableLayoutConstants.FILL, 100.0, 3.0, 100.0, 3.0 },
+      final TableLayout thisLayout = new TableLayout(new double[][] { { 3.0, 200.0, TableLayoutConstants.FILL, 150.0, 3.0, 150.0, 3.0 },
                { TableLayoutConstants.FILL, 3.0, 30.0, 3.0 } });
       thisLayout.setHGap(5);
       thisLayout.setVGap(5);
@@ -185,7 +185,7 @@ public class SextanteConfigurationDialog
          getContentPane().add(jSplitPane, "0, 0, 6, 1");
          {
             jTree = new JTree();
-            jTree.setPreferredSize(new java.awt.Dimension(164, 422));
+            jTree.setPreferredSize(new java.awt.Dimension(204, 422));
             jSplitPane.add(jTree, JSplitPane.LEFT);
             final MouseListener ml = new MouseAdapter() {
                @Override

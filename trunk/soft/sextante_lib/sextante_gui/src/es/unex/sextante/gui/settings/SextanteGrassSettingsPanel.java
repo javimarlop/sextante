@@ -6,12 +6,16 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -187,6 +191,17 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 
 		}
 
+		/* add provider logo and URL */
+		final URL res = getClass().getClassLoader().getResource("images/grass.smlogo.gif");
+		if (res != null) {
+			final ImageIcon logo = new ImageIcon(res);
+			JLabel logoLabel = new JLabel(logo);
+			logoLabel.setIconTextGap(4);
+			logoLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+			logoLabel.setText("<html><i><a href=http://grass.osgeo.org/>http://grass.osgeo.org/</a></i></html>");
+			this.add(logoLabel,"1, 16, 1, 16");
+		}
+		
 		/**********************************/
 		/** Action listeners for widgets **/
 		/**********************************/
