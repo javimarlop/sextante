@@ -102,7 +102,7 @@ public class SextanteGeneralSettingsPanel
          this.add(new JSeparator(SwingConstants.HORIZONTAL), "1, 6, 2, 6");
          /* -----------------------------------------------------------*/                  
                   
-         jButtonConfigureGroups = new JButton(Sextante.getText("ConfigureAlgGroups"));
+         jButtonConfigureGroups = new JButton(Sextante.getText("ConfigureAlgGroups") + "..." );
          jButtonConfigureGroups.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent arg0) {
                configureGroups();
