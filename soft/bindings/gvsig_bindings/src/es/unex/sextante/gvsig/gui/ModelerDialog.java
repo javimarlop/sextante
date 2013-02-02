@@ -58,7 +58,7 @@ public class ModelerDialog
 
       if (viewInfo == null) {
          viewInfo = new WindowInfo(WindowInfo.MAXIMIZABLE | WindowInfo.RESIZABLE | WindowInfo.MODELESSDIALOG);
-         viewInfo.setTitle(PluginServices.getText(this, "Modeler"));
+         viewInfo.setTitle(PluginServices.getText(this, "SEXTANTE - " + "Modeler"));
       }
       return viewInfo;
 
