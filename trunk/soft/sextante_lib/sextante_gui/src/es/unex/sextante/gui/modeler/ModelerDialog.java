@@ -18,7 +18,7 @@ public class ModelerDialog
    public ModelerDialog(final Frame parent) {
 
       super(parent, Sextante.getText("Modeler"), false);
-
+	        
       initialize();
       setLocationRelativeTo(null);
 
@@ -28,7 +28,7 @@ public class ModelerDialog
    public void initialize() {
 
       final JPanel pane = new JPanel();
-      this.setContentPane(pane);
+      this.setContentPane(pane);      
       this.setSize(new java.awt.Dimension(600, 500));
       {
 
