@@ -199,7 +199,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 			logoLabel.setIconTextGap(4);
 			logoLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
 			logoLabel.setText("<html><i><a href=http://grass.osgeo.org/>http://grass.osgeo.org/</a></i></html>");
-			this.add(logoLabel,"1, 16, 1, 16");
+			this.add(logoLabel,"1, 16, 2, 16");
 		}
 		
 		/**********************************/

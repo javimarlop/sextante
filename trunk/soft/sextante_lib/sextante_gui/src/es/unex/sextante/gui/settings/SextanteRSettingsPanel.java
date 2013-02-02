@@ -133,7 +133,7 @@ public class SextanteRSettingsPanel
     	  logoLabel.setIconTextGap(4);
     	  logoLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
     	  logoLabel.setText("<html><i><a href=http://www.r-project.org/>http://www.r-project.org/</a></i></html>");
-    	  this.add(logoLabel,"1, 9, 1, 9");
+    	  this.add(logoLabel,"1, 9, 2, 9");
       }      
 
       
