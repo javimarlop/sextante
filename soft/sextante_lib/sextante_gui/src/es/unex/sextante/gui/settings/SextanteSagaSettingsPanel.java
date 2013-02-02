@@ -115,7 +115,7 @@ SettingPanel {
 			logoLabel.setIconTextGap(4);
 			logoLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
 			logoLabel.setText("<html><i><a href=http://www.saga-gis.org/>http://www.saga-gis.org/</a></i></html>");
-			this.add(logoLabel,"1, 8, 1, 8");
+			this.add(logoLabel,"1, 8, 2, 8");
 		}
 
 		/**********************************/
