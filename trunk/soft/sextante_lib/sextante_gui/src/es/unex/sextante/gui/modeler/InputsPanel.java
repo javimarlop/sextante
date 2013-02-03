@@ -128,6 +128,10 @@ public class InputsPanel
    }
 
 
+   public JTree getTree () {
+	   return ( jTree );
+   }
+   
    private Object getNewNumericalValuePanel() {
 
       if (m_Parent != null) {
