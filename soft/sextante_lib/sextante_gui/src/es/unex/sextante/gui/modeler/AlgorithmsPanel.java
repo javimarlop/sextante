@@ -210,6 +210,11 @@ public class AlgorithmsPanel
       collapseAll();
 
    }
+   
+   
+   public JTree getTree () {
+	   return (jTree);
+   }
 
 
    private void addNodeInSortedOrder(final DefaultMutableTreeNode parent,
@@ -252,22 +257,26 @@ public class AlgorithmsPanel
       }
 
       try {
-         final DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-         final GeoAlgorithm alg = (GeoAlgorithm) node.getUserObject();
-         if (isAlgorithmEnabled(alg)) {
-            final String sName = getValidName();
-            final String sDescription = Sextante.getText("Process") + " " + Integer.toString(m_iAlgorithm) + ": " + alg.getName();
+    	  final DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+    	  if ( node.getUserObject() instanceof java.lang.String == false ) {
+    		  final GeoAlgorithm alg = (GeoAlgorithm) node.getUserObject();
+    		  if (isAlgorithmEnabled(alg)) {
+    			  final String sName = getValidName();
+    			  final String sDescription = Sextante.getText("Process") + " " + Integer.toString(m_iAlgorithm) + ": " + alg.getName();
 
-            final int iRet = SextanteGUI.getGUIFactory().showAlgorithmDialogForModeler(alg, sName, sDescription, m_Algorithm,
-                     m_DataObjects, m_Parent);
-            if (iRet == IGUIFactory.OK) {
-               m_iAlgorithm++;
-               m_ModelerPanel.setHasChanged(true);
-               m_ModelerPanel.getGraph().storeCoords();
-               m_ModelerPanel.getGraph().addAlgorithm(sName);
-               m_ModelerPanel.updatePanel(true);
-            }
-         }
+    			  final int iRet = SextanteGUI.getGUIFactory().showAlgorithmDialogForModeler(alg, sName, sDescription, m_Algorithm,
+    					  m_DataObjects, m_Parent);
+    			  if (iRet == IGUIFactory.OK) {
+    				  m_iAlgorithm++;
+    				  m_ModelerPanel.setHasChanged(true);
+    				  m_ModelerPanel.getGraph().storeCoords();
+    				  m_ModelerPanel.getGraph().addAlgorithm(sName);
+    				  m_ModelerPanel.updatePanel(true);
+    			  }
+    		  }
+    	  } else {
+    		  return;
+    	  }
       }
       catch (final Exception e) {
          Sextante.addErrorToLog(e);

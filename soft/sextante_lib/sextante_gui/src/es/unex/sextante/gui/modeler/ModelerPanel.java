@@ -8,8 +8,13 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.AbstractAction;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -25,14 +31,18 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.JTextComponent;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import es.unex.sextante.core.GeoAlgorithm;
 import es.unex.sextante.core.ObjectAndDescription;
@@ -40,6 +50,7 @@ import es.unex.sextante.core.OutputObjectsSet;
 import es.unex.sextante.core.Sextante;
 import es.unex.sextante.gui.algorithm.GenericFileFilter;
 import es.unex.sextante.gui.core.SextanteGUI;
+import es.unex.sextante.gui.modeler.parameters.ParameterPanel;
 import es.unex.sextante.gui.settings.SextanteModelerSettings;
 import es.unex.sextante.outputs.Output;
 
@@ -50,10 +61,9 @@ JPanel {
 
 	private JPanel          jModelPanel;
 	private JPanel          jElementsPanel;
-	private JPanel          jPanelButtonsSave;
-	private JButton         jButtonOpen;
-	private JButton         jButtonSave;
-	private JButton         jButtonNew;
+	private JButton         jButtonMenu;
+	private JPopupMenu		popup;
+	private JMenuItem		jMenuSave;
 	private JButton         jButtonHelp;
 	private JPanel          jPanelButtonsModel;
 	private JTextField      jTextFieldName;
@@ -96,6 +106,11 @@ JPanel {
 			final BorderLayout thisLayout = new BorderLayout();
 			this.setLayout(thisLayout);
 			this.setSize(new java.awt.Dimension(850, 530));
+			jMenuSave= new JMenuItem(new AbstractAction(Sextante.getText("Save")) {
+	            public void actionPerformed(ActionEvent e) {
+	            	saveModel(false);
+	            }
+	        });
 			{
 				jSplitPane = new JSplitPane();
 				this.add(jSplitPane, BorderLayout.CENTER);
@@ -111,45 +126,52 @@ JPanel {
 					jSplitPane.add(jModelPanel, JSplitPane.RIGHT);
 					{
 						jPanelButtonsModel = new JPanel();
-						final TableLayout jPanelButtonsModelLayout = new TableLayout(new double[][] { { TableLayoutConstants.FILL },
+						final TableLayout jPanelButtonsModelLayout =
+							new TableLayout(new double[][] { { 	120.0,
+																TableLayoutConstants.FILL,
+																120.0},
 								{ TableLayoutConstants.FILL } });
 						jPanelButtonsModelLayout.setHGap(5);
 						jPanelButtonsModelLayout.setVGap(5);
 						jPanelButtonsModel.setLayout(jPanelButtonsModelLayout);
-						jModelPanel.add(jPanelButtonsModel, "4, 4");
+						jModelPanel.add(jPanelButtonsModel, "1, 4");						
 						{
-							jPanelButtonsSave = new JPanel();
-							jPanelButtonsModel.add(jPanelButtonsSave, "0, 0");
-							{
-								jButtonNew = new JButton();
-								jPanelButtonsSave.add(jButtonNew);
-								jButtonNew.setText(Sextante.getText("New"));
-								jButtonNew.addActionListener(new ActionListener() {
-									public void actionPerformed(final ActionEvent evt) {
-										checkChangesAndCreateNewModel();
-									}
-								});
-							}
-							{
-								jButtonSave = new JButton();
-								jPanelButtonsSave.add(jButtonSave);
-								jButtonSave.setText(Sextante.getText("Save"));
-								jButtonSave.addActionListener(new ActionListener() {
-									public void actionPerformed(final ActionEvent evt) {
-										saveModel();
-									}
-								});
-							}
-							{
-								jButtonOpen = new JButton();
-								jPanelButtonsSave.add(jButtonOpen);
-								jButtonOpen.setText(Sextante.getText("Open"));
-								jButtonOpen.addActionListener(new ActionListener() {
-									public void actionPerformed(final ActionEvent evt) {
-										checkChangesAndOpenModel();
-									}
-								});
-							}
+							/* popup menu for selecting New, Open, Save and Save As actions */
+							jButtonMenu = new JButton();
+							popup = new JPopupMenu();
+					        popup.add(new JMenuItem(new AbstractAction(Sextante.getText("New")) {
+					            public void actionPerformed(ActionEvent e) {
+					            	checkChangesAndCreateNewModel();
+					            }
+					        }));
+					        popup.add(new JMenuItem(new AbstractAction(Sextante.getText("Open")) {
+					            public void actionPerformed(ActionEvent e) {
+					            	checkChangesAndOpenModel();
+					            }
+					        }));
+					        popup.add(new JSeparator(SwingConstants.HORIZONTAL));
+					        
+					        popup.add(jMenuSave);
+				        	if ( m_Algorithm.getFilename() != null ) {
+				        		jMenuSave.setEnabled(true);
+				        	} else {
+				        		jMenuSave.setEnabled(false);
+				        	}
+					        popup.add(new JMenuItem(new AbstractAction(Sextante.getText("Save_as")) {
+					            public void actionPerformed(ActionEvent e) {
+					            	saveModel(true);
+					            }
+					        }));					        
+					        jButtonMenu.addMouseListener(new MouseAdapter() {
+					            public void mousePressed(MouseEvent e) {
+					                popup.show(e.getComponent(), e.getX(), e.getY());
+					            }
+					        });
+							jButtonMenu.setText(Sextante.getText("file_operations"));
+							jButtonMenu.setIcon(new ImageIcon(getClass().getClassLoader().
+									getResource("javax/swing/plaf/metal/icons/ocean/menu.gif")));
+							jButtonMenu.setIconTextGap(8);
+							jPanelButtonsModel.add (jButtonMenu,"0,0");					        
 						}
 					}
 
@@ -159,8 +181,12 @@ JPanel {
 
 					modelGraphPanel.setPreferredSize(new java.awt.Dimension(580, 401));
 					{
-						jTextFieldName = new JTextField();
-						jModelPanel.add(jTextFieldName, "2, 1");
+						jLabelName = new JLabel();						
+						jLabelName.setText(Sextante.getText("Name")+":");
+						jModelPanel.add(jLabelName, "1, 1");
+					}					
+					{
+						jTextFieldName = new JTextField();						
 						jTextFieldName.addFocusListener(new FocusAdapter() {
 							@Override
 							public void focusLost(final FocusEvent e) {
@@ -168,16 +194,12 @@ JPanel {
 								m_Algorithm.setName(jTextFieldName.getText());
 							}
 						});
+						jModelPanel.add(jTextFieldName, "2, 1");
 					}
 					{
-						jLabelName = new JLabel();
-						jModelPanel.add(jLabelName, "1, 1");
-						jLabelName.setText(Sextante.getText("Name"));
-					}
-					{
-						jLabelGroup = new JLabel();
+						jLabelGroup = new JLabel();						
+						jLabelGroup.setText(Sextante.getText("Group"+":"));
 						jModelPanel.add(jLabelGroup, "3, 1");
-						jLabelGroup.setText(Sextante.getText("Group"));
 					}
 					{
 						jComboBoxGroup = new JComboBox();
@@ -226,7 +248,8 @@ JPanel {
 						{
 							jButtonAdd = new JButton();
 							jButtonAdd.setText(Sextante.getText("Add") + "..." );
-							jPanelButtonsElements.add(jButtonAdd,"1, 1");							
+							jPanelButtonsElements.add(jButtonAdd,"1, 1");
+							jButtonAdd.setEnabled(false); //only enable if a selection has been made from the tree
 							jButtonAdd.addActionListener(new ActionListener() {
 								public void actionPerformed(final ActionEvent evt) {
 									switch (jElementsTabbedPane.getSelectedIndex()) {
@@ -247,7 +270,7 @@ JPanel {
 								public void actionPerformed(final ActionEvent evt) {
 									showHelp(evt);
 								}
-							});							
+							});
 						}
 					}
 					jElementsPanel.add(jPanelButtonsElements,"1, 2");
@@ -261,8 +284,87 @@ JPanel {
 							extensionsPanel = new AlgorithmsPanel(this, m_Parent);
 							jElementsTabbedPane.addTab(Sextante.getText("Procedures"), null, extensionsPanel, null);
 						}
-					}
-
+						/* provide mouse and key listeners to toogle "Add.." button state */
+						inputsPanel.getTree().addMouseListener(new MouseListener () {
+							public void mouseClicked(MouseEvent e) {
+								jButtonAdd.setEnabled(false);
+								if ( inputsPanel.getTree().getSelectionPath() != null ) {
+									final DefaultMutableTreeNode node = (DefaultMutableTreeNode) inputsPanel.getTree().
+											getSelectionPath().getLastPathComponent();
+							         if (node.getUserObject() instanceof ParameterPanel) {
+							            final ParameterPanel paramPanel = (ParameterPanel) node.getUserObject();
+							            if (paramPanel.parameterCanBeAdded()) {				
+							            	jButtonAdd.setEnabled(true);
+							            }
+							         }									
+								}
+								jButtonAdd.repaint();
+							}
+							public void mouseEntered(MouseEvent e) {}
+							public void mouseExited(MouseEvent e) {}
+							public void mousePressed(MouseEvent e) {}
+							public void mouseReleased(MouseEvent e) {}
+						});
+						inputsPanel.getTree().addKeyListener(new KeyListener () {
+							public void keyReleased(KeyEvent e) {
+								jButtonAdd.setEnabled(false);
+								if ( inputsPanel.getTree().getSelectionPath() != null ) {
+									final DefaultMutableTreeNode node = (DefaultMutableTreeNode) inputsPanel.getTree().
+											getSelectionPath().getLastPathComponent();
+							         if (node.getUserObject() instanceof ParameterPanel) {
+							            final ParameterPanel paramPanel = (ParameterPanel) node.getUserObject();
+							            if (paramPanel.parameterCanBeAdded()) {				
+							            	jButtonAdd.setEnabled(true);
+							            }
+							         }									
+								}
+								jButtonAdd.repaint();								
+							}
+							public void keyTyped(KeyEvent e) {}							
+							public void keyPressed(KeyEvent e) {}
+							
+						});
+						/* provide mouse and key listeners to toogle "Add.." button state */
+						extensionsPanel.getTree().addMouseListener(new MouseListener () {
+							public void mouseClicked(MouseEvent e) {
+								jButtonAdd.setEnabled(false);
+								if ( extensionsPanel.getTree().getSelectionPath() != null ) {
+							         final DefaultMutableTreeNode node = (DefaultMutableTreeNode) extensionsPanel.
+							         		getTree().getSelectionPath().getLastPathComponent();
+							         if ( node.getUserObject() instanceof java.lang.String == false ) {
+							        	 final GeoAlgorithm alg = (GeoAlgorithm) node.getUserObject();
+							        	 if (extensionsPanel.isAlgorithmEnabled(alg)) {
+							        		 jButtonAdd.setEnabled(true);
+							        	 }
+							         }
+								}
+								jButtonAdd.repaint();
+							}
+							public void mouseEntered(MouseEvent e) {}
+							public void mouseExited(MouseEvent e) {}
+							public void mousePressed(MouseEvent e) {}
+							public void mouseReleased(MouseEvent e) {}
+						});
+						extensionsPanel.getTree().addKeyListener(new KeyListener () {
+							public void keyReleased(KeyEvent e) {
+								jButtonAdd.setEnabled(false);
+								if ( extensionsPanel.getTree().getSelectionPath() != null ) {
+									final DefaultMutableTreeNode node = (DefaultMutableTreeNode) extensionsPanel.getTree().
+											getSelectionPath().getLastPathComponent();
+							         if (node.getUserObject() instanceof ParameterPanel) {
+							            final ParameterPanel paramPanel = (ParameterPanel) node.getUserObject();
+							            if (paramPanel.parameterCanBeAdded()) {				
+							            	jButtonAdd.setEnabled(true);
+							            }
+							         }									
+								}
+								jButtonAdd.repaint();								
+							}
+							public void keyTyped(KeyEvent e) {}							
+							public void keyPressed(KeyEvent e) {}
+							
+						});						
+					}					
 				}
 			}
 		}
@@ -314,7 +416,7 @@ JPanel {
 			final int iRet = JOptionPane.showConfirmDialog(null,
 					Sextante.getText("Model_has_been_modified") + ".\n "
 					+ Sextante.getText("Do_you_want_to_open_a_new_model_without_saving_changes?"),
-					Sextante.getText("Warning"), JOptionPane.YES_NO_OPTION);
+					Sextante.getText("Warning"), JOptionPane.YES_NO_CANCEL_OPTION);
 			if (iRet == JOptionPane.YES_OPTION) {
 				openModel(sFilename);
 			}
@@ -345,6 +447,7 @@ JPanel {
 				Sextante.addErrorToLog(e);
 				return;
 			}
+			jMenuSave.setEnabled(true);
 		}
 
 		m_bHasChanged = false;
@@ -358,7 +461,7 @@ JPanel {
 			final int iRet = JOptionPane.showConfirmDialog(null,
 					Sextante.getText("Model_has_been_modified") + ".\n "
 					+ Sextante.getText("Do_you_want_to_open_a_new_model_without_saving_changes?"),
-					Sextante.getText("Warning"), JOptionPane.YES_NO_OPTION);
+					Sextante.getText("Warning"), JOptionPane.YES_NO_CANCEL_OPTION);
 			if (iRet == JOptionPane.YES_OPTION) {
 				openModel();
 			}
@@ -370,12 +473,12 @@ JPanel {
 	}
 
 
-	protected void saveModel() {
+	protected void saveModel( boolean SaveAs) {
 
 		String sFilename = m_Algorithm.getFilename();
 		final JFileChooser fc = new JFileChooser();
-		final GenericFileFilter javaFilter = new GenericFileFilter("java", "Java code");
-		final GenericFileFilter modelFilter = new GenericFileFilter("model", "SEXTANTE Model");
+		final GenericFileFilter javaFilter = new GenericFileFilter("java", "Java code (*.java)");
+		final ModelFileFilter modelFilter = new ModelFileFilter();
 		fc.addChoosableFileFilter(modelFilter);
 		fc.addChoosableFileFilter(javaFilter);
 		fc.setAcceptAllFileFilterUsed(false);
@@ -387,12 +490,27 @@ JPanel {
 			final String sFolder = SextanteGUI.getSettingParameterValue(SextanteModelerSettings.MODELS_FOLDER);
 			fc.setCurrentDirectory(new File(sFolder));
 		}
-		final int returnVal = fc.showSaveDialog(this);
+		
+		/* we only show a "Save As..." dialog if it is really necessary */
+		int returnVal;
+		if ( SaveAs == true || m_Algorithm.getFilename() == null ) {
+			returnVal = fc.showSaveDialog(this);
+		} else {
+			returnVal = JFileChooser.APPROVE_OPTION;
+		}		
 
+		File file = null;
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
-			sFilename = file.getAbsolutePath();
+			if ( SaveAs == true || m_Algorithm.getFilename() == null ) {
+				file = fc.getSelectedFile();
+				sFilename = file.getAbsolutePath();
+				m_Algorithm.setFilename(sFilename);
+			} else {
+				sFilename = m_Algorithm.getFilename();
+				file = new File(sFilename);
+			}
 			if (fc.getFileFilter() == javaFilter) {
+				/* this can only happen if we have a "Save As..." action */
 				if (!sFilename.endsWith("java")) {
 					file = new File(sFilename + ".java");
 				}
@@ -401,6 +519,7 @@ JPanel {
 			else {
 				if (!sFilename.endsWith("model")) {
 					file = new File(sFilename + ".model");
+					jMenuSave.setEnabled(true);
 				}
 				modelGraphPanel.storeCoords();
 				ModelAlgorithmIO.save(this, file);
@@ -440,9 +559,8 @@ JPanel {
 				return;
 			}
 		}
-
+		jMenuSave.setEnabled(true);
 		m_bHasChanged = false;
-
 	}
 
 
@@ -452,7 +570,7 @@ JPanel {
 			final int iRet = JOptionPane.showConfirmDialog(null,
 					Sextante.getText("Model_has_been_modified") + "\n"
 					+ Sextante.getText("Do_you_want_to_start_a_new_model_without_saving_changes?"),
-					Sextante.getText("Warning"), JOptionPane.YES_NO_OPTION);
+					Sextante.getText("Warning"), JOptionPane.YES_NO_CANCEL_OPTION);
 			if (iRet == JOptionPane.YES_OPTION) {
 				newModel();
 			}
@@ -504,8 +622,8 @@ JPanel {
 		modelGraphPanel.resetCoords();
 		jTextFieldName.setText(Sextante.getText("[New_model]"));
 		jComboBoxGroup.setSelectedItem(Sextante.getText("Models"));
+		jMenuSave.setEnabled(false);
 		updatePanel(true);
-
 	}
 
 

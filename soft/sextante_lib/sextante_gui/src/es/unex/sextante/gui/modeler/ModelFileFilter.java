@@ -32,7 +32,7 @@ public class ModelFileFilter
    @Override
    public String getDescription() {
 
-      return "Models (*.model)";
+      return "SEXANTE models (*.model)";
 
    }
 
