@@ -516,7 +516,7 @@ public class ModelGraphPanel
                                               final double w,
                                               final double h) {
 
-      return createVertex(oad, x, y, w, h, m_InputIcon);
+      return createVertex(oad, x, y, w, h, m_InputIcon, new Color(128,223,255,125) );
 
 
    }
@@ -530,7 +530,7 @@ public class ModelGraphPanel
 
       final GeoAlgorithm alg = (GeoAlgorithm) m_ModelerPanel.getObjectFromKey((String) oad.getObject());
 
-      return createVertex(oad, x, y, w, h, SextanteGUI.getAlgorithmIcon(alg));
+      return createVertex(oad, x, y, w, h, SextanteGUI.getAlgorithmIcon(alg), new Color(255,223,128,125));
 
    }
 
@@ -540,7 +540,8 @@ public class ModelGraphPanel
                                          final double y,
                                          final double w,
                                          final double h,
-                                         final Icon icon) {
+                                         final Icon icon,
+                                         final Color color) {
 
       final DefaultGraphCell cell = new DefaultGraphCell(obj);
 
@@ -552,6 +553,8 @@ public class ModelGraphPanel
 
       GraphConstants.setBorder(cell.getAttributes(), BorderFactory.createEtchedBorder());
       GraphConstants.setBorderColor(cell.getAttributes(), Color.black);
+      GraphConstants.setBackground(cell.getAttributes(), color);
+      GraphConstants.setOpaque(cell.getAttributes(), true);
 
       GraphConstants.setInset(cell.getAttributes(), 10);
       GraphConstants.setMoveable(cell.getAttributes(), true);
