@@ -657,8 +657,8 @@ JPanel {
 
 		if (m_bHasChanged) {
 			final int iRet = JOptionPane.showConfirmDialog(null,
-					Sextante.getText("Model_has_been_modified") + ".\n "
-					+ Sextante.getText("Do_you_want_to_open_a_new_model_without_saving_changes?"),
+					Sextante.getText("Model_has_been_modified") + "\n"
+					+ Sextante.getText("Do_you_want_to_open_a_new_model_without_saving_changes"),
 					Sextante.getText("Warning"), JOptionPane.YES_NO_CANCEL_OPTION);
 			if (iRet == JOptionPane.YES_OPTION) {
 				openModel();
