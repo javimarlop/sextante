@@ -4,10 +4,13 @@ package es.unex.sextante.gui.modeler;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +57,7 @@ public class ModelGraphPanel
    private int                m_iInputs;
    private final ModelerPanel m_ModelerPanel;
    private JPopupMenu         popupMenu;
-   private DefaultGraphCell   m_ActiveCell;
+   private DefaultGraphCell   m_ActiveCell = null;
    private final HashMap      m_Coords;
    private final JDialog      m_Parent;
    private JMenuItem          menuItemEdit;
@@ -75,6 +78,8 @@ public class ModelGraphPanel
 
       m_InputIcon = new ImageIcon(getClass().getClassLoader().getResource("images/list-add.png"));
       m_ProcessIcon = new ImageIcon(getClass().getClassLoader().getResource("images/module2.png"));
+      
+      this.setWheelScrollingEnabled(false);
 
       initGUI();
 
@@ -92,7 +97,7 @@ public class ModelGraphPanel
       menuItemEdit.addActionListener(new ActionListener() {
          public void actionPerformed(final ActionEvent evt) {
             final Object ob = m_ActiveCell.getUserObject();
-            System.out.println(ob.getClass());
+            //System.out.println(ob.getClass());
             editCell((ObjectAndDescription) ob);
          }
       });
@@ -147,7 +152,12 @@ public class ModelGraphPanel
 
    }
 
-
+   
+   public JGraph getGraph () {
+	   return (jGraph);
+   }
+   
+   
    private void initGraph() {
 
       final GraphModel model = new DefaultGraphModel();
@@ -166,11 +176,43 @@ public class ModelGraphPanel
          public void mousePressed(final MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON3) {
                showPopupMenu(e);
-            }
+               return;
+            }            
             if (e.getClickCount() == 2) {
                editCell(e);
+               return;
             }
-         }
+                        
+            final int x = e.getX();
+            final int y = e.getY();
+            final DefaultGraphCell cell = (DefaultGraphCell) jGraph.getFirstCellForLocation(x, y);
+            if ( cell != null ) {
+            	final ObjectAndDescription oad = (ObjectAndDescription) cell.getUserObject();
+            	if ( oad != null ) {
+            		final String sKey = (String) oad.getObject();
+            		final Object usrObj = m_ModelerPanel.getObjectFromKey(sKey);            	
+            		if ( usrObj instanceof GeoAlgorithm || usrObj instanceof ObjectAndDescription ) {            		
+            			m_ModelerPanel.toggleEditButtons(true, oad);
+            			jGraph.scrollCellToVisible(cell);
+            		}
+            	}
+            } else {
+            	m_ModelerPanel.toggleEditButtons(false, null);
+            }            
+         }         
+      });
+      
+      jGraph.addMouseWheelListener(new MouseAdapter() {
+    	  public void mouseWheelMoved(MouseWheelEvent e) {
+    		  int notches = e.getWheelRotation();
+    		  if (notches < 0) {
+    			  //Mouse wheel moved UP
+    			  m_ModelerPanel.zoomPlus();
+    		  } else {
+    			  //Mouse wheel moved DOWN
+    			  m_ModelerPanel.zoomMinus();
+    		  }
+    	  }
       });
 
    }
@@ -248,7 +290,7 @@ public class ModelGraphPanel
    }
 
 
-   private void editCell(ObjectAndDescription oad) {
+   public void editCell(ObjectAndDescription oad) {
 
       try {
          final String sDescription = oad.getDescription();
