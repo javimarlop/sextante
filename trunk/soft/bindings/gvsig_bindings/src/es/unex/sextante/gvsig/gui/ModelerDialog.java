@@ -2,6 +2,8 @@ package es.unex.sextante.gvsig.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JPanel;
 
@@ -74,11 +76,7 @@ public class ModelerDialog
 
 
    public void windowClosed() {
-
-   //      if (m_Toolbox == null) {
-   //         SextanteGUI.getInputFactory().clearDataObjects();
-   //      }
-
+	   m_Panel.checkChangesAndCloseModel();
    }
 
 
