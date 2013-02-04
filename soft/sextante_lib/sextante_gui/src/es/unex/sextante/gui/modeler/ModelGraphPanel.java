@@ -169,6 +169,7 @@ public class ModelGraphPanel
       jGraph.setConnectable(false);
       jGraph.setDisconnectable(false);
       jGraph.setEditable(false);
+      jGraph.setAntiAliased(true);
       jGraph.setEnabled(true);
 
       jGraph.addMouseListener(new MouseAdapter() {
