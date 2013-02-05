@@ -38,6 +38,10 @@ public class BooleanPanel
 
       super.initGUI();
 
+      super.setTitle(Sextante.getText("modeler_add_par_boolean"));
+      
+      super.setPreferredSize(new java.awt.Dimension(390, 200));
+      
       try {
          jCheckBoxDefault = new JCheckBox();
          jCheckBoxDefault.setSelected(true);

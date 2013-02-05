@@ -11,7 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import es.unex.sextante.core.ParametersSet;
 import es.unex.sextante.core.Sextante;
@@ -70,55 +72,47 @@ public abstract class ParameterPanel
 
    protected void initGUI() {
 
-      this.setSize(new java.awt.Dimension(390, 300));
-      this.setPreferredSize(new java.awt.Dimension(390, 300));
+      //this.setSize(new java.awt.Dimension(390, 300));
+      //this.setPreferredSize(new java.awt.Dimension(390, 300));
       {
-         final TableLayout thisLayout = new TableLayout(new double[][] { { 5.0, TableLayoutConstants.FILL, 5.0 },
-                  { 5.0, 45.0, TableLayoutConstants.FILL, 29.0, 5.0 } });
+         final TableLayout thisLayout = new TableLayout(new double[][] { { 3.0, TableLayoutConstants.FILL, 3.0 },
+                  { 3.0, TableLayoutConstants.MINIMUM, TableLayoutConstants.FILL, TableLayoutConstants.MINIMUM, 3.0, 30.0, 3.0 } });
          thisLayout.setHGap(5);
          thisLayout.setVGap(5);
          this.setLayout(thisLayout);
          {
             jPanelName = new JPanel();
-            final TableLayout jPanelNameLayout = new TableLayout(new double[][] { { TableLayoutConstants.FILL, 5.0, TableLayoutConstants.FILL },
-                     { TableLayoutConstants.FILL, 20.0, TableLayoutConstants.FILL } });
+            final TableLayout jPanelNameLayout = new TableLayout(new double[][] { { 0.33, 5.0, 0.67 },
+                     { 20.0, 3.0, TableLayoutConstants.MINIMUM, 3.0 } });
             jPanelNameLayout.setHGap(5);
             jPanelNameLayout.setVGap(5);
             jPanelName.setLayout(jPanelNameLayout);
             this.add(jPanelName, "1, 1");
             {
+                jLabelDescription = new JLabel();
+                jPanelName.add(jLabelDescription, "0, 0");
+                jLabelDescription.setText(Sextante.getText("Description"));
+             }            
+            {
                jTextFieldDescription = new JTextField();
                jTextFieldDescription.setText(getDefaultName());
-               jPanelName.add(jTextFieldDescription, "2, 1");
+               jPanelName.add(jTextFieldDescription, "2, 0");
             }
-            {
-               jLabelDescription = new JLabel();
-               jPanelName.add(jLabelDescription, "0, 1");
-               jLabelDescription.setText(Sextante.getText("Description"));
-            }
+            jPanelName.add(new JSeparator(SwingConstants.HORIZONTAL), "0, 2, 2, 2");
          }
          {
             jPanelButtons = new JPanel();
-            final FlowLayout jPanelButtonsLayout = new FlowLayout();
-            jPanelButtonsLayout.setAlignment(FlowLayout.RIGHT);
+            final TableLayout jPanelButtonsLayout = new TableLayout(new double[][] { { TableLayoutConstants.FILL, 90.0, 5.0, 90.0 },
+            			{ 30.0 } });
+            //final FlowLayout jPanelButtonsLayout = new FlowLayout();
+            //jPanelButtonsLayout.setAlignment(FlowLayout.RIGHT);
             jPanelButtons.setLayout(jPanelButtonsLayout);
-            this.add(jPanelButtons, "1, 3");
-            {
-               jButtonOk = new JButton();
-               jPanelButtons.add(jButtonOk);
-               jButtonOk.setText(Sextante.getText("OK"));
-               jButtonOk.addActionListener(new ActionListener() {
-                  public void actionPerformed(final ActionEvent evt) {
-                     if (prepareParameter()) {
-                        cancel();
-                     }
-                  }
-               });
-            }
+            this.add(new JSeparator(SwingConstants.HORIZONTAL), "1, 3");
+            this.add(jPanelButtons, "1, 5");
             {
                jButtonCancel = new JButton();
-               jPanelButtons.add(jButtonCancel);
                jButtonCancel.setText(Sextante.getText("Cancel"));
+               jPanelButtons.add(jButtonCancel, "1, 0" );
                jButtonCancel.addActionListener(new ActionListener() {
                   public void actionPerformed(final ActionEvent evt) {
                      m_Parameter = null;
@@ -126,9 +120,23 @@ public abstract class ParameterPanel
                   }
                });
             }
+            {
+                jButtonOk = new JButton();                
+                jButtonOk.setText(Sextante.getText("OK"));
+                jPanelButtons.add(jButtonOk, "3, 0");
+                jButtonOk.addActionListener(new ActionListener() {
+                   public void actionPerformed(final ActionEvent evt) {
+                      if (prepareParameter()) {
+                         cancel();
+                      }
+                   }
+                });
+             }            
          }
          {
             jPanelMiddle = new JPanel();
+            FlowLayout layout = (FlowLayout) jPanelMiddle.getLayout();
+            layout.setVgap(1);
             this.add(jPanelMiddle, "1, 2");
          }
       }
