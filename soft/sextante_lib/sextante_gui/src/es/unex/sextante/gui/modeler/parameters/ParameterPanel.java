@@ -72,6 +72,10 @@ public abstract class ParameterPanel
 
    protected void initGUI() {
 
+	  /* the preferred size for this dialog is set by a more
+	     specific class (e.g. NumericalValuePanel) after running
+	     this (super) class' constructor.
+	   */
       //this.setSize(new java.awt.Dimension(390, 300));
       //this.setPreferredSize(new java.awt.Dimension(390, 300));
 	  this.setResizable(false);

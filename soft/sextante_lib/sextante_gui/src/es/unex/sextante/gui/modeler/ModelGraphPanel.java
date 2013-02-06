@@ -342,6 +342,7 @@ public class ModelGraphPanel
 				   paramPanel.setVisible(true);
 				   Parameter newParam = paramPanel.getParameter(); 
 				   if (newParam != null) {
+					   /* store new settings for this parameter */
 					   final AdditionalInfo ai = newParam.getParameterAdditionalInfo();					   
 					   param.setParameterAdditionalInfo(ai);			
 					   param.setParameterDescription(newParam.getParameterDescription());
