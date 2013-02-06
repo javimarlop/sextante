@@ -32,6 +32,9 @@ public class NumericalValuePanel
 extends
 ParameterPanel {
 
+	private static int	typeFloat = 0;
+	private static int	typeInteger = 1;
+	
 	private JCheckBox  jCheckBoxMin;
 	private JCheckBox  jCheckBoxMax;
 	private JLabel     jLabelType;
@@ -64,7 +67,7 @@ ParameterPanel {
 
 		super.setTitle(Sextante.getText("modeler_add_par_numerical"));
 
-		super.setPreferredSize(new java.awt.Dimension(390, 270));      
+		super.setPreferredSize(new java.awt.Dimension(390, 240));
 
 		try {
 			{
@@ -169,8 +172,8 @@ ParameterPanel {
 				}
 				{
 					final ComboBoxModel jComboBoxTypeModel = 
-						new DefaultComboBoxModel(new String[] { Sextante.getText("Integer"),
-							Sextante.getText("Float") });
+						new DefaultComboBoxModel(new String[] { Sextante.getText("Float"),
+							Sextante.getText("Integer") });
 					jComboBoxType = new JComboBox();
 					jPanelMiddle.add(jComboBoxType, "2, 6");
 					jComboBoxType.setModel(jComboBoxTypeModel);
@@ -183,6 +186,19 @@ ParameterPanel {
 
 	}
 
+	
+	/* Parses a text field containing a number and returns
+	   the result as a truncated double value */
+	private double truncNumeric ( String number ) throws Exception {
+		Integer Value;
+		try {
+			Value = Integer.parseInt(number);
+		} catch (final Exception e) {
+			throw e;
+		}
+		return ( (double) Value.intValue() );		
+	}
+	
 
 	@Override
 	protected boolean prepareParameter() {
@@ -193,7 +209,7 @@ ParameterPanel {
 		int iType;
 
 		try {
-			if (jComboBoxType.getSelectedIndex() == 0) {
+			if (jComboBoxType.getSelectedIndex() == typeInteger ) {
 				iType = AdditionalInfoNumericalValue.NUMERICAL_VALUE_INTEGER;
 				dAbsoluteMin = Integer.MIN_VALUE;
 				dAbsoluteMax = Integer.MAX_VALUE;
@@ -203,18 +219,38 @@ ParameterPanel {
 				dAbsoluteMin = Double.NEGATIVE_INFINITY;
 				dAbsoluteMax = Double.MAX_VALUE;
 			}
-			dDefault = Double.parseDouble(jTextFieldDefault.getText());
+			if ( iType == AdditionalInfoNumericalValue.NUMERICAL_VALUE_INTEGER ) {
+				/* truncate to integer before saving */
+				dDefault = truncNumeric (jTextFieldDefault.getText());
+			} else {
+				dDefault = Double.parseDouble(jTextFieldDefault.getText());
+			}			
 			if (jCheckBoxMin.isSelected()) {
-				dMin = Double.parseDouble(jTextFieldMin.getText());
+				if ( iType == AdditionalInfoNumericalValue.NUMERICAL_VALUE_INTEGER ) {
+					/* truncate to integer before saving */
+					dMin = truncNumeric (jTextFieldMin.getText());
+				} else {				
+					dMin = Double.parseDouble(jTextFieldMin.getText());
+				}
 			}
 			else {
 				dMin = dAbsoluteMin;
 			}
 			if (jCheckBoxMax.isSelected()) {
-				dMax = Double.parseDouble(jTextFieldMax.getText());
+				if ( iType == AdditionalInfoNumericalValue.NUMERICAL_VALUE_INTEGER ) {
+					/* truncate to integer before saving */
+					dMax = truncNumeric (jTextFieldMax.getText());
+				} else {								
+					dMax = Double.parseDouble(jTextFieldMax.getText());
+				}
 			}
 			else {
 				dMax = dAbsoluteMax;
+			}
+			if ( dDefault < dMin || dDefault > dMax || dMin > dMax ) {
+				JOptionPane.showMessageDialog(null, Sextante.getText("Invalid_parameters"), Sextante.getText("Warning"),
+						JOptionPane.WARNING_MESSAGE);
+				return false;
 			}
 		}
 		catch (final Exception e) {
@@ -247,26 +283,41 @@ ParameterPanel {
 
 		super.setParameter(param);
 
+		boolean isInt = false;
+		
 		try {
 			final AdditionalInfoNumericalValue ai = (AdditionalInfoNumericalValue) param.getParameterAdditionalInfo();
+			if (ai.getType() == AdditionalInfoNumericalValue.NUMERICAL_VALUE_INTEGER) {
+				jComboBoxType.setSelectedIndex(typeInteger);
+				isInt = true;
+			}
+			else {
+				jComboBoxType.setSelectedIndex(typeFloat);
+			}			
 			if (ai.getMaxValue() != Double.MAX_VALUE && ai.getMaxValue() != Integer.MAX_VALUE) {
 				jCheckBoxMax.setSelected(true);
 				jTextFieldMax.setEnabled(true);
 				jTextFieldMax.setEditable(true);
-				jTextFieldMax.setText(Double.toString(ai.getMaxValue()));
+				if ( isInt == false ) {
+					jTextFieldMax.setText(Double.toString(ai.getMaxValue()));
+				} else {
+					jTextFieldMax.setText(Integer.toString((int)ai.getMaxValue()));
+				}
 			}
 			if (ai.getMinValue() != Double.NEGATIVE_INFINITY && ai.getMinValue() != Integer.MIN_VALUE) {
 				jCheckBoxMin.setSelected(true);
 				jTextFieldMin.setEnabled(true);
-				jTextFieldMin.setEditable(true);				
-				jTextFieldMin.setText(Double.toString(ai.getMinValue()));
+				jTextFieldMin.setEditable(true);
+				if ( isInt == false ) {
+					jTextFieldMin.setText(Double.toString(ai.getMinValue()));
+				} else {
+					jTextFieldMin.setText(Integer.toString((int)ai.getMinValue()));
+				}
 			}
-			jTextFieldDefault.setText(Double.toString(ai.getDefaultValue()));
-			if (ai.getType() == AdditionalInfoNumericalValue.NUMERICAL_VALUE_INTEGER) {
-				jComboBoxType.setSelectedIndex(0);
-			}
-			else {
-				jComboBoxType.setSelectedIndex(1);
+			if ( isInt == false ) {
+				jTextFieldDefault.setText(Double.toString(ai.getDefaultValue()));
+			} else {
+				jTextFieldDefault.setText(Integer.toString((int)ai.getDefaultValue()));
 			}
 		}
 		catch (final NullParameterAdditionalInfoException e) {
