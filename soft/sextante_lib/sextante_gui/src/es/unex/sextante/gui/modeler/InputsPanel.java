@@ -97,9 +97,7 @@ public class InputsPanel
       DefaultMutableTreeNode node;
       final DefaultMutableTreeNode mainNode = new DefaultMutableTreeNode(Sextante.getText("Inputs"));
 
-      node = new DefaultMutableTreeNode(getNewNumericalValuePanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewBooleanPanel());
+      node = new DefaultMutableTreeNode(getNewVectorLayerPanel());
       mainNode.add(node);
       node = new DefaultMutableTreeNode(getNewRasterLayerPanel());
       mainNode.add(node);
@@ -107,21 +105,23 @@ public class InputsPanel
       mainNode.add(node);
       node = new DefaultMutableTreeNode(getNew3DRasterLayerPanel());
       mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewTableFieldPanel());
+      node = new DefaultMutableTreeNode(getNewPointPanel());
       mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewStringPanel());
+      node = new DefaultMutableTreeNode(getNewTableFieldPanel());
       mainNode.add(node);
       node = new DefaultMutableTreeNode(getNewTablePanel());
       mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewPointPanel());
+      node = new DefaultMutableTreeNode(getNewFixedTablePanel());
+      mainNode.add(node);      
+      node = new DefaultMutableTreeNode(getNewNumericalValuePanel());
       mainNode.add(node);
+      node = new DefaultMutableTreeNode(getNewStringPanel());
+      mainNode.add(node);
+      node = new DefaultMutableTreeNode(getNewBooleanPanel());
+      mainNode.add(node);      
       node = new DefaultMutableTreeNode(getNewMultipleInputPanel());
       mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewFixedTablePanel());
-      mainNode.add(node);
       node = new DefaultMutableTreeNode(getNewSelectionPanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewVectorLayerPanel());
       mainNode.add(node);
       jTree.setModel(new DefaultTreeModel(mainNode));
 
@@ -131,6 +131,7 @@ public class InputsPanel
    public JTree getTree () {
 	   return ( jTree );
    }
+   
    
    private Object getNewNumericalValuePanel() {
 

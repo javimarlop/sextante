@@ -230,7 +230,7 @@ ParameterPanel {
 					dMin, dMax));
 			m_Parameter = new ParameterNumericalValue();
 			m_Parameter.setParameterAdditionalInfo(addInfo);
-			m_Parameter.setParameterDescription(jTextFieldDescription.getText());
+			m_Parameter.setParameterDescription(jTextFieldDescription.getText());			
 			return true;
 		}
 		else {
@@ -238,7 +238,6 @@ ParameterPanel {
 					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-
 
 	}
 
@@ -252,10 +251,14 @@ ParameterPanel {
 			final AdditionalInfoNumericalValue ai = (AdditionalInfoNumericalValue) param.getParameterAdditionalInfo();
 			if (ai.getMaxValue() != Double.MAX_VALUE && ai.getMaxValue() != Integer.MAX_VALUE) {
 				jCheckBoxMax.setSelected(true);
+				jTextFieldMax.setEnabled(true);
+				jTextFieldMax.setEditable(true);
 				jTextFieldMax.setText(Double.toString(ai.getMaxValue()));
 			}
 			if (ai.getMinValue() != Double.NEGATIVE_INFINITY && ai.getMinValue() != Integer.MIN_VALUE) {
 				jCheckBoxMin.setSelected(true);
+				jTextFieldMin.setEnabled(true);
+				jTextFieldMin.setEditable(true);				
 				jTextFieldMin.setText(Double.toString(ai.getMinValue()));
 			}
 			jTextFieldDefault.setText(Double.toString(ai.getDefaultValue()));
