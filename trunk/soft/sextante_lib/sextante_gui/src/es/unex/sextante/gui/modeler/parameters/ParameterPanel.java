@@ -74,6 +74,7 @@ public abstract class ParameterPanel
 
       //this.setSize(new java.awt.Dimension(390, 300));
       //this.setPreferredSize(new java.awt.Dimension(390, 300));
+	  this.setResizable(false);
       {
          final TableLayout thisLayout = new TableLayout(new double[][] { { 3.0, TableLayoutConstants.FILL, 3.0 },
                   { 3.0, TableLayoutConstants.MINIMUM, TableLayoutConstants.FILL, TableLayoutConstants.MINIMUM, 3.0, 30.0, 3.0 } });
@@ -155,7 +156,7 @@ public abstract class ParameterPanel
    /**
     * Returns the parameter created using this panel
     *
-    * @return the paramter created using this panel
+    * @return the parameter created using this panel
     */
    public Parameter getParameter() {
 

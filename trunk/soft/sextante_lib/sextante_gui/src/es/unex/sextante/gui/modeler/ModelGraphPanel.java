@@ -32,6 +32,7 @@ import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
 
+import es.unex.sextante.additionalInfo.AdditionalInfo;
 import es.unex.sextante.core.GeoAlgorithm;
 import es.unex.sextante.core.ObjectAndDescription;
 import es.unex.sextante.core.ParametersSet;
@@ -293,66 +294,69 @@ public class ModelGraphPanel
 
    public void editCell(ObjectAndDescription oad) {
 
-      try {
-         final String sDescription = oad.getDescription();
-         final String sKey = (String) oad.getObject();
-         final Object usrObj = m_ModelerPanel.getObjectFromKey(sKey);
+	   try {
+		   final String sDescription = oad.getDescription();
+		   final String sKey = (String) oad.getObject();
+		   final Object usrObj = m_ModelerPanel.getObjectFromKey(sKey);
 
-         if (usrObj instanceof GeoAlgorithm) {
-            final GeoAlgorithm alg = (GeoAlgorithm) usrObj;
-            GeoAlgorithmModelerParametersPanel paramPanel = null;
-            Class paramPanelClass = SextanteGUI.getModelerParametersPanel(alg.getCommandLineName());
-            if (paramPanelClass == null) {
-               paramPanelClass = SextanteGUI.getGUIFactory().getDefaultModelerParametersPanel();
-            }
-            try {
-               paramPanel = (GeoAlgorithmModelerParametersPanel) paramPanelClass.newInstance();
-            }
-            catch (final Exception e) {
-               try {
-                  paramPanel = SextanteGUI.getGUIFactory().getDefaultModelerParametersPanel().newInstance();
-               }
-               catch (final Exception e1) {
-               }
-            }
-            AlgorithmDialog dialog;
-            if (m_Parent == null) {
-               dialog = new AlgorithmDialog(alg, sKey, sDescription, m_Algorithm, paramPanel, m_DataObjects);
-            }
-            else {
-               dialog = new AlgorithmDialog(alg, sKey, sDescription, m_Algorithm, paramPanel, m_DataObjects, m_Parent);
-            }
-            dialog.pack();
-            dialog.setVisible(true);
-            if (dialog.getDialogReturn() == IGUIFactory.OK) {
-               m_ModelerPanel.setHasChanged(true);
-               m_ModelerPanel.updatePanel(true);
-            }
-         }
-         else if (usrObj instanceof ObjectAndDescription) {
-            final ParametersSet params = m_ModelerPanel.getAlgorithm().getParameters();
-            Parameter param = params.getParameter(sKey);
-            final ParameterPanel paramPanel = getParameterPanel(param);
-            if (paramPanel != null) {
-               paramPanel.updateOptions();
-               paramPanel.setParameter(param);
-               paramPanel.pack();
-               paramPanel.setVisible(true);
-               param = paramPanel.getParameter();
-               if (param != null) {
-                  param.setParameterName(sKey);
-                  oad = new ObjectAndDescription(param.getParameterDescription(),
-                           ModelElementFactory.getParameterAsModelElement(param));
-                  m_DataObjects.put(sKey, oad);
-                  m_ModelerPanel.setHasChanged(true);
-                  m_ModelerPanel.updatePanel(true);
-               }
-            }
-         }
-      }
-      catch (final Exception ex) {
-         ex.printStackTrace();
-      }
+		   if (usrObj instanceof GeoAlgorithm) {
+			   final GeoAlgorithm alg = (GeoAlgorithm) usrObj;
+			   GeoAlgorithmModelerParametersPanel paramPanel = null;
+			   Class paramPanelClass = SextanteGUI.getModelerParametersPanel(alg.getCommandLineName());
+			   if (paramPanelClass == null) {
+				   paramPanelClass = SextanteGUI.getGUIFactory().getDefaultModelerParametersPanel();
+			   }
+			   try {
+				   paramPanel = (GeoAlgorithmModelerParametersPanel) paramPanelClass.newInstance();
+			   }
+			   catch (final Exception e) {
+				   try {
+					   paramPanel = SextanteGUI.getGUIFactory().getDefaultModelerParametersPanel().newInstance();
+				   }
+				   catch (final Exception e1) {
+				   }
+			   }
+			   AlgorithmDialog dialog;
+			   if (m_Parent == null) {
+				   dialog = new AlgorithmDialog(alg, sKey, sDescription, m_Algorithm, paramPanel, m_DataObjects);
+			   }
+			   else {
+				   dialog = new AlgorithmDialog(alg, sKey, sDescription, m_Algorithm, paramPanel, m_DataObjects, m_Parent);
+			   }
+			   dialog.pack();
+			   dialog.setVisible(true);
+			   if (dialog.getDialogReturn() == IGUIFactory.OK) {
+				   m_ModelerPanel.setHasChanged(true);
+				   m_ModelerPanel.updatePanel(true);
+			   }
+		   }
+		   else if (usrObj instanceof ObjectAndDescription) { // Got an input parameter
+			   final ParametersSet params = m_ModelerPanel.getAlgorithm().getParameters();
+			   Parameter param = params.getParameter(sKey);
+			   final ParameterPanel paramPanel = getParameterPanel(param);			   
+			   if (paramPanel != null) {
+				   paramPanel.updateOptions();
+				   paramPanel.setParameter(param); // Restore current settings
+				   paramPanel.pack();
+				   paramPanel.setTitle(Sextante.getText("modeler_edit_parameter"));
+				   paramPanel.setVisible(true);
+				   Parameter newParam = paramPanel.getParameter(); 
+				   if (newParam != null) {
+					   final AdditionalInfo ai = newParam.getParameterAdditionalInfo();					   
+					   param.setParameterAdditionalInfo(ai);			
+					   param.setParameterDescription(newParam.getParameterDescription());
+					   oad = new ObjectAndDescription(param.getParameterDescription(),
+							   ModelElementFactory.getParameterAsModelElement(newParam));					   
+					   m_DataObjects.put(sKey, oad);
+					   m_ModelerPanel.setHasChanged(true);
+					   m_ModelerPanel.updatePanel(true);
+				   }
+			   }
+		   }
+	   }
+	   catch (final Exception ex) {
+		   ex.printStackTrace();
+	   }
 
    }
 
