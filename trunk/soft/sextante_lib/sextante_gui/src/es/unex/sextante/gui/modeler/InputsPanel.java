@@ -94,36 +94,43 @@ public class InputsPanel
 
    private void fillTree() {
 
-      DefaultMutableTreeNode node;
-      final DefaultMutableTreeNode mainNode = new DefaultMutableTreeNode(Sextante.getText("Inputs"));
-
-      node = new DefaultMutableTreeNode(getNewVectorLayerPanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewRasterLayerPanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewRasterBandPanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNew3DRasterLayerPanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewPointPanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewTableFieldPanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewTablePanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewFixedTablePanel());
-      mainNode.add(node);      
-      node = new DefaultMutableTreeNode(getNewNumericalValuePanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewStringPanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewBooleanPanel());
-      mainNode.add(node);      
-      node = new DefaultMutableTreeNode(getNewMultipleInputPanel());
-      mainNode.add(node);
-      node = new DefaultMutableTreeNode(getNewSelectionPanel());
-      mainNode.add(node);
-      jTree.setModel(new DefaultTreeModel(mainNode));
+	   DefaultMutableTreeNode node;
+	   final DefaultMutableTreeNode mainNode = new DefaultMutableTreeNode(Sextante.getText("node_Inputs"));
+	     final DefaultMutableTreeNode layersNode = new DefaultMutableTreeNode(Sextante.getText("node_Layers"));
+	       mainNode.add(layersNode);
+	         node = new DefaultMutableTreeNode(getNewVectorLayerPanel());
+	         layersNode.add(node);
+	         node = new DefaultMutableTreeNode(getNewRasterLayerPanel());
+	         layersNode.add(node);
+	         node = new DefaultMutableTreeNode(getNewRasterBandPanel());
+	         layersNode.add(node);
+	         node = new DefaultMutableTreeNode(getNew3DRasterLayerPanel());
+	         layersNode.add(node);
+	     final DefaultMutableTreeNode valuesNode = new DefaultMutableTreeNode(Sextante.getText("node_Values"));
+	       mainNode.add(valuesNode);
+	         node = new DefaultMutableTreeNode(getNewNumericalValuePanel());
+	         valuesNode.add(node);
+	         node = new DefaultMutableTreeNode(getNewStringPanel());
+	         valuesNode.add(node);
+	         node = new DefaultMutableTreeNode(getNewBooleanPanel());
+	         valuesNode.add(node);
+		 final DefaultMutableTreeNode fandtNode = new DefaultMutableTreeNode(Sextante.getText("node_Fields_and_Tables"));
+		   mainNode.add(fandtNode);	         
+		     node = new DefaultMutableTreeNode(getNewTableFieldPanel());
+		     fandtNode.add(node);
+		     node = new DefaultMutableTreeNode(getNewTablePanel());
+		     fandtNode.add(node);
+		     node = new DefaultMutableTreeNode(getNewFixedTablePanel());
+		     fandtNode.add(node);      
+		 final DefaultMutableTreeNode othersNode = new DefaultMutableTreeNode(Sextante.getText("node_Others"));
+		   mainNode.add(othersNode);
+	         node = new DefaultMutableTreeNode(getNewPointPanel());
+	         othersNode.add(node);	   	   
+	         node = new DefaultMutableTreeNode(getNewMultipleInputPanel());
+	         othersNode.add(node);
+	         node = new DefaultMutableTreeNode(getNewSelectionPanel());
+	         othersNode.add(node);
+	   jTree.setModel(new DefaultTreeModel(mainNode));
 
    }
 

@@ -145,7 +145,7 @@ public class RasterBandPanel
    @Override
    public String getParameterDescription() {
 
-      return Sextante.getText("Band");
+      return Sextante.getText("Raster_band");
 
    }
 
