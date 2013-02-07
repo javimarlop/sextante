@@ -19,7 +19,6 @@ public class OutputLayerSettingsPanel
 
    private JCheckBox  jCheckBoxAdd;
    private JTextField jTextFieldName;
-   private JLabel     jLabel1;
 
 
    public OutputLayerSettingsPanel() {
@@ -34,17 +33,12 @@ public class OutputLayerSettingsPanel
       try {
          {
             final TableLayout thisLayout = new TableLayout(new double[][] {
-                     { TableLayoutConstants.FILL, TableLayoutConstants.FILL, TableLayoutConstants.FILL },
-                     { TableLayoutConstants.FILL, 1.0, TableLayoutConstants.FILL } });
+                     { TableLayoutConstants.MINIMUM, TableLayoutConstants.FILL},
+                     { TableLayoutConstants.MINIMUM } });
             thisLayout.setHGap(5);
             thisLayout.setVGap(5);
             this.setLayout(thisLayout);
             this.setPreferredSize(new java.awt.Dimension(271, 48));
-            {
-               jLabel1 = new JLabel();
-               this.add(jLabel1, "0, 2");
-               jLabel1.setText(Sextante.getText("Name"));
-            }
             {
                jCheckBoxAdd = new JCheckBox(Sextante.getText("Keep_as_final_result"));
                jCheckBoxAdd.addItemListener(new ItemListener() {
@@ -52,12 +46,12 @@ public class OutputLayerSettingsPanel
                      jTextFieldName.setEnabled(jCheckBoxAdd.isSelected());
                   }
                });
-               this.add(jCheckBoxAdd, "0, 0, 2, 0");
+               this.add(jCheckBoxAdd, "0, 0");
             }
             {
                jTextFieldName = new JTextField();
                jTextFieldName.setEnabled(false);
-               this.add(jTextFieldName, "1, 2, 2, 2");
+               this.add(jTextFieldName, "1, 0");
             }
          }
       }
