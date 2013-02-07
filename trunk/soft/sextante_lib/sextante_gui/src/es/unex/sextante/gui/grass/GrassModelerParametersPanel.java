@@ -24,10 +24,11 @@ public class GrassModelerParametersPanel
       super.addOutputObjects(pane);
 
       addTitleLabel(pane, Sextante.getText("grass_restrict_geometry_ouput"), m_iCurrentRow, false);
-      m_iCurrentRow++;
+      
       final String[] options = new String[] { Sextante.getText("Points"), Sextante.getText("Lines"), Sextante.getText("Polygons") };
       jComboRestrictGeometryType = new JComboBox(options);
       pane.add(jComboRestrictGeometryType, getStringTableCoords(2, m_iCurrentRow));
+      m_iCurrentRow++;
 
    }
 
