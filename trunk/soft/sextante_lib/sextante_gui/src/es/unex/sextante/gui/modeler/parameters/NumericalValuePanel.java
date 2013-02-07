@@ -67,14 +67,14 @@ ParameterPanel {
 
 		super.setTitle(Sextante.getText("modeler_add_par_numerical"));
 
-		super.setPreferredSize(new java.awt.Dimension(390, 240));
+		super.setPreferredSize(new java.awt.Dimension(400, 240));
 
 		try {
 			{
 				final TableLayout thisLayout = new TableLayout(new double[][] {
-						{ 	0.33, 
+						{ 	TableLayoutConstants.MINIMUM, 
 							5.0,
-							0.67 },
+							TableLayoutConstants.FILL },
 							{ 		TableLayoutConstants.MINIMUM,
 								1.0,
 								TableLayoutConstants.MINIMUM,

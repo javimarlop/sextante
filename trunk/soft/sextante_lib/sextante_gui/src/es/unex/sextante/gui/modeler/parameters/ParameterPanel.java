@@ -87,7 +87,8 @@ public abstract class ParameterPanel
          this.setLayout(thisLayout);
          {
             jPanelName = new JPanel();
-            final TableLayout jPanelNameLayout = new TableLayout(new double[][] { { 0.33, 5.0, 0.67 },
+            final TableLayout jPanelNameLayout = new TableLayout
+            	(new double[][] { { TableLayoutConstants.MINIMUM, 5.0, TableLayoutConstants.FILL },
                      { 20.0, 3.0, TableLayoutConstants.MINIMUM, 3.0 } });
             jPanelNameLayout.setHGap(5);
             jPanelNameLayout.setVGap(5);
@@ -188,7 +189,7 @@ public abstract class ParameterPanel
 
       do {
          bNameFound = true;
-         sName = getParameterDescription() + Integer.toString(i);
+         sName = getParameterDescription() + " " + Integer.toString(i);
          for (int j = 0; j < iCount; j++) {
             param = ps.getParameter(j);
             if (param.getParameterDescription().equals(sName)) {

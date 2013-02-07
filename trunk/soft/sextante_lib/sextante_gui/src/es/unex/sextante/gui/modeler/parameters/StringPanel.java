@@ -42,24 +42,28 @@ public class StringPanel
    protected void initGUI() {
 
       super.initGUI();
-
+      
+      super.setTitle(Sextante.getText("modeler_add_par_string"));
+      
+      super.setPreferredSize(new java.awt.Dimension(400, 150));
+      
       try {
          {
-            final TableLayout thisLayout = new TableLayout(new double[][] { { TableLayoutConstants.FILL, 5.0, TableLayoutConstants.FILL },
-                     { TableLayoutConstants.FILL, 20, TableLayoutConstants.FILL } });
+            final TableLayout thisLayout = new TableLayout
+            	(new double[][] { { TableLayoutConstants.MINIMUM, 5.0, TableLayoutConstants.FILL },
+                     { TableLayoutConstants.MINIMUM, } });
             thisLayout.setHGap(5);
             thisLayout.setVGap(5);
             jPanelMiddle.setLayout(thisLayout);
             {
-               jTextFieldDefault = new JTextField();
-               jPanelMiddle.add(jTextFieldDefault, "2, 1");
-            }
-            {
                jLabelDefault = new JLabel();
-               jPanelMiddle.add(jLabelDefault, "0, 1");
+               jPanelMiddle.add(jLabelDefault, "0, 0");
                jLabelDefault.setText(Sextante.getText("Default_value"));
             }
-
+            {
+                jTextFieldDefault = new JTextField();
+                jPanelMiddle.add(jTextFieldDefault, "2, 0");
+             }
          }
       }
       catch (final Exception e) {

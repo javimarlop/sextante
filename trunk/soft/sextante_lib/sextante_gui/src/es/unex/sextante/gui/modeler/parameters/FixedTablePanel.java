@@ -57,50 +57,57 @@ public class FixedTablePanel
    @Override
    protected void initGUI() {
 
-      final Integer values[] = new Integer[15];
-      super.initGUI();
+	   super.setTitle(Sextante.getText("modeler_add_par_fixed_table"));
 
-      try {
-         {
-            final TableLayout thisLayout = new TableLayout(
-                     new double[][] {
-                              { TableLayoutConstants.FILL, 5.0, TableLayoutConstants.FILL },
-                              { TableLayoutConstants.FILL, TableLayoutConstants.FILL, TableLayoutConstants.FILL,
-                                       TableLayoutConstants.FILL } });
-            thisLayout.setHGap(5);
-            thisLayout.setVGap(5);
-            jPanelMiddle.setLayout(thisLayout);
-            for (int i = 0; i < 15; i++) {
-               values[i] = new Integer(i + 1);
-            }
-            {
-               jCheckBox = new JCheckBox();
-               jPanelMiddle.add(jCheckBox, "2, 1");
-               jCheckBox.setText(Sextante.getText("Fixed_number_of_rows"));
-            }
-            {
-               jLabelRows = new JLabel();
-               jPanelMiddle.add(jLabelRows, "0, 0");
-               jLabelRows.setText(Sextante.getText("Number_of_rows"));
-            }
-            {
-               jSpinnerRows = new JSpinner(new SpinnerListModel(values));
-               jPanelMiddle.add(jSpinnerRows, "2, 0");
-            }
-            {
-               jLabelCols = new JLabel();
-               jPanelMiddle.add(jLabelCols, "0, 3");
-               jLabelCols.setText(Sextante.getText("Number_of_columns"));
-            }
-            {
-               jSpinnerCols = new JSpinner(new SpinnerListModel(values));
-               jPanelMiddle.add(jSpinnerCols, "2, 3");
-            }
-         }
-      }
-      catch (final Exception e) {
-         Sextante.addErrorToLog(e);
-      }
+	   super.setPreferredSize(new java.awt.Dimension(400, 208));	   
+
+	   final Integer values[] = new Integer[15];
+	   super.initGUI();
+
+	   try {
+		   {
+			   final TableLayout thisLayout = new TableLayout(
+					   new double[][] {
+							   { TableLayoutConstants.MINIMUM, 5.0, TableLayoutConstants.FILL },
+							   { 	TableLayoutConstants.MINIMUM,
+								   	1.0,
+								   	TableLayoutConstants.MINIMUM,
+								   	1.0,
+								   	TableLayoutConstants.MINIMUM, } });
+			   thisLayout.setHGap(5);
+			   thisLayout.setVGap(5);
+			   jPanelMiddle.setLayout(thisLayout);
+			   for (int i = 0; i < 15; i++) {
+				   values[i] = new Integer(i + 1);
+			   }
+			   {
+				   jLabelRows = new JLabel();
+				   jPanelMiddle.add(jLabelRows, "0, 0");
+				   jLabelRows.setText(Sextante.getText("Number_of_rows"));
+			   }
+			   {
+				   jSpinnerRows = new JSpinner(new SpinnerListModel(values));
+				   jPanelMiddle.add(jSpinnerRows, "2, 0");
+			   }
+			   {
+				   jCheckBox = new JCheckBox();
+				   jPanelMiddle.add(jCheckBox, "2, 2");
+				   jCheckBox.setText(Sextante.getText("Fixed_number_of_rows"));
+			   }			   
+			   {
+				   jLabelCols = new JLabel();
+				   jPanelMiddle.add(jLabelCols, "0, 4");
+				   jLabelCols.setText(Sextante.getText("Number_of_columns"));
+			   }
+			   {
+				   jSpinnerCols = new JSpinner(new SpinnerListModel(values));
+				   jPanelMiddle.add(jSpinnerCols, "2, 4");
+			   }
+		   }
+	   }
+	   catch (final Exception e) {
+		   Sextante.addErrorToLog(e);
+	   }
 
    }
 
