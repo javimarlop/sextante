@@ -51,19 +51,23 @@ public class RasterBandPanel
 
       super.initGUI();
 
+      super.setTitle(Sextante.getText("modeler_add_par_band"));
+      
+      super.setPreferredSize(new java.awt.Dimension(400, 150));      
+      
       try {
 
          final TableLayout thisLayout = new TableLayout(new double[][] {
-                  { TableLayoutConstants.FILL, 5.0, TableLayoutConstants.FILL },
-                  { TableLayoutConstants.FILL, 25.0, TableLayoutConstants.FILL } });
+                  { TableLayoutConstants.MINIMUM, 5.0, TableLayoutConstants.FILL },
+                  { TableLayoutConstants.MINIMUM } });
          thisLayout.setHGap(5);
          thisLayout.setVGap(5);
          jPanelMiddle.setLayout(thisLayout);
          jLabelType = new JLabel();
-         jPanelMiddle.add(jLabelType, "0, 1");
+         jPanelMiddle.add(jLabelType, "0, 0");
          jLabelType.setText(Sextante.getText("Parent_layer"));
          jComboBoxParent = new JComboBox();
-         jPanelMiddle.add(jComboBoxParent, "2, 1");
+         jPanelMiddle.add(jComboBoxParent, "2, 0");
 
       }
       catch (final Exception e) {

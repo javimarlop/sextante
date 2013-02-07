@@ -57,7 +57,7 @@ public class SelectionTreePanel
       fillTree();
       jScrollPane = new JScrollPane(jTree, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-      jScrollPane.setMinimumSize(new Dimension(300, 400));
+      //jScrollPane.setMinimumSize(new Dimension(300, 400));
 
       this.add(jScrollPane, BorderLayout.CENTER);
 

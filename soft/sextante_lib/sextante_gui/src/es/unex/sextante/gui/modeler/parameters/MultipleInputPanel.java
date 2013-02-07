@@ -19,172 +19,184 @@ import es.unex.sextante.parameters.Parameter;
 import es.unex.sextante.parameters.ParameterMultipleInput;
 
 public class MultipleInputPanel
-         extends
-            ParameterPanel {
+extends
+ParameterPanel {
 
-   private JLabel    jLabelType;
-   private JComboBox jComboBoxType;
-   private JCheckBox jCheckBoxMandatory;
-
-
-   public MultipleInputPanel(final JDialog parent,
-                             final ModelerPanel panel) {
-
-      super(parent, panel);
-
-   }
+	private JLabel    jLabelType;
+	private JComboBox jComboBoxType;
+	private JCheckBox jCheckBoxMandatory;
 
 
-   public MultipleInputPanel(final ModelerPanel panel) {
+	public MultipleInputPanel(final JDialog parent,
+			final ModelerPanel panel) {
 
-      super(panel);
+		super(parent, panel);
 
-   }
-
-
-   @Override
-   protected void initGUI() {
-
-      super.initGUI();
-
-      try {
-         {
-            final TableLayout thisLayout = new TableLayout(new double[][] { { TableLayoutConstants.FILL, 5.0, TableLayoutConstants.FILL },
-                     { TableLayoutConstants.FILL, 20.0, TableLayoutConstants.FILL, 20.0, TableLayoutConstants.FILL } });
-            thisLayout.setHGap(5);
-            thisLayout.setVGap(5);
-            jPanelMiddle.setLayout(thisLayout);
-            {
-               jLabelType = new JLabel();
-               jPanelMiddle.add(jLabelType, "0, 1");
-               jLabelType.setText(Sextante.getText("Input_type"));
-            }
-            {
-               final ComboBoxModel jComboBoxTypeModel = new DefaultComboBoxModel(new String[] { Sextante.getText("Raster"),
-                        Sextante.getText("Vector_any_type"), Sextante.getText("Vectorial__polygons"),
-                        Sextante.getText("Vectorial__lines"), Sextante.getText("Vectorial__points"), Sextante.getText("Table"),
-                        Sextante.getText("Band") });
-               jComboBoxType = new JComboBox();
-               jPanelMiddle.add(jComboBoxType, "2, 1");
-               jComboBoxType.setModel(jComboBoxTypeModel);
-            }
-            {
-               jCheckBoxMandatory = new JCheckBox();
-               jCheckBoxMandatory.setSelected(true);
-               jPanelMiddle.add(jCheckBoxMandatory, "0,3,2,3");
-               jCheckBoxMandatory.setText(Sextante.getText("Mandatory_input"));
-            }
-         }
-      }
-      catch (final Exception e) {
-         Sextante.addErrorToLog(e);
-      }
-
-   }
+	}
 
 
-   @Override
-   protected boolean prepareParameter() {
+	public MultipleInputPanel(final ModelerPanel panel) {
 
-      int iType = 0;
+		super(panel);
 
-      switch (jComboBoxType.getSelectedIndex()) {
-         case 0:
-            iType = AdditionalInfoMultipleInput.DATA_TYPE_RASTER;
-            break;
-         case 1:
-            iType = AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_ANY;
-            break;
-         case 2:
-            iType = AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_POLYGON;
-            break;
-         case 3:
-            iType = AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_LINE;
-            break;
-         case 4:
-            iType = AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_POINT;
-            break;
-         case 5:
-            iType = AdditionalInfoMultipleInput.DATA_TYPE_TABLE;
-            break;
-         case 6:
-            iType = AdditionalInfoMultipleInput.DATA_TYPE_BAND;
-            break;
-      }
-
-      final String sDescription = jTextFieldDescription.getText();
-      final boolean bMandatory = jCheckBoxMandatory.isSelected();
-
-      if (sDescription.length() != 0) {
-         final AdditionalInfoMultipleInput addInfo = new AdditionalInfoMultipleInput(iType, bMandatory);
-         m_Parameter = new ParameterMultipleInput();
-         m_Parameter.setParameterAdditionalInfo(addInfo);
-         m_Parameter.setParameterDescription(jTextFieldDescription.getText());
-         return true;
-      }
-      else {
-         JOptionPane.showMessageDialog(null, Sextante.getText("Invalid_description"), Sextante.getText("Warning"),
-                  JOptionPane.WARNING_MESSAGE);
-         return false;
-      }
-
-   }
+	}
 
 
-   @Override
-   public void setParameter(final Parameter param) {
+	@Override
+	protected void initGUI() {
 
-      super.setParameter(param);
+		super.initGUI();
 
-      try {
-         final AdditionalInfoMultipleInput ai = (AdditionalInfoMultipleInput) param.getParameterAdditionalInfo();
-         jCheckBoxMandatory.setSelected(ai.getIsMandatory());
-         switch (ai.getDataType()) {
-            case AdditionalInfoMultipleInput.DATA_TYPE_RASTER:
-               jComboBoxType.setSelectedIndex(0);
-               break;
-            case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_ANY:
-               jComboBoxType.setSelectedIndex(1);
-               break;
-            case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_POLYGON:
-               jComboBoxType.setSelectedIndex(2);
-               break;
+		super.setTitle(Sextante.getText("modeler_add_par_multiple"));
 
-            case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_POINT:
-               jComboBoxType.setSelectedIndex(3);
-               break;
-            case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_LINE:
-               jComboBoxType.setSelectedIndex(4);
-               break;
-            case AdditionalInfoMultipleInput.DATA_TYPE_TABLE:
-               jComboBoxType.setSelectedIndex(5);
-               break;
-            case AdditionalInfoMultipleInput.DATA_TYPE_BAND:
-               jComboBoxType.setSelectedIndex(6);
-               break;
-         }
+		super.setPreferredSize(new java.awt.Dimension(400, 180));
 
-      }
-      catch (final NullParameterAdditionalInfoException e) {
-         e.printStackTrace();
-      }
+		try {
+			{
+				final TableLayout thisLayout = new TableLayout
+					(new double[][] { { TableLayoutConstants.MINIMUM, 5.0, TableLayoutConstants.FILL },
+						{  	TableLayoutConstants.MINIMUM,
+							1.0,
+							TableLayoutConstants.MINIMUM,
+							1.0 } });
+				thisLayout.setHGap(5);
+				thisLayout.setVGap(5);
+				jPanelMiddle.setLayout(thisLayout);
+				{
+					jLabelType = new JLabel();
+					jPanelMiddle.add(jLabelType, "0, 0");
+					jLabelType.setText(Sextante.getText("Input_type"));
+				}
+				{
+					final ComboBoxModel jComboBoxTypeModel = new DefaultComboBoxModel(new String[] { 							
+							Sextante.getText("Vector_any_type"),							
+							Sextante.getText("Vectorial__points"),
+							Sextante.getText("Vectorial__lines"),
+							Sextante.getText("Vectorial__polygons"),
+							Sextante.getText("Raster"),
+							Sextante.getText("Raster_band"),
+							Sextante.getText("Table") });
+					jComboBoxType = new JComboBox();
+					jPanelMiddle.add(jComboBoxType, "2, 0");
+					jComboBoxType.setModel(jComboBoxTypeModel);
+				}
+				{
+					jCheckBoxMandatory = new JCheckBox();
+					jCheckBoxMandatory.setSelected(true);
+					jPanelMiddle.add(jCheckBoxMandatory, "0,2,2,2");
+					jCheckBoxMandatory.setText(Sextante.getText("Mandatory"));
+				}
+			}
+		}
+		catch (final Exception e) {
+			Sextante.addErrorToLog(e);
+		}
 
-   }
+	}
 
 
-   @Override
-   public String getParameterDescription() {
+	@Override
+	protected boolean prepareParameter() {
 
-      return Sextante.getText("Multiple_input");
+		int iType = AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_ANY;
 
-   }
+		switch (jComboBoxType.getSelectedIndex()) {
+		case 0:
+			iType = AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_ANY;
+			break;
+		case 1:
+			iType = AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_POINT;
+			break;
+		case 2:
+			iType = AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_LINE;
+			break;			
+		case 3:
+			iType = AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_POLYGON;
+			break;
+		case 4:
+			iType = AdditionalInfoMultipleInput.DATA_TYPE_RASTER;
+			break;
+		case 5:
+			iType = AdditionalInfoMultipleInput.DATA_TYPE_BAND;
+			break;			
+		case 6:
+			iType = AdditionalInfoMultipleInput.DATA_TYPE_TABLE;
+			break;
+		}
+
+		final String sDescription = jTextFieldDescription.getText();
+		final boolean bMandatory = jCheckBoxMandatory.isSelected();
+
+		if (sDescription.length() != 0) {
+			final AdditionalInfoMultipleInput addInfo = new AdditionalInfoMultipleInput(iType, bMandatory);
+			m_Parameter = new ParameterMultipleInput();
+			m_Parameter.setParameterAdditionalInfo(addInfo);
+			m_Parameter.setParameterDescription(jTextFieldDescription.getText());
+			return true;
+		}
+		else {
+			JOptionPane.showMessageDialog(null, Sextante.getText("Invalid_description"), Sextante.getText("Warning"),
+					JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+
+	}
 
 
-   @Override
-   public boolean parameterCanBeAdded() {
+	@Override
+	public void setParameter(final Parameter param) {
 
-      return true;
+		super.setParameter(param);
 
-   }
+		try {
+			final AdditionalInfoMultipleInput ai = (AdditionalInfoMultipleInput) param.getParameterAdditionalInfo();
+			jCheckBoxMandatory.setSelected(ai.getIsMandatory());
+			jComboBoxType.setSelectedIndex(0);
+			switch (ai.getDataType()) {
+			case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_ANY:
+				jComboBoxType.setSelectedIndex(0);
+				break;
+			case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_POINT:
+				jComboBoxType.setSelectedIndex(1);
+				break;
+			case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_LINE:
+				jComboBoxType.setSelectedIndex(2);
+				break;
+			case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_POLYGON:
+				jComboBoxType.setSelectedIndex(3);
+				break;				
+			case AdditionalInfoMultipleInput.DATA_TYPE_RASTER:
+				jComboBoxType.setSelectedIndex(4);
+				break;
+			case AdditionalInfoMultipleInput.DATA_TYPE_BAND:
+				jComboBoxType.setSelectedIndex(5);
+				break;				
+			case AdditionalInfoMultipleInput.DATA_TYPE_TABLE:
+				jComboBoxType.setSelectedIndex(6);
+				break;
+			}
+
+		}
+		catch (final NullParameterAdditionalInfoException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
+	@Override
+	public String getParameterDescription() {
+
+		return Sextante.getText("Multiple_input");
+
+	}
+
+
+	@Override
+	public boolean parameterCanBeAdded() {
+
+		return true;
+
+	}
 
 }

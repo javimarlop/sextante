@@ -40,13 +40,13 @@ public class BooleanPanel
 
       super.setTitle(Sextante.getText("modeler_add_par_boolean"));
       
-      super.setPreferredSize(new java.awt.Dimension(390, 200));
+      super.setPreferredSize(new java.awt.Dimension(400, 150));
       
       try {
          jCheckBoxDefault = new JCheckBox();
          jCheckBoxDefault.setSelected(true);
          jPanelMiddle.add(jCheckBoxDefault);
-         jCheckBoxDefault.setText(Sextante.getText("Default_value"));
+         jCheckBoxDefault.setText(Sextante.getText("Default_value_true"));
       }
       catch (final Exception e) {
          Sextante.addErrorToLog(e);

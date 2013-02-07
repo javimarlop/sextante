@@ -38,6 +38,10 @@ public class Raster3DLayerPanel
 
       super.initGUI();
 
+      super.setTitle(Sextante.getText("modeler_add_par_raster_3D"));
+      
+      super.setPreferredSize(new java.awt.Dimension(400, 150));      
+      
       try {
          jCheckBoxMandatory = new JCheckBox();
          jCheckBoxMandatory.setSelected(true);

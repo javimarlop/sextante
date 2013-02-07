@@ -38,6 +38,10 @@ public class TablePanel
 
       super.initGUI();
 
+      super.setTitle(Sextante.getText("modeler_add_par_table"));
+      
+      super.setPreferredSize(new java.awt.Dimension(400, 150));      
+      
       try {
          jCheckBoxMandatory = new JCheckBox();
          jCheckBoxMandatory.setSelected(true);

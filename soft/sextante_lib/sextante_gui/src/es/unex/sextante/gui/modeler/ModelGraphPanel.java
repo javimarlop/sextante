@@ -392,6 +392,8 @@ public class ModelGraphPanel
             jGraph.getGraphLayoutCache().insert(cell);
 
             m_iInputs++;
+            
+            m_ModelerPanel.repaint();
          }
       }
       catch (final ClassCastException e) {

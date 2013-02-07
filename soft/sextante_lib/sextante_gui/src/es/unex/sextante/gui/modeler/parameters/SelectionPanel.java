@@ -1,5 +1,8 @@
 package es.unex.sextante.gui.modeler.parameters;
 
+import info.clearthought.layout.TableLayout;
+import info.clearthought.layout.TableLayoutConstants;
+
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -11,103 +14,113 @@ import es.unex.sextante.parameters.Parameter;
 import es.unex.sextante.parameters.ParameterSelection;
 
 public class SelectionPanel
-         extends
-            ParameterPanel {
+extends
+ParameterPanel {
 
-   SelectionTreePanel tree;
-
-
-   public SelectionPanel(final JDialog parent,
-                         final ModelerPanel panel) {
-
-      super(parent, panel);
-
-   }
+	SelectionTreePanel tree;
 
 
-   public SelectionPanel(final ModelerPanel panel) {
+	public SelectionPanel(final JDialog parent,
+			final ModelerPanel panel) {
 
-      super(panel);
+		super(parent, panel);
 
-   }
-
-
-   @Override
-   public String getParameterDescription() {
-
-      return Sextante.getText("Selection");
-
-   }
+	}
 
 
-   @Override
-   protected void initGUI() {
+	public SelectionPanel(final ModelerPanel panel) {
 
-      super.initGUI();
+		super(panel);
 
-      this.setSize(new java.awt.Dimension(390, 500));
-      this.setPreferredSize(new java.awt.Dimension(390, 500));
-
-      try {
-         tree = new SelectionTreePanel();
-         jPanelMiddle.add(tree);
-      }
-      catch (final Exception e) {
-         Sextante.addErrorToLog(e);
-      }
-
-   }
+	}
 
 
-   @Override
-   protected boolean prepareParameter() {
+	@Override
+	public String getParameterDescription() {
+
+		return Sextante.getText("option_setting");
+
+	}
 
 
-      final String sDescription = jTextFieldDescription.getText();
+	@Override
+	protected void initGUI() {
 
-      if (sDescription.length() != 0) {
-         m_Parameter = new ParameterSelection();
-         final SelectionAndChoices sac = tree.getSelectedList();
-         if (sac != null) {
-            final AdditionalInfoSelection ai = new AdditionalInfoSelection(sac.getChoices());
-            m_Parameter.setParameterAdditionalInfo(ai);
-            if (sDescription.trim().equals("")) {
-               m_Parameter.setParameterDescription(sac.getDescription());
-            }
-            else {
-               m_Parameter.setParameterDescription(sDescription);
-            }
-            return true;
-         }
-         else {
-            return false;
-         }
-      }
-      else {
-         JOptionPane.showMessageDialog(null, Sextante.getText("Invalid_description"), Sextante.getText("Warning"),
-                  JOptionPane.WARNING_MESSAGE);
-         return false;
-      }
+		super.initGUI();
 
+		super.setTitle(Sextante.getText("modeler_add_par_selection"));
 
-   }
+		super.setPreferredSize(new java.awt.Dimension(400, 540));      
 
+		super.setResizable(true);
+		
+		final TableLayout thisLayout = new TableLayout(new double[][] {
+				{ 	TableLayoutConstants.FILL },	
+				{ TableLayoutConstants.FILL} });
+		thisLayout.setHGap(5);
+		thisLayout.setVGap(5);
+		jPanelMiddle.setLayout(thisLayout);		
+		
+		try {
+			tree = new SelectionTreePanel();
+			jPanelMiddle.add(tree, "0, 0");
+		}
+		catch (final Exception e) {
+			Sextante.addErrorToLog(e);
+		}
 
-   @Override
-   public void setParameter(final Parameter param) {
-
-      super.setParameter(param);
-
-      //TODO:
-
-   }
+	}
 
 
-   @Override
-   public boolean parameterCanBeAdded() {
+	@Override
+	protected boolean prepareParameter() {
 
-      return true;
 
-   }
+		final String sDescription = jTextFieldDescription.getText();
+
+		if (sDescription.length() != 0) {
+			m_Parameter = new ParameterSelection();
+			final SelectionAndChoices sac = tree.getSelectedList();
+			if (sac != null) {
+				final AdditionalInfoSelection ai = new AdditionalInfoSelection(sac.getChoices());
+				m_Parameter.setParameterAdditionalInfo(ai);
+				if (sDescription.trim().equals("")) {
+					m_Parameter.setParameterDescription(sac.getDescription());
+				}
+				else {
+					m_Parameter.setParameterDescription(sDescription);
+				}
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			JOptionPane.showMessageDialog(null, Sextante.getText("Invalid_description"), Sextante.getText("Warning"),
+					JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+
+
+	}
+
+
+	@Override
+	public void setParameter(final Parameter param) {
+
+		super.setParameter(param);
+
+		//TODO:
+
+	}
+
+
+	@Override
+	public boolean parameterCanBeAdded() {
+
+		return true;
+
+	}
 
 }
