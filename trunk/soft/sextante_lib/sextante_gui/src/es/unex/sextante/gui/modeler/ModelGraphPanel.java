@@ -324,6 +324,7 @@ public class ModelGraphPanel
 				   dialog = new AlgorithmDialog(alg, sKey, sDescription, m_Algorithm, paramPanel, m_DataObjects, m_Parent);
 			   }
 			   dialog.pack();
+			   dialog.setTitle(Sextante.getText("modeler_edit_algorithm"));
 			   dialog.setVisible(true);
 			   if (dialog.getDialogReturn() == IGUIFactory.OK) {
 				   m_ModelerPanel.setHasChanged(true);

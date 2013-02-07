@@ -262,7 +262,7 @@ public class AlgorithmsPanel
     		  final GeoAlgorithm alg = (GeoAlgorithm) node.getUserObject();
     		  if (isAlgorithmEnabled(alg)) {
     			  final String sName = getValidName();
-    			  final String sDescription = Sextante.getText("Process") + " " + Integer.toString(m_iAlgorithm) + ": " + alg.getName();
+    			  final String sDescription = Sextante.getText("Algorithm") + " " + Integer.toString(m_iAlgorithm) + ": " + alg.getName();
 
     			  final int iRet = SextanteGUI.getGUIFactory().showAlgorithmDialogForModeler(alg, sName, sDescription, m_Algorithm,
     					  m_DataObjects, m_Parent);
