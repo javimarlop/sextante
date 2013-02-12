@@ -42,7 +42,9 @@ import es.unex.sextante.core.OutputObjectsSet;
 import es.unex.sextante.core.ParametersSet;
 import es.unex.sextante.core.Sextante;
 import es.unex.sextante.exceptions.NullParameterAdditionalInfoException;
+import es.unex.sextante.exceptions.NullParameterValueException;
 import es.unex.sextante.exceptions.WrongParameterIDException;
+import es.unex.sextante.exceptions.WrongParameterTypeException;
 import es.unex.sextante.gui.algorithm.FileSelectionPanel;
 import es.unex.sextante.gui.algorithm.ParameterContainer;
 import es.unex.sextante.modeler.elements.ModelElementBand;
@@ -92,8 +94,8 @@ public class DefaultModelerParametersPanel
    protected int            m_iCurrentRow                        = 0;
    private JScrollPane      jScrollPanelParameters;
    private JPanel           jPanelParameters;
-   private final ArrayList  m_InputParameterContainer            = new ArrayList();
-   private final ArrayList  m_OutputParameterDefinitionContainer = new ArrayList();
+   protected final ArrayList  m_InputParameterContainer            = new ArrayList();
+   protected final ArrayList  m_OutputParameterDefinitionContainer = new ArrayList();
    private ArrayList        m_ComboBox                           = new ArrayList();
 
 
@@ -774,37 +776,49 @@ public class DefaultModelerParametersPanel
 
 
    private void addFilepath(final JPanel pane,
-                            final ParameterFilepath parameter) {
+		   final ParameterFilepath parameter) {
 
-      try {
-         final AdditionalInfoFilepath additionalInfo = (AdditionalInfoFilepath) parameter.getParameterAdditionalInfo();
+	   try {
+		   final AdditionalInfoFilepath additionalInfo = (AdditionalInfoFilepath) parameter.getParameterAdditionalInfo();
 
-         addTitleLabel(pane, parameter.getParameterDescription(), m_iCurrentRow, false);
+		   addTitleLabel(pane, parameter.getParameterDescription(), m_iCurrentRow, false);
 
-         String sExtension = "*.*";
-         final String[] sExtensions = additionalInfo.getExtensions();
-         if (sExtensions != null) {
-            final StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < sExtensions.length; i++) {
-               sb.append(sExtensions[i]);
-               if (i < sExtensions.length - 1) {
-                  sb.append(",");
-               }
-            }
-            sExtension = sb.toString();
-         }
+		   String sExtension = "*.*";
+		   final String[] sExtensions = additionalInfo.getExtensions();
+		   if (sExtensions != null) {
+			   final StringBuffer sb = new StringBuffer();
+			   for (int i = 0; i < sExtensions.length; i++) {
+				   sb.append(sExtensions[i]);
+				   if (i < sExtensions.length - 1) {
+					   sb.append(",");
+				   }
+			   }
+			   sExtension = sb.toString();
+		   }
 
-         final FileSelectionPanel fileSelectionPanel = new FileSelectionPanel(additionalInfo.isFolder(),
-                  additionalInfo.isOpenDialog(), additionalInfo.getExtensions(), Sextante.getText("Files") + " " + sExtension);
-         addTitleLabel(pane, parameter.getParameterDescription(), m_iCurrentRow, false);
+		   final FileSelectionPanel fileSelectionPanel = new FileSelectionPanel(additionalInfo.isFolder(),
+				   additionalInfo.isOpenDialog(), additionalInfo.getExtensions(), Sextante.getText("Files") + " " + sExtension);
 
-         pane.add(fileSelectionPanel, getStringTableCoords(2, m_iCurrentRow));
-         m_InputParameterContainer.add(new ParameterContainer(parameter, fileSelectionPanel));
-         m_iCurrentRow++;
-      }
-      catch (final NullParameterAdditionalInfoException e) {
-         Sextante.addErrorToLog(e);
-      }
+		   String sPath = null;
+		   try {
+			   sPath = parameter.getParameterValueAsString();
+		   } catch (WrongParameterTypeException e) {
+			   sPath = null;
+		   } catch (NullParameterValueException e) {
+			   sPath = null;
+		   }
+		   if ( sPath != null )
+			   fileSelectionPanel.getTextField().setText(sPath);
+
+		   addTitleLabel(pane, parameter.getParameterDescription(), m_iCurrentRow, false);
+
+		   pane.add(fileSelectionPanel, getStringTableCoords(2, m_iCurrentRow));
+		   m_InputParameterContainer.add(new ParameterContainer(parameter, fileSelectionPanel));
+		   m_iCurrentRow++;
+	   }
+	   catch (final NullParameterAdditionalInfoException e) {
+		   Sextante.addErrorToLog(e);
+	   }
 
    }
 
@@ -1402,7 +1416,7 @@ public class DefaultModelerParametersPanel
             bAssigningOK = makeFixedTableAssignment(map, parameterContainer);
          }
          else if (parameterContainer.getType().equals("Filepath")) {
-            bAssigningOK = makeFilepathAssignment(parameterContainer);
+            bAssigningOK = makeFilepathAssignment(map,parameterContainer);
          }
          else if (parameterContainer.getType().equals("Band")) {
             bAssigningOK = makeRasterBandAssignment(map, parameterContainer);
@@ -1419,6 +1433,7 @@ public class DefaultModelerParametersPanel
          }
       }
 
+      /* set output objects */
       final OutputObjectsSet oosetGlobal = this.m_GlobalAlgorithm.getOutputObjects();
       final OutputObjectsSet ooset = this.m_Algorithm.getOutputObjects();
 
@@ -1447,7 +1462,7 @@ public class DefaultModelerParametersPanel
    }
 
 
-   private void makeDataObjectAssignment(final HashMap map,
+   protected void makeDataObjectAssignment(final HashMap map,
                                          final ParameterContainer pc) {
 
       Parameter parameter;
@@ -1465,7 +1480,7 @@ public class DefaultModelerParametersPanel
    }
 
 
-   private boolean makeMultipleInputAssignment(final HashMap map,
+   protected boolean makeMultipleInputAssignment(final HashMap map,
                                                final ParameterContainer pc) {
 
       int i;
@@ -1536,7 +1551,7 @@ public class DefaultModelerParametersPanel
    }
 
 
-   private boolean makeTableFieldAssignment(final HashMap map,
+   protected boolean makeTableFieldAssignment(final HashMap map,
                                             final ParameterContainer parameterContainer) {
 
       ObjectAndDescription oad;
@@ -1569,7 +1584,7 @@ public class DefaultModelerParametersPanel
    }
 
 
-   private boolean makeSelectionAssignment(final HashMap map,
+   protected boolean makeSelectionAssignment(final HashMap map,
                                            final ParameterContainer parameterContainer) {
 
       int iIndex;
@@ -1613,7 +1628,7 @@ public class DefaultModelerParametersPanel
    }
 
 
-   private boolean makeRasterBandAssignment(final HashMap map,
+   protected boolean makeRasterBandAssignment(final HashMap map,
                                             final ParameterContainer parameterContainer) {
 
       int iIndex;
@@ -1703,7 +1718,7 @@ public class DefaultModelerParametersPanel
    }
 
 
-   private boolean makeFixedTableAssignment(final HashMap map,
+   protected boolean makeFixedTableAssignment(final HashMap map,
                                             final ParameterContainer parameterContainer) {
 
       String sKey, sInnerKey;
@@ -1736,7 +1751,7 @@ public class DefaultModelerParametersPanel
    }
 
 
-   private boolean makeStringAssignment(final HashMap map,
+   protected boolean makeStringAssignment(final HashMap map,
                                         final ParameterContainer parameterContainer) {
 
       ObjectAndDescription oad;
@@ -1756,39 +1771,39 @@ public class DefaultModelerParametersPanel
          map.put(sKey, sAssignment);
          return true;
       }
-      catch (final ClassCastException e) {
+      catch (final Exception e) { //whatever it is: we can save it as a (empty) string
          sInnerKey = getInnerParameterKey();
          map.put(sKey, sInnerKey);
          m_DataObjects.put(sInnerKey, new ObjectAndDescription("String", textField.getText()));
          return true;
       }
-      catch (final Exception e) {
-         return false;
-      }
-
    }
 
 
-   private boolean makeFilepathAssignment(final ParameterContainer parameterContainer) {
+   protected boolean makeFilepathAssignment(final HashMap map, final ParameterContainer parameterContainer) {
 
       boolean bReturn;
-
+     
       try {
          final FileSelectionPanel fileSelectionPanel = (FileSelectionPanel) parameterContainer.getContainer();
          final Parameter parameter = m_Algorithm.getParameters().getParameter(parameterContainer.getName());
          bReturn = parameter.setParameterValue(fileSelectionPanel.getFilepath());
+         if ( fileSelectionPanel.getFilepath() == null )
+        	 return ( false );
+         if ( fileSelectionPanel.getFilepath().length() < 1 )
+        	 return ( false );
       }
       catch (final WrongParameterIDException e) {
          Sextante.addErrorToLog(e);
          return false;
       }
-
+            
       return bReturn;
 
    }
 
 
-   private boolean makeBooleanAssignment(final HashMap map,
+   protected boolean makeBooleanAssignment(final HashMap map,
                                          final ParameterContainer parameterContainer) {
 
       int iIndex;
