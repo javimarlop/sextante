@@ -16,6 +16,7 @@ import es.unex.sextante.parameters.ParameterString;
 import es.unex.sextante.parameters.ParameterTable;
 import es.unex.sextante.parameters.ParameterTableField;
 import es.unex.sextante.parameters.ParameterVectorLayer;
+import es.unex.sextante.parameters.ParameterFilepath;
 
 public class ParameterPanelFactory {
 
@@ -59,6 +60,9 @@ public class ParameterPanelFactory {
       if (parameter instanceof ParameterSelection) {
          return getNewSelectionPanel(modelerPanel, parent);
       }
+      if (parameter instanceof ParameterFilepath) {
+          return getNewFilepathPanel(modelerPanel, parent);
+       }      
       else {
          return null;
       }
@@ -220,5 +224,17 @@ public class ParameterPanelFactory {
       }
 
    }
+   
+   private static ParameterPanel getNewFilepathPanel(final ModelerPanel modelerPanel,
+		   final JDialog parent) {
+
+	   if (parent != null) {
+		   return new FilepathPanel(parent, modelerPanel);
+	   }
+	   else {
+		   return new FilepathPanel(modelerPanel);
+	   }
+
+   }   
 
 }
