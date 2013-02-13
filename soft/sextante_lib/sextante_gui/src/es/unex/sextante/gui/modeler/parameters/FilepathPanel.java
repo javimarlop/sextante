@@ -3,24 +3,32 @@ package es.unex.sextante.gui.modeler.parameters;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import es.unex.sextante.additionalInfo.AdditionalInfoFilepath;
+import es.unex.sextante.additionalInfo.AdditionalInfoVectorLayer;
 import es.unex.sextante.core.Sextante;
 import es.unex.sextante.exceptions.NullParameterAdditionalInfoException;
 import es.unex.sextante.gui.modeler.ModelerPanel;
 import es.unex.sextante.parameters.Parameter;
-import es.unex.sextante.parameters.ParameterString;
+import es.unex.sextante.parameters.ParameterFilepath;
 
 public class FilepathPanel
          extends
             ParameterPanel {
 
-   private JTextField jTextFieldDefault;
-   private JLabel     jLabelDefault;
+   private JTextField jTextFieldExtension;
+   private JLabel     jLabelExtension;
+   private JComboBox  jComboBoxType;
+   private JLabel     jLabelType;
+   private JCheckBox  jCheckBoxVoxel;
 
 
    public FilepathPanel(final JDialog parent,
@@ -41,37 +49,52 @@ public class FilepathPanel
    @Override
    protected void initGUI() {
 
-      super.initGUI();
-      
-      super.setTitle(Sextante.getText("modeler_add_par_filepath"));
-      
-      super.setPreferredSize(new java.awt.Dimension(400, 150));
-      
-      try {
-         {
-            final TableLayout thisLayout = new TableLayout
-            	(new double[][] { { TableLayoutConstants.MINIMUM, 5.0, TableLayoutConstants.FILL },
-                     { TableLayoutConstants.MINIMUM, } });
-            thisLayout.setHGap(5);
-            thisLayout.setVGap(5);
-            
-            //TODO: need a boolean to indicate whether we are browsing for a folder
-            
-            jPanelMiddle.setLayout(thisLayout);
-            {
-               jLabelDefault = new JLabel();
-               jPanelMiddle.add(jLabelDefault, "0, 0");
-               jLabelDefault.setText(Sextante.getText("file_extension"));
-            }
-            {
-                jTextFieldDefault = new JTextField();
-                jPanelMiddle.add(jTextFieldDefault, "2, 0");
-             }
-         }
-      }
-      catch (final Exception e) {
-         Sextante.addErrorToLog(e);
-      }
+	   super.initGUI();
+
+	   super.setTitle(Sextante.getText("modeler_add_par_filepath"));
+
+	   super.setPreferredSize(new java.awt.Dimension(400, 210));
+
+	   try {
+		   {
+			   final TableLayout thisLayout = new TableLayout
+			   (new double[][] { { TableLayoutConstants.MINIMUM, 5.0, TableLayoutConstants.FILL },
+					   { 	TableLayoutConstants.MINIMUM,
+				   			1.0,
+				   			TableLayoutConstants.MINIMUM,
+				   			1.0,
+				   			TableLayoutConstants.MINIMUM } });
+			   thisLayout.setHGap(5);
+			   thisLayout.setVGap(5);
+
+			   jPanelMiddle.setLayout(thisLayout);
+
+			   jLabelType = new JLabel();
+			   jLabelType.setText(Sextante.getText("filepath_type"));
+			   jPanelMiddle.add(jLabelType, "0, 0");			   
+			   final ComboBoxModel jComboBoxTypeModel = new DefaultComboBoxModel(new String[] {
+					   Sextante.getText("filepath_file_open"),
+					   Sextante.getText("filepath_file_save"),
+					   Sextante.getText("filepath_folder") });
+			   jComboBoxType = new JComboBox();
+			   jComboBoxType.setModel(jComboBoxTypeModel);
+			   jPanelMiddle.add(jComboBoxType, "2, 0");
+
+			   jLabelExtension = new JLabel();
+			   jPanelMiddle.add(jLabelExtension, "0, 2");
+			   jLabelExtension.setText(Sextante.getText("file_extension"));
+			   jTextFieldExtension = new JTextField();
+			   jPanelMiddle.add(jTextFieldExtension, "2, 2");
+
+			   jCheckBoxVoxel = new JCheckBox();
+			   jCheckBoxVoxel.setSelected(false);
+			   jCheckBoxVoxel.setText(Sextante.getText("filepath_is_voxel_data"));
+			   jPanelMiddle.add(jCheckBoxVoxel, "0, 4");
+		   }
+	   }
+	   catch (final Exception e) {
+		   Sextante.addErrorToLog(e);
+	   }
 
    }
 
@@ -91,13 +114,25 @@ public class FilepathPanel
       final String sDescription = jTextFieldDescription.getText();
       String[] sDefault;
       
-      sDefault = new String[1];
-      sDefault[0]=jTextFieldDefault.getText();
-      
       if (sDescription.length() != 0) {
          final AdditionalInfoFilepath ai = new AdditionalInfoFilepath();
-         ai.setExtensions(sDefault);
-         m_Parameter = new ParameterString();
+         sDefault = new String[1];
+         sDefault[0]=jTextFieldExtension.getText();
+         if ( sDefault[0] != null && sDefault[0].length() > 0 ) {
+        	 ai.setExtensions(sDefault);
+         }
+         ai.setIsFolder(false);
+         ai.setIsOpenDialog(false);
+         switch (jComboBoxType.getSelectedIndex()) {
+			case 0:
+		         ai.setIsOpenDialog(true);
+				break;
+			case 2:
+				ai.setIsFolder(true);
+				break;
+		 }
+         ai.setIsVoxelData(jCheckBoxVoxel.isSelected());
+         m_Parameter = new ParameterFilepath();
          m_Parameter.setParameterDescription(sDescription);
          m_Parameter.setParameterAdditionalInfo(ai);
          return true;
@@ -119,7 +154,15 @@ public class FilepathPanel
 
       try {
          final AdditionalInfoFilepath ai = (AdditionalInfoFilepath) param.getParameterAdditionalInfo();
-         jTextFieldDefault.setText(ai.getExtensions()[0]);
+         if ( ai.getExtensions() != null )
+        	 jTextFieldExtension.setText(ai.getExtensions()[0]);
+         jComboBoxType.setSelectedIndex(1);
+         if ( ai.isOpenDialog() == true )
+        	 jComboBoxType.setSelectedIndex(0);
+         if ( ai.isFolder() == true )
+        	 jComboBoxType.setSelectedIndex(2);
+         if ( ai.getIsVoxelData() == true )
+        	 jCheckBoxVoxel.setSelected(true);
       }
       catch (final NullParameterAdditionalInfoException e) {
          e.printStackTrace();

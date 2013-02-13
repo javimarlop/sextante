@@ -37,6 +37,7 @@ import es.unex.sextante.gui.modeler.parameters.StringPanel;
 import es.unex.sextante.gui.modeler.parameters.TableFieldPanel;
 import es.unex.sextante.gui.modeler.parameters.TablePanel;
 import es.unex.sextante.gui.modeler.parameters.VectorLayerPanel;
+import es.unex.sextante.gui.modeler.parameters.FilepathPanel;
 import es.unex.sextante.modeler.elements.ModelElementFactory;
 import es.unex.sextante.parameters.Parameter;
 
@@ -124,6 +125,8 @@ public class InputsPanel
 		     fandtNode.add(node);      
 		 final DefaultMutableTreeNode othersNode = new DefaultMutableTreeNode(Sextante.getText("node_Others"));
 		   mainNode.add(othersNode);
+	         node = new DefaultMutableTreeNode(getNewFilepathPanel());
+	         othersNode.add(node);		   
 	         node = new DefaultMutableTreeNode(getNewPointPanel());
 	         othersNode.add(node);	   	   
 	         node = new DefaultMutableTreeNode(getNewMultipleInputPanel());
@@ -294,6 +297,18 @@ public class InputsPanel
       }
 
    }
+
+   
+   private Object getNewFilepathPanel() {
+
+	      if (m_Parent != null) {
+	         return new FilepathPanel(m_Parent, m_ModelerPanel);
+	      }
+	      else {
+	         return new FilepathPanel(m_ModelerPanel);
+	      }
+
+		}
 
 
    public void addSelectedInput() {
