@@ -171,6 +171,7 @@ public class ModelGraphPanel
       jGraph.setDisconnectable(false);
       jGraph.setEditable(false);
       jGraph.setAntiAliased(true);
+      jGraph.setSizeable(true);
       jGraph.setEnabled(true);
 
       jGraph.addMouseListener(new MouseAdapter() {
@@ -550,15 +551,17 @@ public class ModelGraphPanel
                                          final double w,
                                          final double h,
                                          final Icon icon,
-                                         final Color color) {
+                                         final Color color
+                                         ) {
 
       final DefaultGraphCell cell = new DefaultGraphCell(obj);
-
+      
       GraphConstants.setBounds(cell.getAttributes(), new Rectangle2D.Double(x, y, w, h));
 
+      GraphConstants.setResize(cell.getAttributes(), false);
+                  
       GraphConstants.setIcon(cell.getAttributes(), icon);
-      GraphConstants.setResize(cell.getAttributes(), true);
-      GraphConstants.setAutoSize(cell.getAttributes(), true);
+      GraphConstants.setAutoSize(cell.getAttributes(), false);
 
       GraphConstants.setBorder(cell.getAttributes(), BorderFactory.createEtchedBorder());
       GraphConstants.setBorderColor(cell.getAttributes(), Color.black);
@@ -567,6 +570,8 @@ public class ModelGraphPanel
 
       GraphConstants.setInset(cell.getAttributes(), 10);
       GraphConstants.setMoveable(cell.getAttributes(), true);
+      
+      GraphConstants.setSizeable(cell.getAttributes(), true);
 
       cell.addPort();
 
