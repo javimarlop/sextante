@@ -151,7 +151,7 @@ JPanel {
 					jModelGraphicalDescriptionPanel.setViewportView(modelGraphPanel);
 					jModelGraphicalDescriptionPanel.setWheelScrollingEnabled(false);
 										
-					modelGraphPanel.setPreferredSize(new java.awt.Dimension(580, 401));
+					//modelGraphPanel.setPreferredSize(new java.awt.Dimension(480, 401));
 					{
 						jLabelName = new JLabel();						
 						jLabelName.setText(Sextante.getText("Name")+":");
@@ -375,14 +375,14 @@ JPanel {
 					jElementsPanel.setLayout(jElementsPanelLayout);
 					jSplitPane.add(jElementsPanel, JSplitPane.LEFT);
 					jSplitPane.setDividerLocation(0.3);
-					jElementsPanel.setMinimumSize(new java.awt.Dimension(300, 528));
+					jElementsPanel.setMinimumSize(new java.awt.Dimension(120, 528));
 					{
 						jPanelButtonsElements = new JPanel();
 						final TableLayout jButtonsElementsPanelLayout = 
 							new TableLayout(new double[][] { { 3.0, 
 								120.0,
 								TableLayoutConstants.FILL,
-								40.0,
+								TableLayoutConstants.MINIMUM,
 								3.0 },
 							{ 	3.0,
 								30.0,

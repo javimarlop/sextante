@@ -3,10 +3,13 @@ package es.unex.sextante.gui.modeler;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -41,6 +44,7 @@ JDialog {
 	private final String                         m_sAlgorithmDescription;
 	private final HashMap                        m_DataObjects;
 	private JPanel                               jPanelButtons;
+	private JButton                              jButtonInfo;	
 	private JButton                              jButtonCancel;
 	private JButton                              jButtonOK;
 
@@ -116,15 +120,29 @@ JDialog {
 		this.getContentPane().add(getJPanelParameters(), "0, 1"); // algorithm parameters
 		
 		final TableLayout panelLayout = new TableLayout(new double[][] {
-				{ TableLayoutConstants.FILL, 90.0, 5.0, 90.0, 5.0 },
+				{ 5.0, TableLayoutConstants.MINIMUM, TableLayoutConstants.FILL, 90.0, 5.0, 90.0, 5.0 },
 				{ 1.0, 30.0, 5.0 } });
 		panelLayout.setHGap(5);
 		panelLayout.setVGap(5);
+		
+		//SextanteGUI.getGUIFactory().showHelpDialog(m_Algorithm);
+		
 		jPanelButtons = new JPanel();
 		jPanelButtons.setLayout(panelLayout);
 		{
+			jButtonInfo = new JButton();
+			jPanelButtons.add(jButtonInfo, "1, 1");
+            jButtonInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/info.gif")));
+            jButtonInfo.setPreferredSize(new java.awt.Dimension(33, 0));
+            jButtonInfo.addActionListener(new ActionListener() {
+               public void actionPerformed(final ActionEvent evt) {
+            	   SextanteGUI.getGUIFactory().showHelpDialog(m_Algorithm);
+               }
+            });
+		}		
+		{
 			jButtonCancel = new JButton();
-			jPanelButtons.add(jButtonCancel, "1, 1");
+			jPanelButtons.add(jButtonCancel, "3, 1");
 			jButtonCancel.setText(Sextante.getText("Cancel"));
 			jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(final java.awt.event.ActionEvent e) {
@@ -135,7 +153,7 @@ JDialog {
 		}		
 		{
 			jButtonOK = new JButton();
-			jPanelButtons.add(jButtonOK, "3, 1");
+			jPanelButtons.add(jButtonOK, "5, 1");
 			jButtonOK.setText(Sextante.getText("OK"));
 			jButtonOK.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(final java.awt.event.ActionEvent e) {
