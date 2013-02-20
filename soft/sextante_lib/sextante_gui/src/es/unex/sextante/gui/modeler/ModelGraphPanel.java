@@ -325,7 +325,7 @@ public class ModelGraphPanel
 				   dialog = new AlgorithmDialog(alg, sKey, sDescription, m_Algorithm, paramPanel, m_DataObjects, m_Parent);
 			   }
 			   dialog.pack();
-			   dialog.setTitle(Sextante.getText("modeler_edit_algorithm"));
+			   dialog.setTitle(Sextante.getText("modeler_edit_algorithm") + " (" + alg.getName() + ")");
 			   dialog.setVisible(true);
 			   if (dialog.getDialogReturn() == IGUIFactory.OK) {
 				   m_ModelerPanel.setHasChanged(true);
@@ -415,7 +415,8 @@ public class ModelGraphPanel
       final Object obj = m_ModelerPanel.getObjectFromKey(sKey);
       if (obj instanceof GeoAlgorithm) {
          final GeoAlgorithm alg = (GeoAlgorithm) obj;
-         final ObjectAndDescription oad = new ObjectAndDescription(alg.getName(), sKey);
+         //final ObjectAndDescription oad = new ObjectAndDescription(alg.getName(), sKey);
+         final ObjectAndDescription oad = new ObjectAndDescription(alg.getDescription(), sKey);
          final Rectangle2D box = getBoundingBox();
          x = box.getMaxX() + 20;
          y = box.getMaxY() + 20;

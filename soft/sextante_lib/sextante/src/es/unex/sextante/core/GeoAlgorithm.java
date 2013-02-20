@@ -92,6 +92,11 @@ public abstract class GeoAlgorithm {
    private String                  m_sGroup;
 
    /**
+    * A description string for misc. use
+    */
+   private String                  m_sDescription					= null; 
+   
+   /**
     * Process metadata
     */
    private HashMap                 m_ProcessMetadata;
@@ -602,6 +607,32 @@ public abstract class GeoAlgorithm {
    }
 
 
+   /**
+    * Returns the description string of the algorithm
+    * 
+    * @return The description. This string is user-definable and e.g. used by the graphical modeler to label processing nodes.
+    */
+   public String getDescription() {
+
+      return m_sDescription;
+
+   }
+
+
+   /**
+    * Sets the algorithm's description string. null by default.
+    * This string is e.g. used by the graphical modeler to label processing nodes.
+    * 
+    * @param sDescription
+    *                description string to be associated with this algorithm
+    */
+   public void setDescription(final String sDescription) {
+
+      m_sDescription = sDescription;
+
+   }   
+   
+   
    /**
     * 
     * @return the set of parameters needed to run the algorithm
