@@ -75,10 +75,23 @@ public class SextanteGUI {
                                                                                            SextanteGUI.class.getClassLoader().getResource(
                                                                                                     "images/module2.png"));
 
-   static {
-
-	  Color COLOR_WHITE = new Color(255, 255, 255, 50);
-	  
+   public final static Color COLOR_WHITE = new Color(255, 255, 255, 255);
+   public final static Color COLOR_GREY = new Color(128, 128, 128, 255);
+   public final static Color COLOR_BLACK = new Color(0, 0, 0, 255);
+   public final static Color COLOR_RED = new Color (255, 51, 51, 255);
+   public final static Color COLOR_ORANGE = new Color(255, 153, 51, 255);
+   public final static Color COLOR_YELLOW = new Color(255, 255, 51, 255);
+   public final static Color COLOR_GREEN_LIGHT = new Color(51, 255, 51, 255);
+   public final static Color COLOR_GREEN_DARK = new Color(0, 184, 0, 255);
+   public final static Color COLOR_BLUE_LIGHT = new Color (102, 179, 255, 255);
+   public final static Color COLOR_BLUE_DARK = new Color (0, 102, 204, 255);
+   public final static Color COLOR_PINK = new Color(255, 153, 255, 255);
+   public final static Color COLOR_PURPLE = new Color(163, 71, 255, 255);
+   public final static Color COLOR_BROWN_LIGHT = new Color(255, 168, 82, 255);
+   public final static Color COLOR_BROWN_DARK = new Color(204, 102, 0, 255);
+   
+   
+   static {	  
 	   
       m_AlgorithmProviders.add(new ScriptAlgorithmProvider());
       m_AlgorithmProviders.add(new ModelerAlgorithmProvider());

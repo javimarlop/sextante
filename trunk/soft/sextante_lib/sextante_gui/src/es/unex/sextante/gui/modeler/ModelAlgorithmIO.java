@@ -52,6 +52,10 @@ public class ModelAlgorithmIO {
    private static final String WPS_PROCESS_IDENTIFIER   = "wps_process_id";
    private static final String GRASS_PROCESS_IDENTIFIER = "grass_process_id";
    private static final String DESCRIPTION              = "description";
+   private static final String RED              		= "red";
+   private static final String GREEN              		= "green";
+   private static final String BLUE              		= "blue";
+   private static final String ALPHA              		= "alpha";
    private static final String ALGORITHM                = "algorithm";
    private static final String DATA_OBJECT              = "data_object";
    private static final String ASSIGNMENT               = "assignment";
@@ -116,6 +120,10 @@ public class ModelAlgorithmIO {
             serializer.attribute(null, KEY, sKey);
             serializer.attribute(null, ALG_CMD_LINE_NAME, alg.getCommandLineName());
             serializer.attribute(null, DESCRIPTION, alg.getDescription());
+            serializer.attribute(null, RED, Integer.toString(alg.getColorR()));
+            serializer.attribute(null, GREEN, Integer.toString(alg.getColorG()));
+            serializer.attribute(null, BLUE, Integer.toString(alg.getColorB()));
+            serializer.attribute(null, ALPHA, Integer.toString(alg.getColorAlpha()));
             serializer.attribute(null, COORDS, getCoordsAsString(panel.getModelGraphPanel().getCoords(), sKey));
             final HashMap assignments = (HashMap) assignmentsArray.get(i);
             final Set set = assignments.keySet();
@@ -256,6 +264,10 @@ public class ModelAlgorithmIO {
       GeoAlgorithm alg = null;
       String sAlgName = null;
       String sAlgDescription = null;
+      String sAlgRed = null;
+      String sAlgGreen = null;
+      String sAlgBlue = null;
+      String sAlgAlpha = null;
       final OutputObjectsSet ooSet = model.getOutputObjects();
 
       model.setFilename(file.getAbsolutePath());
@@ -290,6 +302,22 @@ public class ModelAlgorithmIO {
                         } else {
                         	alg.setDescription(alg.getName());
                         }
+                        sAlgRed = parser.getAttributeValue("", RED);
+                        if ( sAlgRed != null ) {
+                        	alg.setColorR(Integer.parseInt(sAlgRed));
+                        }
+                        sAlgRed = parser.getAttributeValue("", GREEN);
+                        if ( sAlgGreen != null ) {
+                        	alg.setColorG(Integer.parseInt(sAlgGreen));
+                        }
+                        sAlgRed = parser.getAttributeValue("", BLUE);
+                        if ( sAlgBlue != null ) {
+                        	alg.setColorB(Integer.parseInt(sAlgBlue));
+                        }
+                        sAlgRed = parser.getAttributeValue("", ALPHA);
+                        if ( sAlgAlpha != null ) {
+                        	alg.setColorAlpha(Integer.parseInt(sAlgAlpha));
+                        }                        
                         model.addAlgorithm(alg, sAlgName);
                         if (!sCoords.equals("null")) {
                            coords.put(sAlgName, getCoordsFromString(sCoords));

@@ -3,6 +3,7 @@ package es.unex.sextante.gui.modeler;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import es.unex.sextante.core.ParametersSet;
 import es.unex.sextante.core.Sextante;
 import es.unex.sextante.gui.core.IGUIFactory;
 import es.unex.sextante.gui.core.SextanteGUI;
+import es.unex.sextante.gui.modeler.ColorComboBox;
 import es.unex.sextante.modeler.elements.IModelElement;
 import es.unex.sextante.modeler.elements.ModelElement3DRasterLayer;
 import es.unex.sextante.modeler.elements.ModelElementNumericalValue;
@@ -54,7 +56,7 @@ JDialog {
 	private JLabel								 jLabelDescription;
 	private JPanel								 jPanelName;
 	private JPanel                               jPanelButtons;
-	private JButton                              jButtonColor;
+	private ColorComboBox                        jComboColor;
 	private JButton                              jButtonInfo;	
 	private JButton                              jButtonCancel;
 	private JButton                              jButtonOK;
@@ -177,16 +179,23 @@ JDialog {
             });
 		}
 		{
-			jButtonColor = new JButton();
-			jPanelButtons.add(jButtonColor, "3, 1");
-			jButtonColor.setText(Sextante.getText("Color"));
-			/*
-            jButtonColor.addActionListener(new ActionListener() {
-               public void actionPerformed(final ActionEvent evt) {
-            	   //SextanteGUI.getGUIFactory().showHelpDialog(m_Algorithm);
-               }
-            });
-            */
+			jComboColor = new ColorComboBox();
+			final Color curColor = new Color( 	m_Algorithm.getColorR(),
+												m_Algorithm.getColorG(),
+												m_Algorithm.getColorB(),
+												m_Algorithm.getColorAlpha());
+			jComboColor.getComboBox().setBackground(curColor);
+			jPanelButtons.add(jComboColor.getComboBox(), "3, 1");
+			jComboColor.getComboBox().addActionListener(new ActionListener() {
+                public void actionPerformed(final ActionEvent evt) {
+                	final Color curColor = (Color) jComboColor.getComboBox().getSelectedItem();
+                	jComboColor.getComboBox().setBackground(curColor);
+                	m_Algorithm.setColorR(curColor.getRed());
+                	m_Algorithm.setColorG(curColor.getGreen());
+                	m_Algorithm.setColorB(curColor.getBlue());
+                	m_Algorithm.setColorAlpha(curColor.getAlpha());                	
+                }
+             });			
 		}		
 		{
 			jButtonCancel = new JButton();
