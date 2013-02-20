@@ -12,12 +12,17 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import es.unex.sextante.core.GeoAlgorithm;
 import es.unex.sextante.core.ObjectAndDescription;
 import es.unex.sextante.core.OutputObjectsSet;
+import es.unex.sextante.core.ParametersSet;
 import es.unex.sextante.core.Sextante;
 import es.unex.sextante.gui.core.IGUIFactory;
 import es.unex.sextante.gui.core.SextanteGUI;
@@ -33,6 +38,7 @@ import es.unex.sextante.outputs.OutputNumericalValue;
 import es.unex.sextante.outputs.OutputRasterLayer;
 import es.unex.sextante.outputs.OutputTable;
 import es.unex.sextante.outputs.OutputVectorLayer;
+import es.unex.sextante.parameters.Parameter;
 
 public class AlgorithmDialog
 extends
@@ -43,7 +49,12 @@ JDialog {
 	private final String                         m_sAlgorithmName;
 	private final String                         m_sAlgorithmDescription;
 	private final HashMap                        m_DataObjects;
+	
+	private JTextField							 jTextFieldDescription;
+	private JLabel								 jLabelDescription;
+	private JPanel								 jPanelName;
 	private JPanel                               jPanelButtons;
+	private JButton                              jButtonColor;
 	private JButton                              jButtonInfo;	
 	private JButton                              jButtonCancel;
 	private JButton                              jButtonOK;
@@ -105,44 +116,81 @@ JDialog {
 
 	private void initGUI() {
 
-		this.setTitle(Sextante.getText("modeler_add_algorithm"));
-		
-		//this.setPreferredSize(new java.awt.Dimension(700, 415));
-		this.setPreferredSize(new java.awt.Dimension(700, 382));
+		this.setTitle(Sextante.getText("modeler_add_algorithm") + " (" + m_Algorithm.getName()  + ")" );
+		this.setPreferredSize(new java.awt.Dimension(700, 422));
 		this.setResizable(false);
 		
 		final TableLayout thisLayout = new TableLayout(new double[][] {
 				{ TableLayoutConstants.FILL },
-				{ 9.0, TableLayoutConstants.FILL, 1.0, 40.0, 4.0 } });
+				{ 3.0, TableLayoutConstants.MINIMUM, 1.0, TableLayoutConstants.FILL, 1.0, 40.0, 4.0 } });
 		thisLayout.setHGap(5);
 		thisLayout.setVGap(5);		
 		this.getContentPane().setLayout(thisLayout);
-		this.getContentPane().add(getJPanelParameters(), "0, 1"); // algorithm parameters
+		this.getContentPane().add(getJPanelParameters(), "0, 3"); // algorithm parameters
 		
+		/* description */
+		jPanelName = new JPanel();
+        final TableLayout jPanelNameLayout = new TableLayout
+        	(new double[][] { { 5.0, TableLayoutConstants.MINIMUM, 5.0, TableLayoutConstants.FILL, 5.0 },
+                 { 20.0, 3.0, TableLayoutConstants.MINIMUM } });
+        jPanelNameLayout.setHGap(5);
+        jPanelNameLayout.setVGap(5);
+        jPanelName.setLayout(jPanelNameLayout);		
+		{
+			jLabelDescription = new JLabel();
+			jLabelDescription.setText(Sextante.getText("Description"));
+			jPanelName.add(jLabelDescription, "1, 0");
+		}            
+		{
+			jTextFieldDescription = new JTextField();
+			jTextFieldDescription.setText(getDefaultName());
+			jPanelName.add(jTextFieldDescription, "3, 0");
+		}
+		jPanelName.add(new JSeparator(SwingConstants.HORIZONTAL), "1, 2, 3, 2");
+		this.getContentPane().add(jPanelName, "0, 1"); // editable description
+		
+		/* row of buttons on panel bottom area */
 		final TableLayout panelLayout = new TableLayout(new double[][] {
-				{ 5.0, TableLayoutConstants.MINIMUM, TableLayoutConstants.FILL, 90.0, 5.0, 90.0, 5.0 },
+				{ 	5.0,
+					TableLayoutConstants.MINIMUM, // col 1: Help
+					5.0,
+					90.0, // 3: Colour
+					TableLayoutConstants.FILL,
+					90.0, // 5: Cancel
+					5.0,
+					90.0, // 7: OK
+					5.0 },
 				{ 1.0, 30.0, 5.0 } });
 		panelLayout.setHGap(5);
 		panelLayout.setVGap(5);
-		
-		//SextanteGUI.getGUIFactory().showHelpDialog(m_Algorithm);
-		
+				
 		jPanelButtons = new JPanel();
 		jPanelButtons.setLayout(panelLayout);
 		{
 			jButtonInfo = new JButton();
 			jPanelButtons.add(jButtonInfo, "1, 1");
             jButtonInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/info.gif")));
-            jButtonInfo.setPreferredSize(new java.awt.Dimension(33, 0));
             jButtonInfo.addActionListener(new ActionListener() {
                public void actionPerformed(final ActionEvent evt) {
             	   SextanteGUI.getGUIFactory().showHelpDialog(m_Algorithm);
                }
             });
+		}
+		{
+			jButtonColor = new JButton();
+			jPanelButtons.add(jButtonColor, "3, 1");
+			jButtonColor.setText(Sextante.getText("Color"));
+			/*
+            jButtonColor.addActionListener(new ActionListener() {
+               public void actionPerformed(final ActionEvent evt) {
+            	   //SextanteGUI.getGUIFactory().showHelpDialog(m_Algorithm);
+               }
+            });
+            */
 		}		
 		{
 			jButtonCancel = new JButton();
-			jPanelButtons.add(jButtonCancel, "3, 1");
+			jPanelButtons.add(jButtonCancel, "5, 1");
 			jButtonCancel.setText(Sextante.getText("Cancel"));
 			jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(final java.awt.event.ActionEvent e) {
@@ -153,7 +201,7 @@ JDialog {
 		}		
 		{
 			jButtonOK = new JButton();
-			jPanelButtons.add(jButtonOK, "5, 1");
+			jPanelButtons.add(jButtonOK, "7, 1");
 			jButtonOK.setText(Sextante.getText("OK"));
 			jButtonOK.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(final java.awt.event.ActionEvent e) {
@@ -164,10 +212,21 @@ JDialog {
 				}
 			});
 		}
-		this.getContentPane().add(jPanelButtons,"0, 3");				
+		this.getContentPane().add(jPanelButtons,"0, 5");				
 	}
 
 
+	private String getDefaultName() {
+
+		if ( m_Algorithm.getDescription() != null && m_Algorithm.getDescription().length() > 1 ) {
+			return (m_Algorithm.getDescription());
+		}
+	
+		return m_Algorithm.getName();
+
+	}	
+	
+	
 	protected boolean addAlgorithm() {
 
 		String sKey;
@@ -177,6 +236,12 @@ JDialog {
 		OutputObjectsSet ooSet;
 		if (assignParameters(map)) {
 			m_ModelAlgorithm.addAlgorithm(m_Algorithm, m_sAlgorithmName);
+			if ( jTextFieldDescription.getText() != null && jTextFieldDescription.getText().length() > 0 ) {
+				sDescription = jTextFieldDescription.getText();
+				m_Algorithm.setDescription(jTextFieldDescription.getText());
+			} else {
+				m_Algorithm.setDescription(m_Algorithm.getName());
+			}
 			final Set set = map.keySet();
 			final Iterator iter = set.iterator();
 			while (iter.hasNext()) {
@@ -197,6 +262,7 @@ JDialog {
 				}
 
 			}
+			
 			return true;
 		}
 		else {

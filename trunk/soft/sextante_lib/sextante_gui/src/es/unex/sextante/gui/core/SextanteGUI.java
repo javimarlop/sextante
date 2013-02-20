@@ -2,6 +2,7 @@
 
 package es.unex.sextante.gui.core;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -76,6 +77,9 @@ public class SextanteGUI {
 
    static {
 
+	  Color COLOR_WHITE = new Color(255, 255, 255, 50);
+	  
+	   
       m_AlgorithmProviders.add(new ScriptAlgorithmProvider());
       m_AlgorithmProviders.add(new ModelerAlgorithmProvider());
 

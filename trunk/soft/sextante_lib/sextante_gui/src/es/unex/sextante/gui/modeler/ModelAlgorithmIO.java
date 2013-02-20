@@ -115,6 +115,7 @@ public class ModelAlgorithmIO {
             String sKey = (String) algKeys.get(i);
             serializer.attribute(null, KEY, sKey);
             serializer.attribute(null, ALG_CMD_LINE_NAME, alg.getCommandLineName());
+            serializer.attribute(null, DESCRIPTION, alg.getDescription());
             serializer.attribute(null, COORDS, getCoordsAsString(panel.getModelGraphPanel().getCoords(), sKey));
             final HashMap assignments = (HashMap) assignmentsArray.get(i);
             final Set set = assignments.keySet();
@@ -254,6 +255,7 @@ public class ModelAlgorithmIO {
       final ParametersSet ps = model.getParameters();
       GeoAlgorithm alg = null;
       String sAlgName = null;
+      String sAlgDescription = null;
       final OutputObjectsSet ooSet = model.getOutputObjects();
 
       model.setFilename(file.getAbsolutePath());
@@ -275,12 +277,18 @@ public class ModelAlgorithmIO {
                         final String sGroup = parser.getAttributeValue("", GROUP);
                         model.setGroup(sGroup);
                      }
-                     else if (parser.getName().compareTo(ALGORITHM) == 0) {
+                     else if (parser.getName().compareTo(ALGORITHM) == 0) { 	 
                         alg = getAlgorithm(parser.getAttributeValue("", ALG_CMD_LINE_NAME));
                         sAlgName = parser.getAttributeValue("", KEY);
                         final String sCoords = parser.getAttributeValue("", COORDS);
                         if (alg == null) {
                            throw new ModelIOException();
+                        }
+                        sAlgDescription = parser.getAttributeValue("", DESCRIPTION);
+                        if ( sAlgDescription != null ) {
+                        	alg.setDescription(sAlgDescription);
+                        } else {
+                        	alg.setDescription(alg.getName());
                         }
                         model.addAlgorithm(alg, sAlgName);
                         if (!sCoords.equals("null")) {
