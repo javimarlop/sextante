@@ -96,6 +96,15 @@ public abstract class GeoAlgorithm {
     */
    private String                  m_sDescription					= null; 
    
+   
+   /**
+    * Color values useful for e.g. coloring algorithm nodes in the modeler
+    */
+   private int                  i_R									= 128;
+   private int                  i_G									= 128;
+   private int                  i_B									= 128;
+   private int                  i_Alpha								= 255;
+   
    /**
     * Process metadata
     */
@@ -619,6 +628,23 @@ public abstract class GeoAlgorithm {
    }
 
 
+   public int getColorR() {
+	   return(i_R);
+   }
+   
+   public int getColorG() {
+	   return(i_G);
+   }
+  
+   public int getColorB() {
+	   return(i_B);
+   }
+   
+   public int getColorAlpha() {
+	   return(i_Alpha);
+   }  
+   
+   
    /**
     * Sets the algorithm's description string. null by default.
     * This string is e.g. used by the graphical modeler to label processing nodes.
@@ -632,6 +658,21 @@ public abstract class GeoAlgorithm {
 
    }   
    
+   public void setColorR(final int red) {
+	   i_R = red;
+   }
+   
+   public void setColorG(final int green) {
+	   i_G = green;
+   }   
+   
+   public void setColorB(final int blue) {
+	   i_B = blue;
+   }   
+   
+   public void setColorAlpha(final int alpha) {
+	   i_Alpha = alpha;
+   }
    
    /**
     * 

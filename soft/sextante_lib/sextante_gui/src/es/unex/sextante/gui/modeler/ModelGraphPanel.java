@@ -390,7 +390,13 @@ public class ModelGraphPanel
                w = rect.getWidth();
                h = rect.getHeight();
             }
-            final DefaultGraphCell cell = createInputVertex(new ObjectAndDescription(oad.getDescription(), sKey), x, y, w, h);
+            //TODO: pass input color
+            final DefaultGraphCell cell = createInputVertex(new ObjectAndDescription(oad.getDescription(), sKey), 
+            												x, y, w, h,
+            												128,
+            												128,
+            												128,
+            												255 );
             jGraph.getGraphLayoutCache().insert(cell);
 
             m_iInputs++;
@@ -430,7 +436,7 @@ public class ModelGraphPanel
                w = rect.getWidth();
                h = rect.getHeight();
             }
-            cell = createProcessVertex(oad, x, y, w, h);
+            cell = createProcessVertex(oad, x, y, w, h, alg.getColorR(), alg.getColorG(), alg.getColorB(), alg.getColorAlpha());
             jGraph.getGraphLayoutCache().insert(cell);
             dependences = m_ModelerPanel.getDependences(sKey);
             for (i = 0; i < dependences.size(); i++) {
@@ -525,9 +531,13 @@ public class ModelGraphPanel
                                               final double x,
                                               final double y,
                                               final double w,
-                                              final double h) {
+                                              final double h,
+                                              final int R,
+                                              final int G,
+                                              final int B,
+                                              final int Alpha ) {
 
-      return createVertex(oad, x, y, w, h, m_InputIcon, new Color(128,223,255,125) );
+      return createVertex(oad, x, y, w, h, m_InputIcon, R, G, B, Alpha );
 
 
    }
@@ -537,11 +547,15 @@ public class ModelGraphPanel
                                                 final double x,
                                                 final double y,
                                                 final double w,
-                                                final double h) {
+                                                final double h,
+                                                final int R,
+                                                final int G,
+                                                final int B,
+                                                final int Alpha ) {
 
       final GeoAlgorithm alg = (GeoAlgorithm) m_ModelerPanel.getObjectFromKey((String) oad.getObject());
 
-      return createVertex(oad, x, y, w, h, SextanteGUI.getAlgorithmIcon(alg), new Color(255,223,128,125));
+      return createVertex(oad, x, y, w, h, SextanteGUI.getAlgorithmIcon(alg), R, G, B, Alpha);
 
    }
 
@@ -552,8 +566,10 @@ public class ModelGraphPanel
                                          final double w,
                                          final double h,
                                          final Icon icon,
-                                         final Color color
-                                         ) {
+                                         final int R,
+                                         final int G,
+                                         final int B,
+                                         final int Alpha ) {
 
       final DefaultGraphCell cell = new DefaultGraphCell(obj);
       
@@ -565,8 +581,14 @@ public class ModelGraphPanel
       GraphConstants.setAutoSize(cell.getAttributes(), false);
 
       GraphConstants.setBorder(cell.getAttributes(), BorderFactory.createEtchedBorder());
-      GraphConstants.setBorderColor(cell.getAttributes(), Color.black);
-      GraphConstants.setBackground(cell.getAttributes(), color);
+      GraphConstants.setBorderColor(cell.getAttributes(), Color.black);      
+      GraphConstants.setBackground(cell.getAttributes(), new Color( R, G, B, Alpha ) );
+      if ( R < 50 && G < 50 && B < 50 ) {
+    	  GraphConstants.setForeground(cell.getAttributes(), Color.white);
+      } else {
+    	  GraphConstants.setForeground(cell.getAttributes(), Color.black);    	  
+      }
+      
       GraphConstants.setOpaque(cell.getAttributes(), true);
 
       GraphConstants.setInset(cell.getAttributes(), 10);
