@@ -54,10 +54,10 @@ public abstract class Parameter {
    /**
     * Color values useful for e.g. coloring algorithm nodes in the modeler
     */
-   private int                  i_R									= 255;
-   private int                  i_G									= 255;
-   private int                  i_B									= 255;
-   private int                  i_Alpha								= 255;
+   private int                  i_R									= Sextante.i_R_Input;
+   private int                  i_G									= Sextante.i_G_Input;
+   private int                  i_B									= Sextante.i_B_Input;
+   private int                  i_Alpha								= Sextante.i_Alpha_Input;
 
 
    /**

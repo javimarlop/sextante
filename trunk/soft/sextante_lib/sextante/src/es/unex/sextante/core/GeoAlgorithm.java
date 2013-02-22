@@ -100,10 +100,10 @@ public abstract class GeoAlgorithm {
    /**
     * Color values useful for e.g. coloring algorithm nodes in the modeler
     */
-   private int                  i_R									= 128;
-   private int                  i_G									= 128;
-   private int                  i_B									= 128;
-   private int                  i_Alpha								= 255;
+   private int                  i_R									= Sextante.i_R_Algorithm;
+   private int                  i_G									= Sextante.i_G_Algorithm;
+   private int                  i_B									= Sextante.i_B_Algorithm;
+   private int                  i_Alpha								= Sextante.i_Alpha_Algorithm;
    
    /**
     * Process metadata
