@@ -497,11 +497,11 @@ public abstract class Parameter {
       serializer.attribute(null, DESCRIPTION, m_sDescription);
       serializer.attribute(null, TOOLTIP, m_sTooltip);
       serializer.attribute(null, CLASS, this.getClass().toString());
-      serializer.attribute(null, COORDS, sCoords);
       serializer.attribute(null, RED, Integer.toString(getColorR()));
       serializer.attribute(null, GREEN, Integer.toString(getColorG()));
       serializer.attribute(null, BLUE, Integer.toString(getColorB()));
-      serializer.attribute(null, ALPHA, Integer.toString(getColorAlpha()));                
+      serializer.attribute(null, ALPHA, Integer.toString(getColorAlpha()));
+      serializer.attribute(null, COORDS, sCoords);
       serializeAttributes(serializer);
       serializer.text("\n");
       serializer.text("\t\t");

@@ -47,6 +47,7 @@ import es.unex.sextante.exceptions.WrongParameterIDException;
 import es.unex.sextante.exceptions.WrongParameterTypeException;
 import es.unex.sextante.gui.algorithm.FileSelectionPanel;
 import es.unex.sextante.gui.algorithm.ParameterContainer;
+import es.unex.sextante.modeler.elements.ModelElement3DRasterLayer;
 import es.unex.sextante.modeler.elements.ModelElementBand;
 import es.unex.sextante.modeler.elements.ModelElementBoolean;
 import es.unex.sextante.modeler.elements.ModelElementFixedTable;
@@ -623,6 +624,10 @@ public class DefaultModelerParametersPanel
                objects = getElementsOfClass(ModelElementRasterLayer.class, true);
                iDataTypes = new int[] { AdditionalInfoMultipleInput.DATA_TYPE_RASTER };
                break;
+            case AdditionalInfoMultipleInput.DATA_TYPE_RASTER_3D:
+                objects = getElementsOfClass(ModelElement3DRasterLayer.class, true);
+                iDataTypes = new int[] { AdditionalInfoMultipleInput.DATA_TYPE_RASTER_3D };
+                break;               
             case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_ANY:
             case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_POINT:
             case AdditionalInfoMultipleInput.DATA_TYPE_VECTOR_LINE:

@@ -31,10 +31,12 @@ public class AdditionalInfoFilepath
     */
    public AdditionalInfoFilepath(final boolean bFolder,
                                  final boolean bOpenDialog,
+                                 final boolean bIsVoxel,
                                  final String[] sExtensions) {
 
       m_bFolder = bFolder;
       m_bOpenDialog = bOpenDialog;
+      m_bIsVoxelData = bIsVoxel;
       m_sExtensions = sExtensions;
 
    }

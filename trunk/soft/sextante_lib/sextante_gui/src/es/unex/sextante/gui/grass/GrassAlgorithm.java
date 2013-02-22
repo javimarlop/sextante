@@ -351,12 +351,12 @@ public class GrassAlgorithm
             }
             else {//any other old string
                if (getName().equals("v.in.ogr")) {
-                  final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, ext_ogr_in);
+                  final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, false, ext_ogr_in);
                   param = new ParameterFilepath();
                   param.setParameterAdditionalInfo(aif);
                }
                else if (getName().equals("v.out.ogr")) {
-                  final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, ext_ogr_out);
+                  final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, false, ext_ogr_out);
                   param = new ParameterFilepath();
                   param.setParameterAdditionalInfo(aif);
                }
@@ -421,17 +421,17 @@ public class GrassAlgorithm
                   else if (m_sGisPromptElement.equals("file")) {
                      param = new ParameterFilepath();
                      if (m_sGisPromptPrompt.startsWith("dsn")) {//DSN parameter for v.in.ogr/v.out.ogr
-                        final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(true, true, null);
+                        final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(true, true, false, null);
                         param.setParameterAdditionalInfo(aif);
                      }
                      else if (getName().equals("v.in.dxf")) {
                         final String ext[] = { "dxf" };
-                        final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, ext);
+                        final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, false, ext);
                         param = new ParameterFilepath();
                         param.setParameterAdditionalInfo(aif);
                      }
                      else { //all other input files
-                        final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, null);
+                        final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, true, false, null);
                         param.setParameterAdditionalInfo(aif);
                      }
                   }
@@ -451,7 +451,7 @@ public class GrassAlgorithm
                   }
                   else if (m_sGisPromptElement.equals("file")) {
                      param = new ParameterFilepath();
-                     final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, false, null);
+                     final AdditionalInfoFilepath aif = new AdditionalInfoFilepath(false, false, false, null);
                      param.setParameterAdditionalInfo(aif);
                   }
                }

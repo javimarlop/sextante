@@ -1520,9 +1520,10 @@ public class ParametersSet {
                            final String sDescription,
                            final boolean bFolder,
                            final boolean bOpenDialog,
+                           final boolean bIsVoxel,
                            final String[] sExt) throws RepeatedParameterNameException {
 
-      final AdditionalInfoFilepath additionalInfo = new AdditionalInfoFilepath(bFolder, bOpenDialog, sExt);
+      final AdditionalInfoFilepath additionalInfo = new AdditionalInfoFilepath(bFolder, bOpenDialog, bIsVoxel, sExt);
 
       final ParameterFilepath parameter = new ParameterFilepath();
       parameter.setParameterName(sName);
@@ -1534,7 +1535,8 @@ public class ParametersSet {
 
 
    /**
-    * Adds a filepath to the set
+    * Adds a filepath to the set. This version accepts only a single user-defined
+    * File extension (primarily for simplified use in the graphical modeler). 
     * 
     * @param sName
     *                the name of the parameter
@@ -1554,9 +1556,10 @@ public class ParametersSet {
                            final String sDescription,
                            final boolean bFolder,
                            final boolean bOpenDialog,
+                           final boolean bIsVoxel,
                            final String sExt) throws RepeatedParameterNameException {
 
-      final AdditionalInfoFilepath additionalInfo = new AdditionalInfoFilepath(bFolder, bOpenDialog, new String[] { sExt });
+      final AdditionalInfoFilepath additionalInfo = new AdditionalInfoFilepath(bFolder, bOpenDialog, bIsVoxel, new String[] { sExt });
 
       final ParameterFilepath parameter = new ParameterFilepath();
       parameter.setParameterName(sName);

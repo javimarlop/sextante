@@ -96,7 +96,7 @@ public class SaveToWKTAlgorithm
 
       try {
          m_Parameters.addInputVectorLayer(LAYER, Sextante.getText("Layer"), AdditionalInfoVectorLayer.SHAPE_TYPE_ANY, true);
-         m_Parameters.addFilepath(FILENAME, Sextante.getText("File"), false, false, "wkt");
+         m_Parameters.addFilepath(FILENAME, Sextante.getText("File"), false, false, false, "wkt");
       }
       catch (final RepeatedParameterNameException e) {
          Sextante.addErrorToLog(e);
