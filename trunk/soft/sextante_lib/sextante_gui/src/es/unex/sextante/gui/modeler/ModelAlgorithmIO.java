@@ -268,6 +268,10 @@ public class ModelAlgorithmIO {
       String sAlgGreen = null;
       String sAlgBlue = null;
       String sAlgAlpha = null;
+      String sInputRed = null;
+      String sInputGreen = null;
+      String sInputBlue = null;
+      String sInputAlpha = null;      
       final OutputObjectsSet ooSet = model.getOutputObjects();
 
       model.setFilename(file.getAbsolutePath());
@@ -306,15 +310,15 @@ public class ModelAlgorithmIO {
                         if ( sAlgRed != null ) {
                         	alg.setColorR(Integer.parseInt(sAlgRed));
                         }
-                        sAlgRed = parser.getAttributeValue("", GREEN);
+                        sAlgGreen = parser.getAttributeValue("", GREEN);
                         if ( sAlgGreen != null ) {
                         	alg.setColorG(Integer.parseInt(sAlgGreen));
                         }
-                        sAlgRed = parser.getAttributeValue("", BLUE);
+                        sAlgBlue = parser.getAttributeValue("", BLUE);
                         if ( sAlgBlue != null ) {
                         	alg.setColorB(Integer.parseInt(sAlgBlue));
                         }
-                        sAlgRed = parser.getAttributeValue("", ALPHA);
+                        sAlgAlpha = parser.getAttributeValue("", ALPHA);
                         if ( sAlgAlpha != null ) {
                         	alg.setColorAlpha(Integer.parseInt(sAlgAlpha));
                         }                        
@@ -346,6 +350,22 @@ public class ModelAlgorithmIO {
                         if (param == null) {
                            return null;
                         }
+                        sInputRed = parser.getAttributeValue("", RED);
+                        if ( sInputRed != null ) {
+                        	param.setColorR(Integer.parseInt(sInputRed));
+                        }
+                        sInputGreen = parser.getAttributeValue("", GREEN);
+                        if ( sInputGreen != null ) {
+                        	param.setColorG(Integer.parseInt(sInputGreen));
+                        }
+                        sInputBlue = parser.getAttributeValue("", BLUE);
+                        if ( sInputBlue != null ) {
+                        	param.setColorB(Integer.parseInt(sInputBlue));
+                        }
+                        sInputAlpha = parser.getAttributeValue("", ALPHA);
+                        if ( sInputAlpha != null ) {
+                        	param.setColorAlpha(Integer.parseInt(sInputAlpha));
+                        }                                                
                         ps.addParameter(param);
                         inputKeys.add(param.getParameterName());
                         final ObjectAndDescription oad = new ObjectAndDescription(param.getParameterDescription(),

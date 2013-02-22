@@ -37,6 +37,7 @@ import es.unex.sextante.core.GeoAlgorithm;
 import es.unex.sextante.core.ObjectAndDescription;
 import es.unex.sextante.core.ParametersSet;
 import es.unex.sextante.core.Sextante;
+import es.unex.sextante.exceptions.WrongParameterIDException;
 import es.unex.sextante.gui.core.IGUIFactory;
 import es.unex.sextante.gui.core.SextanteGUI;
 import es.unex.sextante.gui.modeler.parameters.ParameterPanel;
@@ -240,6 +241,7 @@ public class ModelGraphPanel
             cell = (DefaultGraphCell) model.getRootAt(i);
             oad = (ObjectAndDescription) cell.getUserObject();
             sCellKey = (String) oad.getObject();
+            
             cell.getAttributes();
             final Rectangle2D rect = GraphConstants.getBounds(cell.getAttributes());
             m_Coords.put(sCellKey, rect);
@@ -337,6 +339,18 @@ public class ModelGraphPanel
 			   Parameter param = params.getParameter(sKey);
 			   final ParameterPanel paramPanel = getParameterPanel(param);			   
 			   if (paramPanel != null) {
+				   paramPanel.setColor( new Color(
+						   	param.getColorR(),
+  						 	param.getColorG(),
+  						 	param.getColorB(),
+  						 	param.getColorAlpha()
+  				   ));
+				   paramPanel.getColorComboBox().getComboBox().setBackground(new Color(
+						   	param.getColorR(),
+  						 	param.getColorG(),
+  						 	param.getColorB(),
+  						 	param.getColorAlpha()
+  				   ));
 				   paramPanel.updateOptions();
 				   paramPanel.setParameter(param); // Restore current settings
 				   paramPanel.pack();
@@ -345,6 +359,10 @@ public class ModelGraphPanel
 				   Parameter newParam = paramPanel.getParameter(); 
 				   if (newParam != null) {
 					   /* store new settings for this parameter */
+					   param.setColorR(paramPanel.getColor().getRed());
+					   param.setColorG(paramPanel.getColor().getGreen());
+					   param.setColorB(paramPanel.getColor().getBlue());
+					   param.setColorAlpha(paramPanel.getColor().getAlpha());					   					   
 					   final AdditionalInfo ai = newParam.getParameterAdditionalInfo();					   
 					   param.setParameterAdditionalInfo(ai);			
 					   param.setParameterDescription(newParam.getParameterDescription());
@@ -374,6 +392,7 @@ public class ModelGraphPanel
    public void addInput(final String sKey) {
 
       double x, y, w, h;
+      int R,G,B,Alpha;
 
       try {
          final ObjectAndDescription oad = (ObjectAndDescription) m_ModelerPanel.getObjectFromKey(sKey);
@@ -390,13 +409,16 @@ public class ModelGraphPanel
                w = rect.getWidth();
                h = rect.getHeight();
             }
+            final ParametersSet params = m_ModelerPanel.getAlgorithm().getParameters();
+            Parameter param = params.getParameter(sKey);
+            R = param.getColorR();
+            G = param.getColorG();
+            B = param.getColorB();
+            Alpha = param.getColorAlpha();            
             //TODO: pass input color
             final DefaultGraphCell cell = createInputVertex(new ObjectAndDescription(oad.getDescription(), sKey), 
             												x, y, w, h,
-            												128,
-            												128,
-            												128,
-            												255 );
+            												R, G, B, Alpha );
             jGraph.getGraphLayoutCache().insert(cell);
 
             m_iInputs++;
@@ -405,7 +427,9 @@ public class ModelGraphPanel
          }
       }
       catch (final ClassCastException e) {
-      }
+      } catch (WrongParameterIDException e) {
+		e.printStackTrace();
+	}
 
    }
 
@@ -582,7 +606,7 @@ public class ModelGraphPanel
 
       GraphConstants.setBorder(cell.getAttributes(), BorderFactory.createEtchedBorder());
       GraphConstants.setBorderColor(cell.getAttributes(), Color.black);      
-      GraphConstants.setBackground(cell.getAttributes(), new Color( R, G, B, Alpha ) );
+      GraphConstants.setBackground(cell.getAttributes(), new Color( R, G, B, (int) (Alpha*0.66) ) );
       if ( R < 50 && G < 50 && B < 50 ) {
     	  GraphConstants.setForeground(cell.getAttributes(), Color.white);
       } else {
