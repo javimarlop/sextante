@@ -155,7 +155,10 @@ public class ModelGraphPanel
       if ( m_ModelerPanel.getGridEnabled() == true ) {
     	  jGraph.setGridEnabled(true);
     	  jGraph.setGridVisible(true);
+    	  jGraph.setGridSize(m_ModelerPanel.getGridSize());    	  
       }
+      
+	  jGraph.setScale(m_ModelerPanel.getScale());
       
       this.setViewportView(jGraph);
 
