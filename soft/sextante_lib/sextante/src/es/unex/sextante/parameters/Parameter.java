@@ -35,6 +35,10 @@ public abstract class Parameter {
    private static final String   DESCRIPTION               = "description";
    private static final String   TOOLTIP                   = "tooltip";
    private static final String   COORDS                    = "coords";
+   private static final String   RED                       = "red";
+   private static final String   GREEN                     = "green";
+   private static final String   BLUE                      = "blue";
+   private static final String   ALPHA                     = "alpha";
 
    protected static final String INPUT                     = "input";
    protected static final String ATTRIBUTE                 = "attribute";
@@ -46,6 +50,14 @@ public abstract class Parameter {
    private String                m_sTooltip                = "";
    protected Object              m_ParameterValue          = null;
    protected AdditionalInfo      m_ParameterAdditionalInfo = null;
+   
+   /**
+    * Color values useful for e.g. coloring algorithm nodes in the modeler
+    */
+   private int                  i_R									= 255;
+   private int                  i_G									= 255;
+   private int                  i_B									= 255;
+   private int                  i_Alpha								= 255;
 
 
    /**
@@ -268,6 +280,23 @@ public abstract class Parameter {
    }
 
 
+   public int getColorR() {
+	   return(i_R);
+   }
+   
+   public int getColorG() {
+	   return(i_G);
+   }
+  
+   public int getColorB() {
+	   return(i_B);
+   }
+   
+   public int getColorAlpha() {
+	   return(i_Alpha);
+   }   
+   
+   
    /**
     * Sets a new description of the parameter
     * 
@@ -280,7 +309,24 @@ public abstract class Parameter {
 
    }
 
+   
+   public void setColorR(final int red) {
+	   i_R = red;
+   }
+   
+   public void setColorG(final int green) {
+	   i_G = green;
+   }   
+   
+   public void setColorB(final int blue) {
+	   i_B = blue;
+   }   
+   
+   public void setColorAlpha(final int alpha) {
+	   i_Alpha = alpha;
+   }  
 
+   
    /**
     * Returns a string that can be used as a tooltip.
     * 
@@ -452,6 +498,10 @@ public abstract class Parameter {
       serializer.attribute(null, TOOLTIP, m_sTooltip);
       serializer.attribute(null, CLASS, this.getClass().toString());
       serializer.attribute(null, COORDS, sCoords);
+      serializer.attribute(null, RED, Integer.toString(getColorR()));
+      serializer.attribute(null, GREEN, Integer.toString(getColorG()));
+      serializer.attribute(null, BLUE, Integer.toString(getColorB()));
+      serializer.attribute(null, ALPHA, Integer.toString(getColorAlpha()));                
       serializeAttributes(serializer);
       serializer.text("\n");
       serializer.text("\t\t");

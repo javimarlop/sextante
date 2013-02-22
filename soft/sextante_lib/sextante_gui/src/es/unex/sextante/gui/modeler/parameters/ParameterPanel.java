@@ -3,6 +3,7 @@ package es.unex.sextante.gui.modeler.parameters;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import javax.swing.SwingConstants;
 import es.unex.sextante.core.ParametersSet;
 import es.unex.sextante.core.Sextante;
 import es.unex.sextante.gui.core.SextanteGUI;
+import es.unex.sextante.gui.modeler.ColorComboBox;
 import es.unex.sextante.gui.modeler.ModelerPanel;
 import es.unex.sextante.parameters.Parameter;
 
@@ -25,15 +27,17 @@ public abstract class ParameterPanel
          extends
             JDialog {
 
-   protected JPanel       jPanelName;
-   protected JButton      jButtonOk;
-   protected JButton      jButtonCancel;
-   protected JLabel       jLabelDescription;
-   protected JPanel       jPanelMiddle;
-   protected JPanel       jPanelButtons;
-   protected JTextField   jTextFieldDescription;
-   protected Parameter    m_Parameter;
-   protected ModelerPanel m_ModelerPanel;
+   protected JPanel       	jPanelName;
+   protected ColorComboBox	jComboColor;
+   protected JButton      	jButtonOk;
+   protected JButton      	jButtonCancel;
+   protected JLabel       	jLabelDescription;
+   protected JPanel       	jPanelMiddle;
+   protected JPanel       	jPanelButtons;
+   protected JTextField   	jTextFieldDescription;
+   protected Parameter    	m_Parameter;
+   protected ModelerPanel 	m_ModelerPanel;
+   protected Color			m_Color = null;
 
 
    public abstract String getParameterDescription();
@@ -64,6 +68,10 @@ public abstract class ParameterPanel
       this.setLocationRelativeTo(null);
 
       m_ModelerPanel = modelerPanel;
+      
+      /* default color for new parameters is white */
+      if ( m_Color == null )
+    	  m_Color = new Color( 	255, 255, 255, 255 );
 
       initGUI();
 
@@ -108,17 +116,34 @@ public abstract class ParameterPanel
          }
          {
             jPanelButtons = new JPanel();
-            final TableLayout jPanelButtonsLayout = new TableLayout(new double[][] { { TableLayoutConstants.FILL, 90.0, 5.0, 90.0 },
+            final TableLayout jPanelButtonsLayout = new TableLayout(new double[][] { { 5.0, 90.0, TableLayoutConstants.FILL, 90.0, 5.0, 90.0 },
             			{ 30.0 } });
             //final FlowLayout jPanelButtonsLayout = new FlowLayout();
             //jPanelButtonsLayout.setAlignment(FlowLayout.RIGHT);
             jPanelButtons.setLayout(jPanelButtonsLayout);
             this.add(new JSeparator(SwingConstants.HORIZONTAL), "1, 3");
             this.add(jPanelButtons, "1, 5");
+    		{
+    			jComboColor = new ColorComboBox();
+    			if ( m_Parameter != null ) {
+    				m_Color = new Color( 	m_Parameter.getColorR(),
+    										m_Parameter.getColorG(),
+    										m_Parameter.getColorB(),
+    										m_Parameter.getColorAlpha());
+    			}
+    			jComboColor.getComboBox().setBackground(m_Color);
+    			jPanelButtons.add(jComboColor.getComboBox(), "1, 0");
+    			jComboColor.getComboBox().addActionListener(new ActionListener() {
+                    public void actionPerformed(final ActionEvent evt) {
+                    	m_Color = (Color) jComboColor.getComboBox().getSelectedItem();
+                    	jComboColor.getComboBox().setBackground(m_Color);  	
+                    }
+                 });			
+    		}            
             {
                jButtonCancel = new JButton();
                jButtonCancel.setText(Sextante.getText("Cancel"));
-               jPanelButtons.add(jButtonCancel, "1, 0" );
+               jPanelButtons.add(jButtonCancel, "3, 0" );
                jButtonCancel.addActionListener(new ActionListener() {
                   public void actionPerformed(final ActionEvent evt) {
                      m_Parameter = null;
@@ -129,7 +154,7 @@ public abstract class ParameterPanel
             {
                 jButtonOk = new JButton();                
                 jButtonOk.setText(Sextante.getText("OK"));
-                jPanelButtons.add(jButtonOk, "3, 0");
+                jPanelButtons.add(jButtonOk, "5, 0");
                 jButtonOk.addActionListener(new ActionListener() {
                    public void actionPerformed(final ActionEvent evt) {
                       if (prepareParameter()) {
@@ -169,7 +194,38 @@ public abstract class ParameterPanel
 
    }
 
+   
+   /**
+    * Returns the color currently selected using this panel
+    *
+    * @return the selected color
+    */
+   public Color getColor() {
 
+      return m_Color;
+
+   }  
+
+   
+   /**
+    * Sets the color currently selected in this panel
+    *
+    * @param
+    * 			Color to set
+    */
+   public void setColor(Color c) {
+
+      m_Color = c;
+
+   }   
+
+   
+   public ColorComboBox getColorComboBox () {
+	   
+	   return (jComboColor);
+   }
+   
+   
    @Override
    public String toString() {
 
