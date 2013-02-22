@@ -266,7 +266,13 @@ ParameterPanel {
 					dMin, dMax));
 			m_Parameter = new ParameterNumericalValue();
 			m_Parameter.setParameterAdditionalInfo(addInfo);
-			m_Parameter.setParameterDescription(jTextFieldDescription.getText());			
+			m_Parameter.setParameterDescription(jTextFieldDescription.getText());
+			
+	        m_Parameter.setColorR(m_Color.getRed());        
+	        m_Parameter.setColorG(m_Color.getGreen());        
+	        m_Parameter.setColorB(m_Color.getBlue());        
+	        m_Parameter.setColorAlpha(m_Color.getAlpha());			
+			
 			return true;
 		}
 		else {
