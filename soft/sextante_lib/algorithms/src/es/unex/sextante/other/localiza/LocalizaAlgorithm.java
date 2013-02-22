@@ -27,7 +27,7 @@ public class LocalizaAlgorithm
       setGroup("localiza");
 
       try {
-         m_Parameters.addFilepath("FILEPATH", "filepath", true, false, "txt");
+         m_Parameters.addFilepath("FILEPATH", "filepath", true, false, false, "txt");
          addOutputVectorLayer("LAYER", "Resultado");
       }
       catch (final RepeatedParameterNameException e) {

@@ -1,7 +1,9 @@
 package es.unex.sextante.gui.modeler;
 
+import es.unex.sextante.additionalInfo.AdditionalInfo3DRasterLayer;
 import es.unex.sextante.additionalInfo.AdditionalInfoBand;
 import es.unex.sextante.additionalInfo.AdditionalInfoBoolean;
+import es.unex.sextante.additionalInfo.AdditionalInfoFilepath;
 import es.unex.sextante.additionalInfo.AdditionalInfoFixedTable;
 import es.unex.sextante.additionalInfo.AdditionalInfoMultipleInput;
 import es.unex.sextante.additionalInfo.AdditionalInfoNumericalValue;
@@ -20,10 +22,13 @@ import es.unex.sextante.parameters.ParameterMultipleInput;
 import es.unex.sextante.parameters.ParameterNumericalValue;
 import es.unex.sextante.parameters.ParameterPoint;
 import es.unex.sextante.parameters.ParameterRasterLayer;
+import es.unex.sextante.parameters.Parameter3DRasterLayer;
 import es.unex.sextante.parameters.ParameterString;
 import es.unex.sextante.parameters.ParameterTable;
 import es.unex.sextante.parameters.ParameterTableField;
 import es.unex.sextante.parameters.ParameterVectorLayer;
+import es.unex.sextante.parameters.ParameterFilepath;
+
 
 public class ModelCodeCreator {
 
@@ -156,6 +161,14 @@ public class ModelCodeCreator {
             }
             catch (final NullParameterAdditionalInfoException e) {};
          }
+         else if (param instanceof Parameter3DRasterLayer) {
+             try {
+                final AdditionalInfo3DRasterLayer ai = (AdditionalInfo3DRasterLayer) param.getParameterAdditionalInfo();
+                code.append("\t\t\tm_Parameters.addInput3DRasterLayer(" + getParameterNameFromDescription(param) + ", \""
+                            + param.getParameterDescription() + "\", " + new Boolean(ai.getIsMandatory()).toString() + ");\n");
+             }
+             catch (final NullParameterAdditionalInfoException e) {};
+         }
          else if (param instanceof ParameterMultipleInput) {
             try {
                final AdditionalInfoMultipleInput ai = (AdditionalInfoMultipleInput) param.getParameterAdditionalInfo();
@@ -167,6 +180,9 @@ public class ModelCodeCreator {
                   case AdditionalInfoMultipleInput.DATA_TYPE_RASTER:
                      sType = "AdditionalInfoMultipleInput.DATA_TYPE_RASTER";
                      break;
+                  case AdditionalInfoMultipleInput.DATA_TYPE_RASTER_3D:
+                      sType = "AdditionalInfoMultipleInput.DATA_TYPE_RASTER_3D";
+                      break;                     
                   case AdditionalInfoMultipleInput.DATA_TYPE_TABLE:
                      sType = "AdditionalInfoMultipleInput.DATA_TYPE_TABLE";
                      break;
@@ -249,6 +265,26 @@ public class ModelCodeCreator {
             }
             catch (final NullParameterAdditionalInfoException e) {}
          }
+         else if (param instanceof ParameterFilepath) {
+             try {
+                final AdditionalInfoFilepath ai = (AdditionalInfoFilepath) param.getParameterAdditionalInfo();
+                String ext;
+                if ( ai.getExtensions() != null && ai.getExtensions().length > 0 
+                		&& ai.getExtensions()[0] != null && ai.getExtensions()[0].length() > 0 ) {
+                	ext = new String (ai.getExtensions()[0]);
+                } else {
+                	ext = new String ("");
+                }
+                code.append("\t\t\tm_Parameters.addFilepath(" + getParameterNameFromDescription(param) + ", \""
+                            + param.getParameterDescription() 
+                            + "\", " + new Boolean(ai.isFolder()).toString() 
+                            + "\", " + new Boolean(ai.isOpenDialog()).toString()
+                            + "\", " + new Boolean(ai.getIsVoxelData()).toString()
+                            + "\", " + ext
+                            + ");\n");
+             }
+             catch (final NullParameterAdditionalInfoException e) {};
+         }         
          else if (param instanceof ParameterFixedTable) {
             try {
                final AdditionalInfoFixedTable ai = (AdditionalInfoFixedTable) param.getParameterAdditionalInfo();

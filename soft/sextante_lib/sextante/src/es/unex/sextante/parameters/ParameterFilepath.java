@@ -31,6 +31,7 @@ public class ParameterFilepath
    private static final String OPENDIALOG = "isopendialog";
    private static final String FOLDER     = "folder";
    private static final String EXTENSION  = "extension";
+   private static final String VOXEL  = "voxel"; 
 
 
    @Override
@@ -158,14 +159,31 @@ public class ParameterFilepath
       if (aifp != null) {
          serializer.text("\n");
          serializer.text("\t\t\t");
+         
          serializer.startTag(null, ATTRIBUTE);
-         serializer.attribute(null, NAME, FOLDER);
-         serializer.attribute(null, VALUE, (Boolean.valueOf(aifp.isFolder())).toString());
+         	serializer.attribute(null, NAME, FOLDER);
+         	serializer.attribute(null, VALUE, (Boolean.valueOf(aifp.isFolder())).toString());
          serializer.endTag(null, ATTRIBUTE);
+         
+         serializer.text("\n");
+         serializer.text("\t\t\t");         
+         
          serializer.startTag(null, ATTRIBUTE);
-         serializer.attribute(null, NAME, OPENDIALOG);
-         serializer.attribute(null, VALUE, (new Boolean(aifp.isOpenDialog())).toString());
+         	serializer.attribute(null, NAME, OPENDIALOG);
+         	serializer.attribute(null, VALUE, (new Boolean(aifp.isOpenDialog())).toString());
          serializer.endTag(null, ATTRIBUTE);
+         
+         serializer.text("\n");
+         serializer.text("\t\t\t");         
+         
+         serializer.startTag(null, ATTRIBUTE);
+         	serializer.attribute(null, NAME, VOXEL);
+         	serializer.attribute(null, VALUE, (new Boolean(aifp.getIsVoxelData())).toString());
+         serializer.endTag(null, ATTRIBUTE);
+         
+         serializer.text("\n");
+         serializer.text("\t\t\t");         
+         
          serializer.startTag(null, ATTRIBUTE);
          serializer.attribute(null, NAME, EXTENSION);
          final StringBuffer exts = new StringBuffer();
@@ -188,8 +206,10 @@ public class ParameterFilepath
 
    public static Parameter deserialize(final KXmlParser parser) throws XmlPullParserException, IOException {
 
-      boolean bFolder = true;
-      boolean bOpenDialog = true;
+      boolean bFolder = false;
+      boolean bOpenDialog = false;
+      boolean bIsVoxel = false;
+      
       String sExt[] = null;
 
       int tag = parser.nextTag();
@@ -209,6 +229,9 @@ public class ParameterFilepath
                   else if (sName.compareTo(OPENDIALOG) == 0) {
                      bOpenDialog = parser.getAttributeValue("", VALUE).equals("true");
                   }
+                  else if (sName.compareTo(VOXEL) == 0) {
+                      bIsVoxel = parser.getAttributeValue("", VALUE).equals("true");
+                   }                  
                }
                break;
             case XmlPullParser.END_TAG:
@@ -227,7 +250,7 @@ public class ParameterFilepath
       }
 
       final ParameterFilepath param = new ParameterFilepath();
-      final AdditionalInfoFilepath ai = new AdditionalInfoFilepath(bFolder, bOpenDialog, sExt);
+      final AdditionalInfoFilepath ai = new AdditionalInfoFilepath(bFolder, bOpenDialog, bIsVoxel, sExt);
       param.setParameterAdditionalInfo(ai);
 
       return param;

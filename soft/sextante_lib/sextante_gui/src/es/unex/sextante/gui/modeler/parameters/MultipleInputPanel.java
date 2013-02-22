@@ -118,8 +118,11 @@ ParameterPanel {
 			break;
 		case 5:
 			iType = AdditionalInfoMultipleInput.DATA_TYPE_BAND;
-			break;			
+			break;
 		case 6:
+			iType = AdditionalInfoMultipleInput.DATA_TYPE_RASTER_3D;
+			break;			
+		case 7:
 			iType = AdditionalInfoMultipleInput.DATA_TYPE_TABLE;
 			break;
 		}
@@ -176,9 +179,12 @@ ParameterPanel {
 				break;
 			case AdditionalInfoMultipleInput.DATA_TYPE_BAND:
 				jComboBoxType.setSelectedIndex(5);
+				break;
+			case AdditionalInfoMultipleInput.DATA_TYPE_RASTER_3D:
+				jComboBoxType.setSelectedIndex(6);
 				break;				
 			case AdditionalInfoMultipleInput.DATA_TYPE_TABLE:
-				jComboBoxType.setSelectedIndex(6);
+				jComboBoxType.setSelectedIndex(7);
 				break;
 			}
 

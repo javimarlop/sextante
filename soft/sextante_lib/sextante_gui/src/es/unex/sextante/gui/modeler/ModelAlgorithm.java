@@ -367,6 +367,7 @@ public class ModelAlgorithm
       checkTableFields(iAlgorithm);
       checkRasterBands(iAlgorithm);
       checkNumericalValues(iAlgorithm);
+      //checkFilepaths(iAlgorithm);
 
       return true;
 
