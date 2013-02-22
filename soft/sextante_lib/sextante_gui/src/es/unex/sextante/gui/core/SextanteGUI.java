@@ -79,7 +79,7 @@ public class SextanteGUI {
    public final static Color COLOR_GREY = new Color(128, 128, 128, 255);
    public final static Color COLOR_BLACK = new Color(0, 0, 0, 255);
    public final static Color COLOR_RED = new Color (255, 51, 51, 255);
-   public final static Color COLOR_ORANGE = new Color(255, 153, 51, 255);
+   public final static Color COLOR_ORANGE = new Color(255, 103, 51, 255);
    public final static Color COLOR_YELLOW = new Color(255, 255, 51, 255);
    public final static Color COLOR_GREEN_LIGHT = new Color(51, 255, 51, 255);
    public final static Color COLOR_GREEN_DARK = new Color(0, 184, 0, 255);
