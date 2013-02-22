@@ -152,6 +152,11 @@ public class ModelGraphPanel
          addAlgorithm(sKey);
       }
 
+      if ( m_ModelerPanel.getGridEnabled() == true ) {
+    	  jGraph.setGridEnabled(true);
+    	  jGraph.setGridVisible(true);
+      }
+      
       this.setViewportView(jGraph);
 
    }

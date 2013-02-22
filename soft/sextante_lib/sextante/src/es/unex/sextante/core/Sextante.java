@@ -18,7 +18,17 @@ public class Sextante {
    private static HashMap<String, String>                        m_Text;
    private static HashMap<String, HashMap<String, GeoAlgorithm>> m_Algorithms;
 
-
+   // Default colors for modeler nodes:
+   public static int i_R_Input = 255;
+   public static int i_G_Input = 255;
+   public static int i_B_Input = 255;
+   public static int i_Alpha_Input = 255;
+   
+   public static int i_R_Algorithm = 128;
+   public static int i_G_Algorithm = 128;
+   public static int i_B_Algorithm = 128;
+   public static int i_Alpha_Algorithm = 255;   
+   
    public static int VERSION_MAJOR = 1;
    public static int VERSION_MINOR = 0;
    public static int VERSION_REVISION = 0;
