@@ -63,6 +63,8 @@ public class ModelGraphPanel
    private final HashMap      m_Coords;
    private final JDialog      m_Parent;
    private JMenuItem          menuItemEdit;
+   
+   private final static double 	  d_Opacity = 0.66; // opacity setting (%) for new nodes
 
 
    public ModelGraphPanel(final ModelAlgorithm algorithm,
@@ -414,8 +416,7 @@ public class ModelGraphPanel
             R = param.getColorR();
             G = param.getColorG();
             B = param.getColorB();
-            Alpha = param.getColorAlpha();            
-            //TODO: pass input color
+            Alpha = param.getColorAlpha();
             final DefaultGraphCell cell = createInputVertex(new ObjectAndDescription(oad.getDescription(), sKey), 
             												x, y, w, h,
             												R, G, B, Alpha );
@@ -596,7 +597,7 @@ public class ModelGraphPanel
                                          final int Alpha ) {
 
       final DefaultGraphCell cell = new DefaultGraphCell(obj);
-      
+            
       GraphConstants.setBounds(cell.getAttributes(), new Rectangle2D.Double(x, y, w, h));
 
       GraphConstants.setResize(cell.getAttributes(), false);
@@ -606,7 +607,7 @@ public class ModelGraphPanel
 
       GraphConstants.setBorder(cell.getAttributes(), BorderFactory.createEtchedBorder());
       GraphConstants.setBorderColor(cell.getAttributes(), Color.black);      
-      GraphConstants.setBackground(cell.getAttributes(), new Color( R, G, B, (int) (Alpha*0.66) ) );
+      GraphConstants.setBackground(cell.getAttributes(), new Color( R, G, B, (int) (Alpha*d_Opacity) ) );
       if ( R < 50 && G < 50 && B < 50 ) {
     	  GraphConstants.setForeground(cell.getAttributes(), Color.white);
       } else {

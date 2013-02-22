@@ -282,6 +282,10 @@ public class ModelAlgorithmIO {
 
          int tag = parser.nextTag();
          boolean bOut = false;
+         String sColorRed = null;
+         String sColorGreen = null;
+         String sColorBlue = null;
+         String sColorAlpha = null;         
 
          if (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
             while ((tag != XmlPullParser.END_DOCUMENT) && !bOut) {
@@ -346,26 +350,22 @@ public class ModelAlgorithmIO {
                         if (!sCoords.equals("null")) {
                            rect = getCoordsFromString(sCoords);
                         }
+                        sColorRed = parser.getAttributeValue("", RED);
+                        sColorGreen = parser.getAttributeValue("", GREEN);
+                        sColorBlue = parser.getAttributeValue("", BLUE);
+                        sColorAlpha = parser.getAttributeValue("", ALPHA);
                         final Parameter param = Parameter.deserialize(parser);
                         if (param == null) {
                            return null;
                         }
-                        sInputRed = parser.getAttributeValue("", RED);
-                        if ( sInputRed != null ) {
-                        	param.setColorR(Integer.parseInt(sInputRed));
-                        }
-                        sInputGreen = parser.getAttributeValue("", GREEN);
-                        if ( sInputGreen != null ) {
-                        	param.setColorG(Integer.parseInt(sInputGreen));
-                        }
-                        sInputBlue = parser.getAttributeValue("", BLUE);
-                        if ( sInputBlue != null ) {
-                        	param.setColorB(Integer.parseInt(sInputBlue));
-                        }
-                        sInputAlpha = parser.getAttributeValue("", ALPHA);
-                        if ( sInputAlpha != null ) {
-                        	param.setColorAlpha(Integer.parseInt(sInputAlpha));
-                        }                                                
+                        if ( sColorRed != null )
+                        	param.setColorR(Integer.parseInt(sColorRed));
+                        if ( sColorGreen != null )
+                        	param.setColorG(Integer.parseInt(sColorGreen));
+                        if ( sColorBlue != null )
+                        	param.setColorB(Integer.parseInt(sColorBlue));
+                        if ( sColorAlpha != null )
+                        	param.setColorAlpha(Integer.parseInt(sColorAlpha));
                         ps.addParameter(param);
                         inputKeys.add(param.getParameterName());
                         final ObjectAndDescription oad = new ObjectAndDescription(param.getParameterDescription(),
