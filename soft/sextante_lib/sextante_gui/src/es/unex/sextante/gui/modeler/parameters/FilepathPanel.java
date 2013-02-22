@@ -135,6 +135,12 @@ public class FilepathPanel
          m_Parameter = new ParameterFilepath();
          m_Parameter.setParameterDescription(sDescription);
          m_Parameter.setParameterAdditionalInfo(ai);
+         
+         m_Parameter.setColorR(m_Color.getRed());        
+         m_Parameter.setColorG(m_Color.getGreen());        
+         m_Parameter.setColorB(m_Color.getBlue());        
+         m_Parameter.setColorAlpha(m_Color.getAlpha());         
+         
          return true;
       }
       else {
