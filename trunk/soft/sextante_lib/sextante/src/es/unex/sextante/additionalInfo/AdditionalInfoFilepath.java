@@ -11,9 +11,8 @@ public class AdditionalInfoFilepath
 
    private boolean  m_bFolder      = false;
    private boolean  m_bOpenDialog  = false;
+   private boolean  m_bIsVoxelData = false; //true if the file is a voxel data file   
    private String[] m_sExtensions  = null;
-   //true if the file is a voxel data file
-   private boolean  m_bIsVoxelData = false;
 
 
    public AdditionalInfoFilepath() {}
@@ -157,6 +156,10 @@ public class AdditionalInfoFilepath
             if (i < m_sExtensions.length - 1) {
                sb.append(",");
             }
+         }
+         if ( m_bIsVoxelData ) {
+        	 sb.append("\n");
+        	 sb.append("(voxel data)");
          }
       }
 

@@ -577,6 +577,7 @@ public class DefaultModelerParametersPanel
 
       for (i = 0; i < m_Algorithm.getNumberOfParameters(); i++) {
          parameter = parameters.getParameter(i);
+         System.out.println ("\t\tPROCESSING: " + parameter.getParameterName() + ".\n");
          if (parameter instanceof ParameterNumericalValue) {
             addNumericalTextField(pane, (ParameterNumericalValue) parameter);
          }
