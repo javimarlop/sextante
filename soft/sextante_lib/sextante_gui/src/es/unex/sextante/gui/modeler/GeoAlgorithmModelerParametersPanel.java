@@ -90,13 +90,16 @@ public abstract class GeoAlgorithmModelerParametersPanel
       final ArrayList objects = new ArrayList();
       Parameter param;
       AdditionalInfoDataObject additionalInfo;
-      final ParametersSet ps = m_GlobalAlgorithm.getParameters();;
+      final ParametersSet ps = m_GlobalAlgorithm.getParameters();
       final Set set = m_DataObjects.keySet();
       final Iterator iter = set.iterator();
       while (iter.hasNext()) {
          sKey = (String) iter.next();
          oad = (ObjectAndDescription) m_DataObjects.get(sKey);
-         if (oad.getObject().getClass().equals(classOfInput)) {
+         if ( oad.getObject() == null ) {
+			   System.out.println ("SEXTANTE: GeoAlgorithmsModeler.java: getElementsOfClass(): Got NULL object.");
+         }
+         else if ( oad.getObject().getClass().equals(classOfInput) ) {
             try {
                param = ps.getParameter(sKey);
                if (param instanceof ParameterDataObject) {

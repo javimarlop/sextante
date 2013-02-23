@@ -287,83 +287,87 @@ public class AlgorithmsPanel
 
    public boolean isAlgorithmEnabled(final GeoAlgorithm alg) {
 
-      boolean bRequiresRasterLayers = alg.requiresRasterLayers();
-      boolean bRequires3DRasterLayers = alg.requires3DRasterLayers();
-      boolean bRequiresVectorLayers = alg.requiresVectorLayers();
-      boolean bRequiresTables = alg.requiresTables();;
-      boolean bRequiresPoints = alg.requiresPoints();
-      boolean bRequiresPointLayers = alg.requiresPointVectorLayers();
-      boolean bRequiresLineLayers = alg.requiresLineVectorLayers();
-      boolean bRequiresPolygonLayers = alg.requiresPolygonVectorLayers();
+	   boolean bRequiresRasterLayers = alg.requiresRasterLayers();
+	   boolean bRequires3DRasterLayers = alg.requires3DRasterLayers();
+	   boolean bRequiresVectorLayers = alg.requiresVectorLayers();
+	   boolean bRequiresTables = alg.requiresTables();;
+	   boolean bRequiresPoints = alg.requiresPoints();
+	   boolean bRequiresPointLayers = alg.requiresPointVectorLayers();
+	   boolean bRequiresLineLayers = alg.requiresLineVectorLayers();
+	   boolean bRequiresPolygonLayers = alg.requiresPolygonVectorLayers();
 
-      boolean bTableRequirementsMet = !bRequiresTables;
-      boolean bRasterRequirementsMet = !bRequiresRasterLayers;
-      boolean b3DRasterRequirementsMet = !bRequires3DRasterLayers;
-      boolean bVectorRequirementsMet = !bRequiresVectorLayers;
-      boolean bPointRequirementsMet = !bRequiresPoints;
-      boolean bPolygonLayerRequirementsMet = !bRequiresPolygonLayers;
-      boolean bLineLayerRequirementsMet = !bRequiresLineLayers;
-      boolean bPointLayerRequirementsMet = !bRequiresPointLayers;
-      boolean bAllRequirementsMet;
+	   boolean bTableRequirementsMet = !bRequiresTables;
+	   boolean bRasterRequirementsMet = !bRequiresRasterLayers;
+	   boolean b3DRasterRequirementsMet = !bRequires3DRasterLayers;
+	   boolean bVectorRequirementsMet = !bRequiresVectorLayers;
+	   boolean bPointRequirementsMet = !bRequiresPoints;
+	   boolean bPolygonLayerRequirementsMet = !bRequiresPolygonLayers;
+	   boolean bLineLayerRequirementsMet = !bRequiresLineLayers;
+	   boolean bPointLayerRequirementsMet = !bRequiresPointLayers;
+	   boolean bAllRequirementsMet;
 
-      final Set set = m_DataObjects.keySet();
-      final Iterator iter = set.iterator();
-      String sKey;
-      Class dataClass;
-      ObjectAndDescription oad;
+	   final Set set = m_DataObjects.keySet();
+	   final Iterator iter = set.iterator();
+	   String sKey;
+	   Class dataClass;
+	   ObjectAndDescription oad;
 
-      bAllRequirementsMet = bRasterRequirementsMet && b3DRasterRequirementsMet && bVectorRequirementsMet && bTableRequirementsMet
-                            && bPointRequirementsMet && bPolygonLayerRequirementsMet && bLineLayerRequirementsMet
-                            && bPointLayerRequirementsMet;
+	   bAllRequirementsMet = bRasterRequirementsMet && b3DRasterRequirementsMet && bVectorRequirementsMet && bTableRequirementsMet
+	   && bPointRequirementsMet && bPolygonLayerRequirementsMet && bLineLayerRequirementsMet
+	   && bPointLayerRequirementsMet;
 
-      while (iter.hasNext() && !bAllRequirementsMet) {
-         sKey = (String) iter.next();
-         oad = (ObjectAndDescription) m_DataObjects.get(sKey);
-         dataClass = oad.getObject().getClass();
-         if (dataClass == ModelElementRasterLayer.class) {
-            if (isParameterMandatory(sKey)) {
-               bRasterRequirementsMet = true;
-            }
-         }
-         if (dataClass == ModelElement3DRasterLayer.class) {
-            if (isParameterMandatory(sKey)) {
-               b3DRasterRequirementsMet = true;
-            }
-         }
-         if (dataClass == ModelElementPoint.class) {
-            bPointRequirementsMet = true;
-         }
-         if (dataClass == ModelElementVectorLayer.class) {
-            if (isParameterMandatory(sKey)) {
-               final ModelElementVectorLayer mevl = (ModelElementVectorLayer) oad.getObject();
-               bVectorRequirementsMet = true;
-               switch (mevl.getShapeType()) {
-                  case ModelElementVectorLayer.SHAPE_TYPE_LINE:
-                     bLineLayerRequirementsMet = true;
-                     break;
-                  case ModelElementVectorLayer.SHAPE_TYPE_POINT:
-                     bPointLayerRequirementsMet = true;
-                     break;
-                  case ModelElementVectorLayer.SHAPE_TYPE_POLYGON:
-                     bPolygonLayerRequirementsMet = true;
-                     break;
-                  case ModelElementVectorLayer.SHAPE_TYPE_UNDEFINED:
-                  default:
-               }
-            }
-         }
-         else if (dataClass == ModelElementTable.class) {
-            if (isParameterMandatory(sKey)) {
-               bTableRequirementsMet = true;
-            }
-         }
+	   while (iter.hasNext() && !bAllRequirementsMet) {
+		   sKey = (String) iter.next();
+		   oad = (ObjectAndDescription) m_DataObjects.get(sKey);
+		   if ( oad.getObject() != null ) {
+			   dataClass = oad.getObject().getClass();
+			   if (dataClass == ModelElementRasterLayer.class) {
+				   if (isParameterMandatory(sKey)) {
+					   bRasterRequirementsMet = true;
+				   }
+			   }
+			   if (dataClass == ModelElement3DRasterLayer.class) {
+				   if (isParameterMandatory(sKey)) {
+					   b3DRasterRequirementsMet = true;
+				   }
+			   }
+			   if (dataClass == ModelElementPoint.class) {
+				   bPointRequirementsMet = true;
+			   }
+			   if (dataClass == ModelElementVectorLayer.class) {
+				   if (isParameterMandatory(sKey)) {
+					   final ModelElementVectorLayer mevl = (ModelElementVectorLayer) oad.getObject();
+					   bVectorRequirementsMet = true;
+					   switch (mevl.getShapeType()) {
+					   case ModelElementVectorLayer.SHAPE_TYPE_LINE:
+						   bLineLayerRequirementsMet = true;
+						   break;
+					   case ModelElementVectorLayer.SHAPE_TYPE_POINT:
+						   bPointLayerRequirementsMet = true;
+						   break;
+					   case ModelElementVectorLayer.SHAPE_TYPE_POLYGON:
+						   bPolygonLayerRequirementsMet = true;
+						   break;
+					   case ModelElementVectorLayer.SHAPE_TYPE_UNDEFINED:
+					   default:
+					   }
+				   }
+			   }
+			   else if (dataClass == ModelElementTable.class) {
+				   if (isParameterMandatory(sKey)) {
+					   bTableRequirementsMet = true;
+				   }
+			   }
 
-         bAllRequirementsMet = bRasterRequirementsMet && bVectorRequirementsMet && bTableRequirementsMet && bPointRequirementsMet
-                               && bPolygonLayerRequirementsMet && bLineLayerRequirementsMet && bPointLayerRequirementsMet;
+			   bAllRequirementsMet = bRasterRequirementsMet && bVectorRequirementsMet && bTableRequirementsMet && bPointRequirementsMet
+			   && bPolygonLayerRequirementsMet && bLineLayerRequirementsMet && bPointLayerRequirementsMet;
+		   } else {
+			   System.out.println ("SEXTANTE: AlgorithmsPanel.java: isAlgorithmEnabled(): Got NULL object.");
+			   bAllRequirementsMet = false;
+		   }
+	   }
 
-      }
-
-      return bAllRequirementsMet;
+	   return bAllRequirementsMet;
 
    }
 

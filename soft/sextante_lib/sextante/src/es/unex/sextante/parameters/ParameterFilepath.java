@@ -31,7 +31,7 @@ public class ParameterFilepath
    private static final String OPENDIALOG = "isopendialog";
    private static final String FOLDER     = "folder";
    private static final String EXTENSION  = "extension";
-   private static final String VOXEL  = "voxel"; 
+   private static final String VOXEL      = "voxel"; 
 
 
    @Override
@@ -180,22 +180,23 @@ public class ParameterFilepath
          	serializer.attribute(null, NAME, VOXEL);
          	serializer.attribute(null, VALUE, (new Boolean(aifp.getIsVoxelData())).toString());
          serializer.endTag(null, ATTRIBUTE);
-         
-         serializer.text("\n");
-         serializer.text("\t\t\t");         
-         
-         serializer.startTag(null, ATTRIBUTE);
-         serializer.attribute(null, NAME, EXTENSION);
+
          final StringBuffer exts = new StringBuffer();
          final String[] sExts = aifp.getExtensions();
-         for (int i = 0; i < sExts.length; i++) {
-            exts.append(sExts[i]);
-            if (i < sExts.length - 1) {
-               exts.append(",");
-            }
+         if ( sExts != null && sExts.length > 0 ) {
+        	 serializer.text("\n");
+        	 serializer.text("\t\t\t");         
+        	 serializer.startTag(null, ATTRIBUTE);
+        	 serializer.attribute(null, NAME, EXTENSION);
+        	 for (int i = 0; i < sExts.length; i++) {
+        		 exts.append(sExts[i]);
+        		 if (i < sExts.length - 1) {
+        			 exts.append(",");
+        		 }
+        	 }
+        	 serializer.attribute(null, VALUE, exts.toString());
+        	 serializer.endTag(null, ATTRIBUTE);
          }
-         serializer.attribute(null, VALUE, exts.toString());
-         serializer.endTag(null, ATTRIBUTE);
       }
       else {
          throw new NullParameterAdditionalInfoException();
@@ -231,7 +232,7 @@ public class ParameterFilepath
                   }
                   else if (sName.compareTo(VOXEL) == 0) {
                       bIsVoxel = parser.getAttributeValue("", VALUE).equals("true");
-                   }                  
+                  }                  
                }
                break;
             case XmlPullParser.END_TAG:
