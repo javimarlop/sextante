@@ -297,8 +297,8 @@ public class ModelAlgorithmIO {
                         final String sGroup = parser.getAttributeValue("", GROUP);
                         model.setGroup(sGroup);
                      }
-                     else if (parser.getName().compareTo(ALGORITHM) == 0) { 	 
-                        alg = getAlgorithm(parser.getAttributeValue("", ALG_CMD_LINE_NAME));
+                     else if (parser.getName().compareTo(ALGORITHM) == 0) {                    	
+                        alg = getAlgorithm(parser.getAttributeValue("", ALG_CMD_LINE_NAME));                        
                         sAlgName = parser.getAttributeValue("", KEY);
                         final String sCoords = parser.getAttributeValue("", COORDS);
                         if (alg == null) {
@@ -329,9 +329,9 @@ public class ModelAlgorithmIO {
                         model.addAlgorithm(alg, sAlgName);
                         if (!sCoords.equals("null")) {
                            coords.put(sAlgName, getCoordsFromString(sCoords));
-                        }
+                        }                        
                      }
-                     else if (parser.getName().compareTo(DATA_OBJECT) == 0) {
+                     else if (parser.getName().compareTo(DATA_OBJECT) == 0) {                    	 
                         final String sKey = parser.getAttributeValue("", KEY);
                         final String sValue = parser.getAttributeValue("", VALUE);
                         final String sDescription = parser.getAttributeValue("", DESCRIPTION);
@@ -354,7 +354,7 @@ public class ModelAlgorithmIO {
                         sColorGreen = parser.getAttributeValue("", GREEN);
                         sColorBlue = parser.getAttributeValue("", BLUE);
                         sColorAlpha = parser.getAttributeValue("", ALPHA);
-                        final Parameter param = Parameter.deserialize(parser);
+                        final Parameter param = Parameter.deserialize(parser);                        
                         if (param == null) {
                            return null;
                         }
@@ -381,9 +381,9 @@ public class ModelAlgorithmIO {
                         if (sAssignment.equals("null")) {
                            sAssignment = null;
                         }
+                        //System.out.println ("model.addInputAssignment("+ sKey +"," + sAssignment +").\n");
                         model.addInputAsignment(sKey, sAssignment, sAlgName);
                      }
-                     //}
                      break;
                   case XmlPullParser.END_TAG:
                      if (parser.getName().compareTo(MODEL) == 0) {
@@ -493,8 +493,9 @@ public class ModelAlgorithmIO {
                dao.put(sKey, new ObjectAndDescription(sDescription, new Integer(Integer.parseInt(sValue))));
             }
          }
-         if (sDescription.equals("String") || sDescription.equals("Field")) {
-            dao.put(sKey, new ObjectAndDescription(sDescription, sValue));
+         if (sDescription.equals("String") || sDescription.equals("Field") || sDescription.equals("Filepath") ) {            
+        	 dao.put(sKey, new ObjectAndDescription(sDescription, sValue));
+        	 //System.out.println ("*** PUTTING: sKey=" + sKey + ", SDescr.=" + sDescription + ", sValue='" + sValue +"'.\n");
          }
          else if (sDescription.equals("Selection") || sDescription.equals("Band")) {
             dao.put(sKey, new ObjectAndDescription(sDescription, new Integer(Integer.parseInt(sValue))));
@@ -570,8 +571,8 @@ public class ModelAlgorithmIO {
 
    private static GeoAlgorithm getAlgorithm(final String sAlgorithmCommandLineName) {
 
-      try {
-         return Sextante.getAlgorithmFromCommandLineName(sAlgorithmCommandLineName).getNewInstance();
+      try {    	 
+         return Sextante.getAlgorithmFromCommandLineName(sAlgorithmCommandLineName).getNewInstance();         
       }
       catch (final Exception e) {
          return null;

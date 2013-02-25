@@ -749,7 +749,7 @@ JPanel {
 				m_Algorithm = ModelAlgorithmIO.open(file, this);
 				extensionsPanel.setAlgorithm(m_Algorithm);
 				extensionsPanel.setAlgorithmCount(m_Algorithm.getAlgorithms().size() + 1);
-				updatePanel(false);
+				//updatePanel(false);
 				jTextFieldName.setText(m_Algorithm.getName());
 				updatePanel(false);
 			}
@@ -1083,8 +1083,12 @@ JPanel {
 			sKey = (String) iter.next();
 			sInput = (String) assignments.get(sKey);
 			if (sInput != null) {
-				obj = ((ObjectAndDescription) m_DataObjects.get(sInput)).getObject();
-				addInputToArray(sInput, obj, array);
+				if ( m_DataObjects != null && m_DataObjects.get(sInput) != null ) {
+					obj = ((ObjectAndDescription) m_DataObjects.get(sInput)).getObject();
+					addInputToArray(sInput, obj, array);
+				} else {
+					System.out.println("SEXTANTE: ModelerPanel.java: getArrayOfSingleInputs(): Got NULL object(s).\n");
+				}
 			}
 		}
 

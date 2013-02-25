@@ -524,6 +524,7 @@ public abstract class Parameter {
          param.setParameterTooltip(m_sTooltip);
          param.setParameterName(m_sName);
          param.setParameterAdditionalInfo(m_ParameterAdditionalInfo);
+         //System.out.println ("\t*** VALUE="+ m_ParameterValue +".\n");
          param.setParameterValue(m_ParameterValue);
 
          return param;

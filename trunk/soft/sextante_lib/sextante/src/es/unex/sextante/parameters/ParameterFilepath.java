@@ -132,12 +132,12 @@ public class ParameterFilepath
 
    @Override
    public boolean setParameterValue(final Object value) {
-
+	   
       if (value instanceof String) {
          m_ParameterValue = value;
          return true;
       }
-      else {
+      else {    	 
          return false;
       }
 

@@ -349,14 +349,14 @@ public class Sextante {
     *                the command-line name
     * @return an algorithm. null if there is no algorithm with that name
     */
-   public static GeoAlgorithm getAlgorithmFromCommandLineName(final String sName) {
-
+   public static GeoAlgorithm getAlgorithmFromCommandLineName(final String sName) {	   
+	   
       final Set<String> set = m_Algorithms.keySet();
       final Iterator<String> iter = set.iterator();
       while (iter.hasNext()) {
          final String key = iter.next();
          final GeoAlgorithm alg = m_Algorithms.get(key).get(sName);
-         if (alg != null) {
+         if (alg != null) {        	 
             return alg;
          }
       }

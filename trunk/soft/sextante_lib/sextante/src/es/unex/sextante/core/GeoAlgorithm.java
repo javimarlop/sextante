@@ -1896,12 +1896,12 @@ public abstract class GeoAlgorithm {
     * @throws IllegalAccessException
     */
    public GeoAlgorithm getNewInstance() throws InstantiationException, IllegalAccessException {
-
+	   
       final GeoAlgorithm alg = this.getClass().newInstance();
-
+      
       alg.setName(m_sName);
-      alg.setGroup(m_sGroup);
-
+      alg.setGroup(m_sGroup);      
+      
       alg.setParameters(m_Parameters.getNewInstance());
       alg.setOutputObjects(m_OutputObjects.getNewInstance());
 
