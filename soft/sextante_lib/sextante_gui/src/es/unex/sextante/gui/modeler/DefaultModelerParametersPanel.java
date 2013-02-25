@@ -577,7 +577,7 @@ public class DefaultModelerParametersPanel
 
       for (i = 0; i < m_Algorithm.getNumberOfParameters(); i++) {
          parameter = parameters.getParameter(i);
-         System.out.println ("\t\tPROCESSING: " + parameter.getParameterName() + ".\n");
+         //System.out.println ("*** PROCESSING PARAM: " + parameter.getParameterName() + ".\n");
          if (parameter instanceof ParameterNumericalValue) {
             addNumericalTextField(pane, (ParameterNumericalValue) parameter);
          }
@@ -783,7 +783,7 @@ public class DefaultModelerParametersPanel
 
    private void addFilepath(final JPanel pane,
 		   final ParameterFilepath parameter) {
-
+	   
 	   try {
 		   final AdditionalInfoFilepath additionalInfo = (AdditionalInfoFilepath) parameter.getParameterAdditionalInfo();
 
@@ -805,16 +805,16 @@ public class DefaultModelerParametersPanel
 		   final FileSelectionPanel fileSelectionPanel = new FileSelectionPanel(additionalInfo.isFolder(),
 				   additionalInfo.isOpenDialog(), additionalInfo.getExtensions(), Sextante.getText("Files") + " " + sExtension);
 
+		   final String sKey = m_GlobalAlgorithm.getInputAsignment(parameter.getParameterName(), m_Algorithm);
+
 		   String sPath = null;
-		   try {
-			   sPath = parameter.getParameterValueAsString();
-		   } catch (WrongParameterTypeException e) {
-			   sPath = null;
-		   } catch (NullParameterValueException e) {
-			   sPath = null;
+		   final ObjectAndDescription oad = (ObjectAndDescription) m_DataObjects.get(sKey);
+		   if (oad != null && oad.getObject() != null) {
+			   sPath = (String) oad.getObject();
+			   fileSelectionPanel.getTextField().setText(sPath);			   
+		   } else {
+			   fileSelectionPanel.getTextField().setText("");
 		   }
-		   if ( sPath != null )
-			   fileSelectionPanel.getTextField().setText(sPath);
 
 		   addTitleLabel(pane, parameter.getParameterDescription(), m_iCurrentRow, false);
 
@@ -1788,24 +1788,31 @@ public class DefaultModelerParametersPanel
 
    protected boolean makeFilepathAssignment(final HashMap map, final ParameterContainer parameterContainer) {
 
+	  ObjectAndDescription oad;
       boolean bReturn;
-     
+      String sKey = null, sInnerKey;
+      String sAssignment;
+           
       try {
          final FileSelectionPanel fileSelectionPanel = (FileSelectionPanel) parameterContainer.getContainer();
+         final String sPath = fileSelectionPanel.getFilepath();
          final Parameter parameter = m_Algorithm.getParameters().getParameter(parameterContainer.getName());
-         bReturn = parameter.setParameterValue(fileSelectionPanel.getFilepath());
-         if ( fileSelectionPanel.getFilepath() == null )
+         sKey = parameter.getParameterName();
+         sInnerKey = getInnerParameterKey();
+         map.put(sKey, sInnerKey);
+         //System.out.println ("*** makeFilePathAssignment: sInnerKey=" + sInnerKey + ", sPath=" + sPath + ".\n");
+         m_DataObjects.put(sInnerKey, new ObjectAndDescription("Filepath", sPath));
+         if ( sPath == null )
         	 return ( false );
-         if ( fileSelectionPanel.getFilepath().length() < 1 )
-        	 return ( false );
+         if ( sPath.length() < 1 )
+        	 return ( false );         
       }
       catch (final WrongParameterIDException e) {
          Sextante.addErrorToLog(e);
          return false;
       }
-            
-      return bReturn;
 
+      return (true);
    }
 
 

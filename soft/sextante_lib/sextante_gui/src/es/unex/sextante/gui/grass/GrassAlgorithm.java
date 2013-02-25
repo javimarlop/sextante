@@ -1864,12 +1864,12 @@ public class GrassAlgorithm
 
 
    @Override
-   public GeoAlgorithm getNewInstance() throws InstantiationException, IllegalAccessException {
-
+   public GeoAlgorithm getNewInstance() throws InstantiationException, IllegalAccessException {	   
+	   
       final GrassAlgorithm alg = this.getClass().newInstance();
       alg.setOutputObjects(m_OutputObjects.getNewInstance());
       alg.setName(this.getName());
-      alg.setParameters(m_Parameters.getNewInstance());
+      alg.setParameters(m_Parameters.getNewInstance());      
       alg.setIsDeterminatedProcess(true);
       alg.setUserCanDefineAnalysisExtent(getUserCanDefineAnalysisExtent());
       alg.setDescriptionFile(m_sDescriptionFile);

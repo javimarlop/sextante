@@ -256,6 +256,7 @@ JDialog {
 			while (iter.hasNext()) {
 				sKey = (String) iter.next();
 				sAssignment = (String) map.get(sKey);
+				//System.out.println ("*** ADD ASSIGNMENT: KEY=" + sKey +" ASSIGN=" +sAssignment + ".\n");
 				m_ModelAlgorithm.addInputAsignment(sKey, sAssignment, m_sAlgorithmName);
 			}
 			ooSet = m_Algorithm.getOutputObjects();
