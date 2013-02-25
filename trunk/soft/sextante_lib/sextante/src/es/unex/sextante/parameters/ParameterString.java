@@ -157,7 +157,8 @@ public class ParameterString
          serializer.text("\n");
          serializer.text("\t\t\t");
          serializer.startTag(null, ATTRIBUTE);
-         serializer.attribute(null, DEFAULT, ais.getDefaultString());
+         serializer.attribute(null, NAME, DEFAULT);
+         serializer.attribute(null, VALUE, ais.getDefaultString());
          serializer.endTag(null, ATTRIBUTE);
          serializer.text("\n");
       }
@@ -172,8 +173,8 @@ public class ParameterString
 
       String sDefault = null;
 
-      int tag = parser.nextTag();
-
+      int tag = parser.nextTag();      
+      
       boolean bOver = false;
       while (!bOver) {
          switch (tag) {

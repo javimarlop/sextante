@@ -46,10 +46,12 @@ import es.unex.sextante.exceptions.NullParameterValueException;
 import es.unex.sextante.exceptions.WrongParameterIDException;
 import es.unex.sextante.exceptions.WrongParameterTypeException;
 import es.unex.sextante.gui.algorithm.FileSelectionPanel;
+import es.unex.sextante.gui.algorithm.FileSelectionComboPanel;
 import es.unex.sextante.gui.algorithm.ParameterContainer;
 import es.unex.sextante.modeler.elements.ModelElement3DRasterLayer;
 import es.unex.sextante.modeler.elements.ModelElementBand;
 import es.unex.sextante.modeler.elements.ModelElementBoolean;
+import es.unex.sextante.modeler.elements.ModelElementFilepath;
 import es.unex.sextante.modeler.elements.ModelElementFixedTable;
 import es.unex.sextante.modeler.elements.ModelElementInputArray;
 import es.unex.sextante.modeler.elements.ModelElementNumericalValue;
@@ -781,54 +783,6 @@ public class DefaultModelerParametersPanel
    }
 
 
-   private void addFilepath(final JPanel pane,
-		   final ParameterFilepath parameter) {
-	   
-	   try {
-		   final AdditionalInfoFilepath additionalInfo = (AdditionalInfoFilepath) parameter.getParameterAdditionalInfo();
-
-		   addTitleLabel(pane, parameter.getParameterDescription(), m_iCurrentRow, false);
-
-		   String sExtension = "*.*";
-		   final String[] sExtensions = additionalInfo.getExtensions();
-		   if (sExtensions != null) {
-			   final StringBuffer sb = new StringBuffer();
-			   for (int i = 0; i < sExtensions.length; i++) {
-				   sb.append(sExtensions[i]);
-				   if (i < sExtensions.length - 1) {
-					   sb.append(",");
-				   }
-			   }
-			   sExtension = sb.toString();
-		   }
-
-		   final FileSelectionPanel fileSelectionPanel = new FileSelectionPanel(additionalInfo.isFolder(),
-				   additionalInfo.isOpenDialog(), additionalInfo.getExtensions(), Sextante.getText("Files") + " " + sExtension);
-
-		   final String sKey = m_GlobalAlgorithm.getInputAsignment(parameter.getParameterName(), m_Algorithm);
-
-		   String sPath = null;
-		   final ObjectAndDescription oad = (ObjectAndDescription) m_DataObjects.get(sKey);
-		   if (oad != null && oad.getObject() != null) {
-			   sPath = (String) oad.getObject();
-			   fileSelectionPanel.getTextField().setText(sPath);			   
-		   } else {
-			   fileSelectionPanel.getTextField().setText("");
-		   }
-
-		   addTitleLabel(pane, parameter.getParameterDescription(), m_iCurrentRow, false);
-
-		   pane.add(fileSelectionPanel, getStringTableCoords(2, m_iCurrentRow));
-		   m_InputParameterContainer.add(new ParameterContainer(parameter, fileSelectionPanel));
-		   m_iCurrentRow++;
-	   }
-	   catch (final NullParameterAdditionalInfoException e) {
-		   Sextante.addErrorToLog(e);
-	   }
-
-   }
-
-
    private void addPoint(final JPanel pane,
                          final ParameterPoint parameter) {
 
@@ -984,7 +938,12 @@ public class DefaultModelerParametersPanel
       addTitleLabel(pane, parameter.getParameterDescription(), m_iCurrentRow, false);
 
       comboBox = new JComboBox();
-      final ObjectAndDescription values[] = getElementsOfClass(ModelElementString.class, true);
+      
+      final ObjectAndDescription values[] = //we allow both strings and numbers as inputs to string fields
+    	  getElementsOfClassAOrB(	ModelElementString.class, 
+    			  					ModelElementNumericalValue.class, true);
+      //final ObjectAndDescription values[] = getElementsOfClass(ModelElementString.class, true);
+      
       final ComboBoxModel jComboBoxModel = new DefaultComboBoxModel(values);
       comboBox.setModel(jComboBoxModel);
       comboBox.setSelectedIndex(-1);
@@ -1013,6 +972,64 @@ public class DefaultModelerParametersPanel
 
    }
 
+   
+   private void addFilepath(final JPanel pane, final ParameterFilepath parameter) {
+
+	   addTitleLabel(pane, parameter.getParameterDescription(), m_iCurrentRow, false);
+
+	   final ObjectAndDescription values[] = getElementsOfClass(ModelElementFilepath.class, true);
+
+	   try {
+		   final AdditionalInfoFilepath additionalInfo = (AdditionalInfoFilepath) parameter.getParameterAdditionalInfo();		   
+
+		   String sExtension = "*.*";
+		   final String[] sExtensions = additionalInfo.getExtensions();
+		   if (sExtensions != null) {
+			   final StringBuffer sb = new StringBuffer();
+			   for (int i = 0; i < sExtensions.length; i++) {
+				   sb.append(sExtensions[i]);
+				   if (i < sExtensions.length - 1) {
+					   sb.append(",");
+				   }
+			   }
+			   sExtension = sb.toString();
+		   }
+
+		   final FileSelectionComboPanel fileSelectionPanel = new FileSelectionComboPanel(additionalInfo.isFolder(),
+				   additionalInfo.isOpenDialog(), additionalInfo.getExtensions(), Sextante.getText("Files") + " " + sExtension);
+
+		   final ComboBoxModel jComboBoxModel = new DefaultComboBoxModel(values);
+		   fileSelectionPanel.getComboBox().setModel(jComboBoxModel);
+		   fileSelectionPanel.getComboBox().setSelectedIndex(-1);
+		   fileSelectionPanel.getComboBox().setEditable(true);
+
+		   final String sKey = m_GlobalAlgorithm.getInputAsignment(parameter.getParameterName(), m_Algorithm);
+		   final ObjectAndDescription oad = (ObjectAndDescription) m_DataObjects.get(sKey);
+		   if (oad != null) {
+			   if (oad.getObject() instanceof String) {
+				   final JTextField textField = (JTextField) fileSelectionPanel.getComboBox().getEditor().getEditorComponent();
+				   textField.setText((String) oad.getObject());
+			   }
+			   else {
+				   for (int i = 0; i < values.length; i++) {
+					   if (values[i].getObject().equals(sKey)) {
+						   fileSelectionPanel.getComboBox().setSelectedIndex(i);
+						   fileSelectionPanel.getComboBox().updateUI();
+						   break;
+					   }
+				   }
+			   }
+		   }
+		   pane.add(fileSelectionPanel, getStringTableCoords(2, m_iCurrentRow));
+		   m_InputParameterContainer.add(new ParameterContainer(parameter, fileSelectionPanel.getComboBox()));
+		   m_iCurrentRow++;
+	   }
+	   catch (final NullParameterAdditionalInfoException e) {
+		   Sextante.addErrorToLog(e);
+	   }
+
+   }
+   
 
    private void addCheckBox(final JPanel pane,
                             final ParameterBoolean parameter) {
@@ -1789,10 +1806,30 @@ public class DefaultModelerParametersPanel
    protected boolean makeFilepathAssignment(final HashMap map, final ParameterContainer parameterContainer) {
 
 	  ObjectAndDescription oad;
+	  Parameter parameter = null;
       boolean bReturn;
       String sKey = null, sInnerKey;
       String sAssignment;
-           
+     
+      final JComboBox comboBox = (JComboBox) parameterContainer.getContainer();
+      final JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
+      
+      try {
+          parameter = m_Algorithm.getParameters().getParameter(parameterContainer.getName());
+          sKey = parameter.getParameterName();
+          final Object selItem = comboBox.getSelectedItem();
+          oad = (ObjectAndDescription) selItem;
+          sAssignment = (String) oad.getObject();
+          map.put(sKey, sAssignment);
+          return true;
+       }
+       catch (final Exception e) { //whatever it is: we can save it as a (empty) string
+          sInnerKey = getInnerParameterKey();
+          map.put(sKey, sInnerKey);
+          m_DataObjects.put(sInnerKey, new ObjectAndDescription("String", textField.getText()));
+          return true;
+       }      
+      /*
       try {
          final FileSelectionPanel fileSelectionPanel = (FileSelectionPanel) parameterContainer.getContainer();
          final String sPath = fileSelectionPanel.getFilepath();
@@ -1811,8 +1848,9 @@ public class DefaultModelerParametersPanel
          Sextante.addErrorToLog(e);
          return false;
       }
-
       return (true);
+      */
+      
    }
 
 

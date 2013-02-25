@@ -10,19 +10,19 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JComboBox;
 
 /**
- * A panel with a text field and a button, which pops-up a file selection dialog and puts the selected file in the text field
+ * A panel with a combo box and a button, which pops-up a file selection dialog and puts the selected file in the combo box's active item.
  * 
  * @author volaya
  * 
  */
-public class FileSelectionPanel
+public class FileSelectionComboPanel
          extends
             JPanel {
 
-   private JTextField     textField;
+   private JComboBox      comboBox;
    private JButton        button;
    private final String[] m_sExtensions;
    private boolean        m_bFolder   = false;
@@ -43,7 +43,7 @@ public class FileSelectionPanel
     * @param sDescription
     *                a description of the panel to show in the file dialog
     */
-   public FileSelectionPanel(final boolean bFolder,
+   public FileSelectionComboPanel(final boolean bFolder,
                              final boolean bOpen,
                              final String[] sExts,
                              final String sDescription) {
@@ -72,7 +72,7 @@ public class FileSelectionPanel
     * @param sDescription
     *                a description of the panel to show in the file dialog
     */
-   public FileSelectionPanel(final boolean bFolder,
+   public FileSelectionComboPanel(final boolean bFolder,
                              final boolean bOpen,
                              final String sExt,
                              final String sDescription) {
@@ -96,7 +96,7 @@ public class FileSelectionPanel
     * @param sSelection
     *                the name of the default selected file or folder
     */
-   public FileSelectionPanel(final boolean bFolder,
+   public FileSelectionComboPanel(final boolean bFolder,
                              final boolean bOpen,
                              final String sExt,
                              final String sDescription,
@@ -122,7 +122,7 @@ public class FileSelectionPanel
     * @param sSelection
     *                the name of the default selected file or folder
     */
-   public FileSelectionPanel(final boolean bFolder,
+   public FileSelectionComboPanel(final boolean bFolder,
                              final boolean bOpen,
                              final String sExt[],
                              final String sDescription,
@@ -138,8 +138,8 @@ public class FileSelectionPanel
 
       button = new JButton("...");
 
-      textField = new JTextField("");
-      textField.setMaximumSize(new java.awt.Dimension(340, 18));
+      comboBox = new JComboBox();
+      comboBox.setMaximumSize(new java.awt.Dimension(340, 18));
       button.addActionListener(new ActionListener() {
          public void actionPerformed(final ActionEvent evt) {
             btnActionPerformed();
@@ -149,7 +149,7 @@ public class FileSelectionPanel
       final TableLayout thisLayout = new TableLayout(new double[][] { { TableLayoutConstants.FILL, 25.0 },
                { TableLayoutConstants.FILL } });
       this.setLayout(thisLayout);
-      this.add(textField, "0,  0");
+      this.add(comboBox, "0,  0");
       this.add(button, "1,  0");
 
    }
@@ -162,7 +162,7 @@ public class FileSelectionPanel
     */
    public String getFilepath() {
 
-      return textField.getText();
+	  return (String) comboBox.getSelectedItem();
 
    }
 
@@ -171,9 +171,9 @@ public class FileSelectionPanel
     * 
     * @return the text field widget used to input/store the selected file's path and name
     */
-   public JTextField getTextField() {
+   public JComboBox getComboBox() {
 
-      return (this.textField);
+      return (this.comboBox);
 
    }
    
@@ -217,7 +217,7 @@ public class FileSelectionPanel
       }
 
       if (returnVal == JFileChooser.APPROVE_OPTION) {
-         textField.setText(fc.getSelectedFile().getAbsolutePath());
+    	  comboBox.setSelectedItem(fc.getSelectedFile().getAbsolutePath());
       }
 
    }
@@ -231,7 +231,7 @@ public class FileSelectionPanel
     */
    public void setFilepath(final String sFilepath) {
 
-      textField.setText(sFilepath);
+	   comboBox.setSelectedItem(sFilepath);
 
    }
 
@@ -239,7 +239,7 @@ public class FileSelectionPanel
    @Override
    public void setToolTipText(final String sText) {
 
-      textField.setToolTipText(sText);
+      comboBox.setToolTipText(sText);
 
    }
 }

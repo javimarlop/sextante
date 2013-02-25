@@ -85,61 +85,72 @@ public abstract class GeoAlgorithmModelerParametersPanel
    protected ObjectAndDescription[] getElementsOfClass(final Class classOfInput,
                                                        final boolean bIncludeOptionalInputs) {
 
-      String sKey;
-      ObjectAndDescription oad;
-      final ArrayList objects = new ArrayList();
-      Parameter param;
-      AdditionalInfoDataObject additionalInfo;
-      final ParametersSet ps = m_GlobalAlgorithm.getParameters();
-      final Set set = m_DataObjects.keySet();
-      final Iterator iter = set.iterator();
-      while (iter.hasNext()) {
-         sKey = (String) iter.next();
-         oad = (ObjectAndDescription) m_DataObjects.get(sKey);
-         if ( oad.getObject() == null ) {
-			   System.out.println ("SEXTANTE: GeoAlgorithmsModeler.java: getElementsOfClass(): Got NULL object.");
-         }
-         else if ( oad.getObject().getClass().equals(classOfInput) ) {
-            try {
-               param = ps.getParameter(sKey);
-               if (param instanceof ParameterDataObject) {
-                  additionalInfo = (AdditionalInfoDataObject) ((ParameterDataObject) param).getParameterAdditionalInfo();
-                  if (bIncludeOptionalInputs || additionalInfo.getIsMandatory()) {
-                     if (!isParameterProducedByThisProcess(sKey) && !dependsOnThisProcess(sKey)) {
-                        objects.add(new ObjectAndDescription(oad.getDescription(), sKey));
-                     }
-                  }
-               }
-               else {
-                  if (!isParameterProducedByThisProcess(sKey) && !dependsOnThisProcess(sKey)) {
-                     objects.add(new ObjectAndDescription(oad.getDescription(), sKey));
-                  }
-               }
-
-            }
-            catch (final WrongParameterIDException e) {
-               if (!isParameterProducedByThisProcess(sKey) && !dependsOnThisProcess(sKey)) {
-                  objects.add(new ObjectAndDescription(oad.getDescription(), sKey));
-               }
-            }
-            catch (final NullParameterAdditionalInfoException e) {
-               Sextante.addErrorToLog(e);
-            }
-         }
-      }
-
-      final ObjectAndDescription[] ret = new ObjectAndDescription[objects.size()];
-      for (int i = 0; i < objects.size(); i++) {
-         ret[i] = (ObjectAndDescription) objects.get(i);
-      }
-
-      Arrays.sort(ret);
-
-      return ret;
+      return getElementsOfClassAOrB(classOfInput,null,bIncludeOptionalInputs);
 
    }
 
 
+   protected ObjectAndDescription[] getElementsOfClassAOrB(final Class classOfInputA, Class classOfInputB,
+		   final boolean bIncludeOptionalInputs) {
+
+	   String sKey;
+	   ObjectAndDescription oad;
+	   final ArrayList objects = new ArrayList();
+	   Parameter param;
+	   AdditionalInfoDataObject additionalInfo;
+	   final ParametersSet ps = m_GlobalAlgorithm.getParameters();
+	   final Set set = m_DataObjects.keySet();
+	   final Iterator iter = set.iterator();
+	   if ( classOfInputB == null )
+		   classOfInputB = classOfInputA; 
+	   while (iter.hasNext()) {
+		   sKey = (String) iter.next();
+		   oad = (ObjectAndDescription) m_DataObjects.get(sKey);
+		   if ( oad.getObject() == null ) {
+			   System.out.println ("SEXTANTE: GeoAlgorithmsModeler.java: getElementsOfClass(): Got NULL object.");
+		   }
+		   else if (  	oad.getObject().getClass().equals(classOfInputA) || 
+				   		oad.getObject().getClass().equals(classOfInputB)) {
+			   try {
+				   param = ps.getParameter(sKey);
+				   if (param instanceof ParameterDataObject) {
+					   additionalInfo = (AdditionalInfoDataObject) ((ParameterDataObject) param).getParameterAdditionalInfo();
+					   if (bIncludeOptionalInputs || additionalInfo.getIsMandatory()) {
+						   if (!isParameterProducedByThisProcess(sKey) && !dependsOnThisProcess(sKey)) {
+							   objects.add(new ObjectAndDescription(oad.getDescription(), sKey));
+						   }
+					   }
+				   }
+				   else {
+					   if (!isParameterProducedByThisProcess(sKey) && !dependsOnThisProcess(sKey)) {
+						   objects.add(new ObjectAndDescription(oad.getDescription(), sKey));
+					   }
+				   }
+
+			   }
+			   catch (final WrongParameterIDException e) {
+				   if (!isParameterProducedByThisProcess(sKey) && !dependsOnThisProcess(sKey)) {
+					   objects.add(new ObjectAndDescription(oad.getDescription(), sKey));
+				   }
+			   }
+			   catch (final NullParameterAdditionalInfoException e) {
+				   Sextante.addErrorToLog(e);
+			   }
+		   }
+	   }
+
+	   final ObjectAndDescription[] ret = new ObjectAndDescription[objects.size()];
+	   for (int i = 0; i < objects.size(); i++) {
+		   ret[i] = (ObjectAndDescription) objects.get(i);
+	   }
+
+	   Arrays.sort(ret);
+
+	   return ret;
+
+   }   
+   
+   
    private boolean dependsOnThisProcess(final String sKey) {
 
       int i;
