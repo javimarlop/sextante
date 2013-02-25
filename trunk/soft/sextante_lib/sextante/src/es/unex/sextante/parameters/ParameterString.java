@@ -160,7 +160,6 @@ public class ParameterString
          serializer.attribute(null, NAME, DEFAULT);
          serializer.attribute(null, VALUE, ais.getDefaultString());
          serializer.endTag(null, ATTRIBUTE);
-         serializer.text("\n");
       }
       else {
          throw new NullParameterAdditionalInfoException();
