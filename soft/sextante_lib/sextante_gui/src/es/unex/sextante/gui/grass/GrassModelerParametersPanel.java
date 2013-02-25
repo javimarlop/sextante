@@ -145,15 +145,6 @@ public class GrassModelerParametersPanel
 		   }
 	   }
 
-	   /*
-	   if (ret) {
-		   m_GlobalAlgorithm.setGeometryTypeRestriction(jComboRestrictGeometryType.getSelectedIndex());
-		   return true;
-	   }
-	   else {
-		   return false;
-	   }
-	   */
 	   m_GlobalAlgorithm.setGeometryTypeRestriction(jComboRestrictGeometryType.getSelectedIndex());
 	   
 	   /* set output objects */

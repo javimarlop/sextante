@@ -9,11 +9,13 @@ import es.unex.sextante.exceptions.NullParameterAdditionalInfoException;
 import es.unex.sextante.parameters.Parameter;
 import es.unex.sextante.parameters.ParameterBand;
 import es.unex.sextante.parameters.ParameterBoolean;
+import es.unex.sextante.parameters.ParameterFilepath;
 import es.unex.sextante.parameters.ParameterFixedTable;
 import es.unex.sextante.parameters.ParameterMultipleInput;
 import es.unex.sextante.parameters.ParameterNumericalValue;
 import es.unex.sextante.parameters.ParameterPoint;
 import es.unex.sextante.parameters.ParameterRasterLayer;
+import es.unex.sextante.parameters.Parameter3DRasterLayer;
 import es.unex.sextante.parameters.ParameterSelection;
 import es.unex.sextante.parameters.ParameterString;
 import es.unex.sextante.parameters.ParameterTable;
@@ -32,6 +34,9 @@ public class ModelElementFactory {
             element = new ModelElementRasterLayer();
             ((ModelElementRasterLayer) element).setNumberOfBands(ModelElementRasterLayer.NUMBER_OF_BANDS_UNDEFINED);
          }
+         if (param instanceof Parameter3DRasterLayer) {
+             element = new ModelElement3DRasterLayer();
+         }         
          else if (param instanceof ParameterVectorLayer) {
             element = new ModelElementVectorLayer();
             final AdditionalInfoVectorLayer ai = (AdditionalInfoVectorLayer) param.getParameterAdditionalInfo();
@@ -49,6 +54,9 @@ public class ModelElementFactory {
          else if (param instanceof ParameterString) {
             element = new ModelElementString();
          }
+         else if (param instanceof ParameterFilepath) {
+             element = new ModelElementFilepath();
+          }         
          else if (param instanceof ParameterFixedTable) {
             element = new ModelElementFixedTable();
             final AdditionalInfoFixedTable aift = (AdditionalInfoFixedTable) param.getParameterAdditionalInfo();

@@ -452,7 +452,7 @@ public abstract class Parameter {
       else if (sClass.equals(ParameterSelection.class.toString())) {
          param = ParameterSelection.deserialize(parser);
       }
-      else if (sClass.equals(ParameterString.class.toString())) {
+      else if (sClass.equals(ParameterString.class.toString())) {    	 
          param = ParameterString.deserialize(parser);
       }
       else if (sClass.equals(ParameterTableField.class.toString())) {
