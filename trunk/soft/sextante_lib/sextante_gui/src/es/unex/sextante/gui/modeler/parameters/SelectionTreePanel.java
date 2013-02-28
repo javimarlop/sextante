@@ -193,9 +193,9 @@ public class SelectionTreePanel
             implements
                TreeCellRenderer {
 
-      ImageIcon m_ModuleIcon = new ImageIcon(getClass().getClassLoader().getResource("images/module2.png"));
+      //ImageIcon m_ModuleIcon = new ImageIcon(getClass().getClassLoader().getResource("images/module2.png"));
 
-
+	  /*
       protected Icon getCustomIcon(final Object value) {
 
          if (((DefaultMutableTreeNode) value).getUserObject() instanceof GeoAlgorithm) {
@@ -206,6 +206,7 @@ public class SelectionTreePanel
          }
 
       }
+      */
 
 
       public Component getTreeCellRendererComponent(final JTree tree,
@@ -219,7 +220,7 @@ public class SelectionTreePanel
          String sName;
 
          setFont(tree.getFont());
-         this.setIcon(getCustomIcon(value));
+         //this.setIcon(getCustomIcon(value));
 
          sName = tree.convertValueToText(value, sel, expanded, leaf, row, hasFocus);
 
