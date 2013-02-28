@@ -894,7 +894,7 @@ JPanel {
 	}
 
 
-	public void removeElement(final String sKey) {
+	public boolean removeElement(final String sKey) {
 
 		final Object obj = getObjectFromKey(sKey);
 
@@ -903,10 +903,11 @@ JPanel {
 				final int iRet = JOptionPane.showConfirmDialog(null,
 						Sextante.getText("delete_modeler_node_question"),
 						Sextante.getText("Warning"), JOptionPane.YES_NO_CANCEL_OPTION);				
-				if (iRet == JOptionPane.YES_OPTION) {
+				if (iRet == JOptionPane.YES_OPTION) {					
 					removeAlgorithm(sKey);
-				}
-				updatePanel(true);
+					updatePanel(true);
+					return (true);
+				}				
 			}
 			else {
 				JOptionPane.showMessageDialog(null, Sextante.getText("Other_elements_depend_on_the_selected_one") + ".\n"
@@ -916,8 +917,14 @@ JPanel {
 		}
 		else {
 			if (canRemoveDataObject(sKey)) {
-				removeDataObject(sKey);
-				updatePanel(true);
+				final int iRet = JOptionPane.showConfirmDialog(null,
+						Sextante.getText("delete_modeler_node_question"),
+						Sextante.getText("Warning"), JOptionPane.YES_NO_CANCEL_OPTION);				
+				if (iRet == JOptionPane.YES_OPTION) {
+					removeDataObject(sKey);
+					updatePanel(true);
+					return ( true );
+				}								
 			}
 			else {
 				JOptionPane.showMessageDialog(null, Sextante.getText("Other_elements_depend_on_the_selected_one") + ".\n"
@@ -926,6 +933,7 @@ JPanel {
 			}
 		}
 
+		return ( false );
 	}
 
 
