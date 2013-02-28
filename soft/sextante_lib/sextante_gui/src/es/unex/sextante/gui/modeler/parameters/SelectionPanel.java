@@ -80,19 +80,19 @@ ParameterPanel {
 			super.jButtonOk.setEnabled(false);
 			final JButton jButtonOk = super.jButtonOk;
 			final JPanel jPanel = super.m_ModelerPanel;
-			//final TreePath TP = new TreePath ("");
 			tree.getTree().addTreeSelectionListener(new TreeSelectionListener() {				
 				public void valueChanged(TreeSelectionEvent e) {
 					DefaultMutableTreeNode node = (DefaultMutableTreeNode)
 					tree.getTree().getLastSelectedPathComponent();
 					if (node == null) {
 						jButtonOk.setEnabled(false);
-					}
-					Object nodeInfo = node.getUserObject();
-					if (node.isLeaf()) {
-						jButtonOk.setEnabled(true);
-					} else {
-						jButtonOk.setEnabled(false);
+					} else {					
+						Object nodeInfo = node.getUserObject();
+						if (node.isLeaf()) {
+							jButtonOk.setEnabled(true);
+						} else {
+							jButtonOk.setEnabled(false);
+						}
 					}
 					jPanel.repaint();
 				}
@@ -119,9 +119,6 @@ ParameterPanel {
 			if (sac != null) {
 				final AdditionalInfoSelection ai = new AdditionalInfoSelection(sac.getChoices());
 				String sSelPath = tree.getTree().getSelectionPath().toString();				
-				//sSelPath = sSelPath.replace(", ","|");
-				//sSelPath = sSelPath.replace("[","");
-				//sSelPath = sSelPath.replace("]","");
 				ai.setSelectionPath(sSelPath);
 				m_Parameter.setParameterAdditionalInfo(ai);
 				if (sDescription.trim().equals("")) {
@@ -174,6 +171,7 @@ ParameterPanel {
 		}
 	}
 
+	
 	@Override
 	public void setParameter(final Parameter param) {
 
