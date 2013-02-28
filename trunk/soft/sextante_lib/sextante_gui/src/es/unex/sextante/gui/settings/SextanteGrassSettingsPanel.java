@@ -156,7 +156,6 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 			jCheckBoxLatLon = new JCheckBox(Sextante.getText ("GRASS_lat_lon_mode"));
 			jCheckBoxLatLon.setSelected(new Boolean(SextanteGUI.getSettingParameterValue
 					(SextanteGrassSettings.GRASS_LAT_LON_MODE)).booleanValue());
-			jCheckBoxLatLon.setSelected(bActivate);
 			this.add(jCheckBoxLatLon, "1, 9, 2, 9");
 
 			jCheckBox3DV = new JCheckBox();
@@ -168,7 +167,6 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 			jCheckBoxNoVectBBox = new JCheckBox(Sextante.getText("grass_no_vect_bbox"));
 			jCheckBoxNoVectBBox.setSelected(new Boolean(SextanteGUI.getSettingParameterValue
 					(SextanteGrassSettings.GRASS_NO_VECT_BBOX)).booleanValue());
-			jCheckBoxNoVectBBox.setSelected(bActivate);
 			this.add(jCheckBoxNoVectBBox, "1, 11, 2, 11");
 
 			jCheckBoxInPolylines = new JCheckBox();
