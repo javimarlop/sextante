@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -116,9 +118,11 @@ public class ModelGraphPanel
       menuItem = new JMenuItem(Sextante.getText("Remove"));
       menuItem.addActionListener(new ActionListener() {
          public void actionPerformed(final ActionEvent evt) {
+        	boolean removed;
             final Object ob = m_ActiveCell.getUserObject();
             final String sKey = (String) ((ObjectAndDescription) ob).getObject();
-            m_ModelerPanel.removeElement(sKey);
+            removed=m_ModelerPanel.removeElement(sKey);
+            m_ModelerPanel.setHasChanged(removed);
          }
       });
       popupMenu.add(menuItem);
@@ -236,6 +240,21 @@ public class ModelGraphPanel
     			  m_ModelerPanel.zoomMinus();
     		  }
     	  }
+      });
+      
+      jGraph.addKeyListener(new KeyAdapter () {
+    	  public void keyPressed(KeyEvent e) {
+    		  boolean removed;
+    		  if ( e.getKeyCode() == e.VK_DELETE || e.getKeyCode() == e.VK_BACK_SPACE ) {
+    			  final DefaultGraphCell cell = (DefaultGraphCell) jGraph.getSelectionCell();
+    			  if ( cell != null ) {
+    				  final ObjectAndDescription oad = (ObjectAndDescription) cell.getUserObject();
+    				  final String sKey = (String) (oad.getObject());
+    				  removed = m_ModelerPanel.removeElement(sKey);
+    				  m_ModelerPanel.setHasChanged(removed);
+    			  }
+    		  }
+    	  }    	  
       });
       
       jGraph.getModel().addGraphModelListener(new GraphModelListener() {
