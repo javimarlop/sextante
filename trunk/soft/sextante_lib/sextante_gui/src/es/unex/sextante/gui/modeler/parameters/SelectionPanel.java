@@ -1,13 +1,25 @@
 package es.unex.sextante.gui.modeler.parameters;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.util.Arrays;
+
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import es.unex.sextante.additionalInfo.AdditionalInfoSelection;
 import es.unex.sextante.core.Sextante;
+import es.unex.sextante.exceptions.NullParameterAdditionalInfoException;
 import es.unex.sextante.gui.modeler.ModelerPanel;
 import es.unex.sextante.gui.modeler.SelectionAndChoices;
 import es.unex.sextante.parameters.Parameter;
@@ -17,7 +29,9 @@ public class SelectionPanel
 extends
 ParameterPanel {
 
-	SelectionTreePanel tree;
+	private SelectionTreePanel tree;
+	private String searchArgument;
+	private TreePath selectedPath = null;
 
 
 	public SelectionPanel(final JDialog parent,
@@ -53,16 +67,37 @@ ParameterPanel {
 		super.setPreferredSize(new java.awt.Dimension(400, 540));      
 
 		super.setResizable(true);
-		
+
 		final TableLayout thisLayout = new TableLayout(new double[][] {
 				{ 	TableLayoutConstants.FILL },	
 				{ TableLayoutConstants.FILL} });
 		thisLayout.setHGap(5);
 		thisLayout.setVGap(5);
 		jPanelMiddle.setLayout(thisLayout);		
-		
+
 		try {
 			tree = new SelectionTreePanel();
+			super.jButtonOk.setEnabled(false);
+			final JButton jButtonOk = super.jButtonOk;
+			final JPanel jPanel = super.m_ModelerPanel;
+			//final TreePath TP = new TreePath ("");
+			tree.getTree().addTreeSelectionListener(new TreeSelectionListener() {				
+				public void valueChanged(TreeSelectionEvent e) {
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+					tree.getTree().getLastSelectedPathComponent();
+					if (node == null) {
+						jButtonOk.setEnabled(false);
+					}
+					Object nodeInfo = node.getUserObject();
+					if (node.isLeaf()) {
+						jButtonOk.setEnabled(true);
+					} else {
+						jButtonOk.setEnabled(false);
+					}
+					jPanel.repaint();
+				}
+			});
+
 			jPanelMiddle.add(tree, "0, 0");
 		}
 		catch (final Exception e) {
@@ -76,13 +111,18 @@ ParameterPanel {
 	protected boolean prepareParameter() {
 
 
-		final String sDescription = jTextFieldDescription.getText();
+		final String sDescription = jTextFieldDescription.getText();		
 
 		if (sDescription.length() != 0) {
 			m_Parameter = new ParameterSelection();
 			final SelectionAndChoices sac = tree.getSelectedList();
 			if (sac != null) {
 				final AdditionalInfoSelection ai = new AdditionalInfoSelection(sac.getChoices());
+				String sSelPath = tree.getTree().getSelectionPath().toString();				
+				//sSelPath = sSelPath.replace(", ","|");
+				//sSelPath = sSelPath.replace("[","");
+				//sSelPath = sSelPath.replace("]","");
+				ai.setSelectionPath(sSelPath);
 				m_Parameter.setParameterAdditionalInfo(ai);
 				if (sDescription.trim().equals("")) {
 					m_Parameter.setParameterDescription(sac.getDescription());
@@ -90,12 +130,12 @@ ParameterPanel {
 				else {
 					m_Parameter.setParameterDescription(sDescription);
 				}
-				
-		        m_Parameter.setColorR(m_Color.getRed());        
-		        m_Parameter.setColorG(m_Color.getGreen());        
-		        m_Parameter.setColorB(m_Color.getBlue());        
-		        m_Parameter.setColorAlpha(m_Color.getAlpha());				
-				
+
+				m_Parameter.setColorR(m_Color.getRed());        
+				m_Parameter.setColorG(m_Color.getGreen());        
+				m_Parameter.setColorB(m_Color.getBlue());        
+				m_Parameter.setColorAlpha(m_Color.getAlpha());				
+
 				return true;
 			}
 			else {
@@ -111,14 +151,57 @@ ParameterPanel {
 
 	}
 
+	
+	private void walk(final DefaultTreeModel model, final Object o) {
+		int cc;
+		
+		if ( searchArgument == null )
+			return;
+		
+		cc = model.getChildCount(o);
+		for (int i = 0; i < cc; i++) {
+			DefaultMutableTreeNode child = (DefaultMutableTreeNode) model.getChild(o, i);
+			if (model.isLeaf(child)) {
+				String path = Arrays.toString(child.getPath());				
+				if (searchArgument.equals(path.substring(1, path.length() - 1))) {
+					selectedPath = new TreePath(model.getPathToRoot(child));
+					searchArgument = null;
+					break;
+				}
+			} else {
+				walk(model, child);
+			}
+		}
+	}
 
 	@Override
 	public void setParameter(final Parameter param) {
 
 		super.setParameter(param);
 
-		//TODO:
-
+		try {
+			if ( param != null ) {
+				final AdditionalInfoSelection ai = (AdditionalInfoSelection) param.getParameterAdditionalInfo();
+				if ( ai != null && ai.getSelectionPath() != null ) {
+					if ( ai.getSelectionPath().length() > 0 ) {
+						searchArgument = ai.getSelectionPath();
+						searchArgument = searchArgument.replace("[", "");
+						searchArgument = searchArgument.replace("]", "");
+						DefaultTreeModel model = (DefaultTreeModel) tree.getTree().getModel();
+						selectedPath = null;
+						walk(model, model.getRoot());
+						if ( selectedPath != null ) {
+							super.jButtonOk.setEnabled(true);
+							tree.getTree().expandPath(selectedPath);
+							tree.getTree().makeVisible(selectedPath);
+							tree.getTree().setSelectionPath(selectedPath);
+							tree.getTree().scrollPathToVisible(selectedPath.getParentPath());							
+						}
+					}
+				}
+			}
+		}
+		catch (final NullParameterAdditionalInfoException e) {}		
 	}
 
 

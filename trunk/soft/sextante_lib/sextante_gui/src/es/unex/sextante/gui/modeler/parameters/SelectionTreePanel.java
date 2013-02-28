@@ -3,7 +3,6 @@ package es.unex.sextante.gui.modeler.parameters;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.text.Collator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -64,6 +63,11 @@ public class SelectionTreePanel
    }
 
 
+   public JTree getTree () {
+	   return jTree;
+   }
+   
+   
    private void fillTree() {
 
       int j;

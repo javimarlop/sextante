@@ -29,6 +29,7 @@ public class ParameterSelection
             Parameter {
 
    private static final String OPTIONS = "options";
+   private static final String PATH = "path";
 
 
    @Override
@@ -186,6 +187,11 @@ public class ParameterSelection
          serializer.attribute(null, VALUE, s);
          serializer.endTag(null, ATTRIBUTE);
          serializer.text("\n");
+         serializer.text("\t\t\t");
+         serializer.startTag(null, ATTRIBUTE);
+         serializer.attribute(null, NAME, PATH);
+         serializer.attribute(null, VALUE, ais.getSelectionPath());
+         serializer.endTag(null, ATTRIBUTE);
       }
       else {
          throw new NullParameterAdditionalInfoException();
@@ -197,6 +203,7 @@ public class ParameterSelection
    public static Parameter deserialize(final KXmlParser parser) throws XmlPullParserException, IOException {
 
       String sValues = null;
+      String sPath = null;
 
       int tag = parser.nextTag();
 
@@ -209,6 +216,9 @@ public class ParameterSelection
                   if (sName.compareTo(OPTIONS) == 0) {
                      sValues = parser.getAttributeValue("", VALUE);
                   }
+                  if (sName.compareTo(PATH) == 0) {
+                      sPath = parser.getAttributeValue("", VALUE);
+                   }
                }
                break;
             case XmlPullParser.END_TAG:
@@ -228,10 +238,11 @@ public class ParameterSelection
 
       final ParameterSelection param = new ParameterSelection();
       final AdditionalInfoSelection ai = new AdditionalInfoSelection(sValues.split("\\;"));
+      if ( sPath != null )
+    	  ai.setSelectionPath(sPath);
       param.setParameterAdditionalInfo(ai);
-
+      
       return param;
-
    }
 
 
