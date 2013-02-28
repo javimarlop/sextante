@@ -31,8 +31,10 @@ import org.jgraph.event.GraphModelListener;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
+import org.jgraph.graph.DefaultGraphSelectionModel;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
+import org.jgraph.graph.GraphSelectionModel;
 
 import es.unex.sextante.additionalInfo.AdditionalInfo;
 import es.unex.sextante.core.GeoAlgorithm;
@@ -56,6 +58,7 @@ public class ModelGraphPanel
    private final HashMap      m_DataObjects;
    private final ArrayList    m_InputKeys;
    private JGraph             jGraph;
+   private DefaultGraphSelectionModel SelectionModel;
    private final Icon         m_InputIcon;
    private final Icon         m_ProcessIcon;
    private int                m_iInputs;
@@ -186,6 +189,10 @@ public class ModelGraphPanel
       jGraph.setAntiAliased(true);
       jGraph.setSizeable(true);
       jGraph.setEnabled(true);
+      
+      SelectionModel = new DefaultGraphSelectionModel(jGraph);
+      SelectionModel.setSelectionMode(GraphSelectionModel.SINGLE_GRAPH_SELECTION);
+      jGraph.setSelectionModel(SelectionModel);
 
       jGraph.addMouseListener(new MouseAdapter() {
          @Override
