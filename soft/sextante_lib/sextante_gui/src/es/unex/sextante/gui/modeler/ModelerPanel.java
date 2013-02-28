@@ -695,6 +695,20 @@ JPanel {
 		int returnVal;
 		if ( SaveAs == true || m_Algorithm.getFilename() == null ) {
 			returnVal = fc.showSaveDialog(this);
+			if ( returnVal == JFileChooser.APPROVE_OPTION && fc.getSelectedFile() != null ) {
+				final File f = fc.getSelectedFile();
+				if(f.exists()) {
+					final int iRet = JOptionPane.showConfirmDialog(null,
+					Sextante.getText("Model_file_exists") + "\n"
+					+ Sextante.getText("Do_you_want_to_overwrite"),
+					Sextante.getText("Warning"), JOptionPane.YES_NO_CANCEL_OPTION);
+					if (iRet == JOptionPane.YES_OPTION) {	
+						returnVal = JFileChooser.APPROVE_OPTION;
+					} else {
+						returnVal = JFileChooser.CANCEL_OPTION;
+					}
+				}
+			}
 		} else {
 			returnVal = JFileChooser.APPROVE_OPTION;
 		}		
@@ -724,7 +738,6 @@ JPanel {
 				modelGraphPanel.storeCoords();
 				ModelAlgorithmIO.save(this, file);
 				setHasChanged(false);
-				//m_bHasChanged = false;
 				SextanteGUI.updateAlgorithmProvider(ModelerAlgorithmProvider.class);
 				SextanteGUI.getGUIFactory().updateToolbox();
 			}
@@ -758,8 +771,6 @@ JPanel {
 				return;
 			}
 		}
-		//jMenuSave.setEnabled(false);
-		//m_bHasChanged = false;
 		setHasChanged(false);
 	}
 
