@@ -189,7 +189,6 @@ public class ModelAlgorithmIO {
          serializer.text("\t");
          serializer.endTag(null, MODEL);
          serializer.text("\n");
-         serializer.startDocument(encoding, new Boolean(true));
          writer.close();
       }
       catch (final Exception e) {
