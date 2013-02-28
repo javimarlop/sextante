@@ -26,6 +26,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
 import org.jgraph.JGraph;
+import org.jgraph.event.GraphModelEvent;
+import org.jgraph.event.GraphModelListener;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
@@ -227,6 +229,14 @@ public class ModelGraphPanel
     			  m_ModelerPanel.zoomMinus();
     		  }
     	  }
+      });
+      
+      jGraph.getModel().addGraphModelListener(new GraphModelListener() {
+
+		@Override
+		public void graphChanged(GraphModelEvent e) {
+			m_ModelerPanel.setHasChanged(true);			
+		}    	  
       });
 
    }
