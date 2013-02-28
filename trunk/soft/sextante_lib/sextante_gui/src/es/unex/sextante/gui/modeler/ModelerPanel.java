@@ -723,7 +723,8 @@ JPanel {
 				}
 				modelGraphPanel.storeCoords();
 				ModelAlgorithmIO.save(this, file);
-				m_bHasChanged = false;
+				setHasChanged(false);
+				//m_bHasChanged = false;
 				SextanteGUI.updateAlgorithmProvider(ModelerAlgorithmProvider.class);
 				SextanteGUI.getGUIFactory().updateToolbox();
 			}
@@ -749,7 +750,6 @@ JPanel {
 				m_Algorithm = ModelAlgorithmIO.open(file, this);
 				extensionsPanel.setAlgorithm(m_Algorithm);
 				extensionsPanel.setAlgorithmCount(m_Algorithm.getAlgorithms().size() + 1);
-				//updatePanel(false);
 				jTextFieldName.setText(m_Algorithm.getName());
 				updatePanel(false);
 			}
@@ -758,8 +758,9 @@ JPanel {
 				return;
 			}
 		}
-		jMenuSave.setEnabled(true);
-		m_bHasChanged = false;
+		//jMenuSave.setEnabled(false);
+		//m_bHasChanged = false;
+		setHasChanged(false);
 	}
 
 
@@ -1012,8 +1013,9 @@ JPanel {
 
 	public void setHasChanged(final boolean hasChanged) {
 
-		m_bHasChanged = hasChanged;
-
+		m_bHasChanged = hasChanged;		
+		jMenuSave.setEnabled(hasChanged);
+		this.repaint();
 	}
 
 
