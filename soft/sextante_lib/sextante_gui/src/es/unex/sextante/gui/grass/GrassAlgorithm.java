@@ -1476,16 +1476,6 @@ public class GrassAlgorithm
                sCommand.append(" " + param.getParameterName());//flags already contain the "-" as part of their names!
             }
          }
-         if (param instanceof ParameterNumericalValue) {
-             //Numerical values can be passed as strings
-             final String sValue = param.getParameterValueAsString();
-             if ((sValue != null) && !sValue.trim().equals("")) {
-                sCommand.append(" ");
-                sCommand.append(param.getParameterName());
-                sCommand.append("=");
-                sCommand.append(sValue);
-             }
-         }         
          else {
             if (param instanceof ParameterDataObject) {
                //GRASS input map(s)
@@ -1541,6 +1531,19 @@ public class GrassAlgorithm
                      }
                   }
                }
+               /*
+               else { 
+               if (param instanceof ParameterNumericalValue) {        	 
+                   //Numerical values can be passed as strings
+                   final String sValue = param.getParameterValueAsString();
+                   if ((sValue != null) && !sValue.trim().equals("")) {
+                      sCommand.append(" ");
+                      sCommand.append(param.getParameterName());
+                      sCommand.append("=");
+                      sCommand.append(sValue);
+                   }
+               } 
+               */        
 
                else {
                   //Any other GRASS option: should be just a simple string
