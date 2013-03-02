@@ -23,6 +23,7 @@ Setting {
 	public static final String GRASS_IN_POLYLINES    = "GrassInPolylines";
 	public static final String GRASS_CLEAN_POLYGONS  = "GrassCleanPolygons";
 	public static final String GRASS_USE_SEXTANTE_NULL  = "GrassUseSextanteNull";	
+	public static final String GRASS_COMPATIBILITY_MODE  = "GrassCompatibilityMode";
 
 
 	@Override
@@ -39,6 +40,7 @@ Setting {
 		map.put(GRASS_IN_POLYLINES, Boolean.FALSE.toString());
 		map.put(GRASS_CLEAN_POLYGONS, Boolean.FALSE.toString());
 		map.put(GRASS_USE_SEXTANTE_NULL, Boolean.FALSE.toString());
+		map.put(GRASS_COMPATIBILITY_MODE, Boolean.FALSE.toString());
 
 		return map;
 

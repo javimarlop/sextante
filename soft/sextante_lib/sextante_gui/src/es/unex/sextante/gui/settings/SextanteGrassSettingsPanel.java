@@ -55,6 +55,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 	private JCheckBox jCheckBoxInPolylines;
 	private JCheckBox jCheckBoxCleanPolygons;
 	private JCheckBox jCheckBoxSextanteNull;
+	private JCheckBox jCheckBoxCompatibility;
 
 	@Override
 	protected void initGUI() {
@@ -79,8 +80,9 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 						TableLayoutConstants.MINIMUM, // row 12
 						TableLayoutConstants.MINIMUM, // row 13
 						TableLayoutConstants.MINIMUM, // row 14
+						TableLayoutConstants.MINIMUM, // row 15
 						TableLayoutConstants.FILL,
-						TableLayoutConstants.MINIMUM, // row 16
+						TableLayoutConstants.MINIMUM, // row 17
 						SextanteConfigurationDialog.SPACER_SMALL } });
 		thisLayout.setHGap(5);
 		thisLayout.setVGap(5);
@@ -186,6 +188,12 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 			jCheckBoxSextanteNull.setSelected(new Boolean(SextanteGUI.getSettingParameterValue
 					(SextanteGrassSettings.GRASS_USE_SEXTANTE_NULL)).booleanValue());
 			this.add(jCheckBoxSextanteNull, "1, 14, 2, 14");			
+			
+			jCheckBoxCompatibility = new JCheckBox();
+			jCheckBoxCompatibility.setText(Sextante.getText("grass_compatibility_mode"));
+			jCheckBoxCompatibility.setSelected(new Boolean(SextanteGUI.getSettingParameterValue
+					(SextanteGrassSettings.GRASS_COMPATIBILITY_MODE)).booleanValue());
+			this.add(jCheckBoxCompatibility, "1, 15, 2, 15");			
 
 		}
 
@@ -197,7 +205,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 			logoLabel.setIconTextGap(4);
 			logoLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
 			logoLabel.setText("<html><i><a href=http://grass.osgeo.org/>http://grass.osgeo.org/</a></i></html>");
-			this.add(logoLabel,"1, 16, 2, 16");
+			this.add(logoLabel,"1, 17, 2, 17");
 		}
 		
 		/**********************************/
@@ -230,6 +238,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 					jCheckBoxInPolylines.setEnabled(active);
 					jCheckBoxCleanPolygons.setEnabled(active);
 					jCheckBoxSextanteNull.setEnabled(active);
+					jCheckBoxCompatibility.setEnabled(active);
 					jActivateCheckBox.getParent().repaint();
 					active = jPortableCheckBox.isSelected();
 					if ( active == true ) {
@@ -321,6 +330,7 @@ public class SextanteGrassSettingsPanel extends SettingPanel {
 		map.put(SextanteGrassSettings.GRASS_IN_POLYLINES, new Boolean(jCheckBoxInPolylines.isSelected()).toString());
 		map.put(SextanteGrassSettings.GRASS_CLEAN_POLYGONS, new Boolean(jCheckBoxCleanPolygons.isSelected()).toString());
 		map.put(SextanteGrassSettings.GRASS_USE_SEXTANTE_NULL, new Boolean(jCheckBoxSextanteNull.isSelected()).toString());
+		map.put(SextanteGrassSettings.GRASS_COMPATIBILITY_MODE, new Boolean(jCheckBoxCompatibility.isSelected()).toString());
 		return map;
 	}
 
