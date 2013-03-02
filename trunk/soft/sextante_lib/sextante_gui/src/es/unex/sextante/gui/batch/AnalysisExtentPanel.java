@@ -99,12 +99,14 @@ public class AnalysisExtentPanel
             throw new WrongAnalysisExtentException(Sextante.getText("Wrong_or_missing_region"));
          }
 
+         /* benducke: let's just assume the other knows what (s)he is doing...
          if (m_AnalysisExtent.getNX() * m_AnalysisExtent.getNY() > BIG_SIZE) {
             throw new TooLargeGridExtentException(Sextante.getText("The_selected_grid_extent_seems_too_large") + "("
                                                   + Integer.toString(m_AnalysisExtent.getNX()) + " X "
                                                   + Integer.toString(m_AnalysisExtent.getNY()) + ")\n"
                                                   + Sextante.getText("Are_you_sure_you_want_to_use_it?"));
          }
+         */
       }
 
 

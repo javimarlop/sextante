@@ -170,13 +170,14 @@ public class AnalysisExtentPanel
       }
 
       final int numCells = outputExtent.getNX() * outputExtent.getNY();
+      /* benducke: let's just assume the other knows what (s)he is doing...
       if ((numCells > BIG_SIZE) || (Integer.MAX_VALUE / outputExtent.getNY() < outputExtent.getNX())) {
          throw new TooLargeGridExtentException(Sextante.getText("The_selected_grid_extent_seems_too_large") + "("
                                                + Integer.toString(outputExtent.getNX()) + " X "
                                                + Integer.toString(outputExtent.getNY()) + ")\n"
                                                + Sextante.getText("Are_you_sure_you_want_to_use_it?"));
       }
-
+      */
    }
 
 

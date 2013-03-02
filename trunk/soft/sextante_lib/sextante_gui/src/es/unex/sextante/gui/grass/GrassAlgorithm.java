@@ -1091,11 +1091,13 @@ public class GrassAlgorithm
       final String location = new String(path.substring(path.lastIndexOf(File.separator) + 1, path.length()));
       final String gisdbase = new String(path.substring(0, path.lastIndexOf(File.separator)));      
       
+      final boolean bCompatMode = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_COMPATIBILITY_MODE)).booleanValue();
+      
       //Default DB driver is SQLite, but if it is not supported, then DBF will
       //be the fallback choice.
-      sCommand.append("db.connect driver=sqlite database='"+gisdbase+File.separator+location+File.separator+mapset+File.separator+"sqlite.db'\n");
-      //Sextante.addInfoToLog("*** SQLITE INIT:\n");
-      //Sextante.addInfoToLog(sCommand.toString());
+      if ( bCompatMode == false ) {
+    	  sCommand.append("db.connect driver=sqlite database='"+gisdbase+File.separator+location+File.separator+mapset+File.separator+"sqlite.db'\n");
+      }
       
       //Set GRASS region
       if (getUserCanDefineAnalysisExtent()) {
@@ -1154,9 +1156,12 @@ public class GrassAlgorithm
             //Create a safe GRASS map name for the imported layer
             final String sGrassName = GrassUtils.getTempMapName();
 
-            //Import raster layer via GDAL
-            //sCommand.append("r.in.gdal");
-            sCommand.append("r.external");
+            //Import or attach raster layer via GDAL
+            if ( bCompatMode == true ) {
+            	sCommand.append("r.in.gdal");
+            } else { 
+            	sCommand.append("r.external");
+            }
             sCommand.append(" input=\"" + sFilename + "\"");
             sCommand.append(" band=1");
             sCommand.append(" output=" + sGrassName);
@@ -1191,19 +1196,25 @@ public class GrassAlgorithm
                   //Create a safe GRASS map name for the imported layer
                   final String sGrassName = GrassUtils.getTempMapName();
 
-                  //Import raster layers via GDAL
-                  //sCommand.append("r.in.gdal");
-                  sCommand.append("r.external");
+                  //Import or attach raster layer via GDAL
+                  if ( bCompatMode == true ) {
+                  	sCommand.append("r.in.gdal");
+                  } else { 
+                  	sCommand.append("r.external");
+                  }
                   sCommand.append(" input=\"" + sFilename + "\"");
                   sCommand.append(" band=1");
                   sCommand.append(" output=" + sGrassName);
                   sCommand.append(" --overwrite -o\n");
                   rasterLayers.add(sGrassName);
                   
-                  //Add NULL value mask
-                  //sCommand.append("r.null map=" + sGrassName);
-                  //sCommand.append(" setnull=\"" + Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue()) + "\"");
-                  //sCommand.append("\n");
+                  //Add NULL value mask if SEXTANTE null value is forwarded
+                  final boolean bSEXTANTENull = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_USE_SEXTANTE_NULL)).booleanValue();
+                  if (bSEXTANTENull == true ) { 
+                	  sCommand.append("r.null map=" + sGrassName);
+                	  sCommand.append(" setnull=\"" + Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue()) + "\"");
+                	  sCommand.append("\n");
+                  }
 
                   //Map relation between imported file and new GRASS map.
                   //We will need this later to substitute the GRASS input options.
@@ -1358,7 +1369,7 @@ public class GrassAlgorithm
                   final String sGrassName = GrassUtils.getTempMapName();
                   //Check for selection filter
                   String sSelectionFilter = new String (applySelectionFilter(layer,sGrassName,keys));
-                //build v.in.ogr command
+                  //build v.in.ogr command
                   sCommand.append("v.in.ogr");
                   String sParent = file.getParent();
                   if (sParent.endsWith(File.separator)) {
@@ -1465,6 +1476,16 @@ public class GrassAlgorithm
                sCommand.append(" " + param.getParameterName());//flags already contain the "-" as part of their names!
             }
          }
+         if (param instanceof ParameterNumericalValue) {
+             //Numerical values can be passed as strings
+             final String sValue = param.getParameterValueAsString();
+             if ((sValue != null) && !sValue.trim().equals("")) {
+                sCommand.append(" ");
+                sCommand.append(param.getParameterName());
+                sCommand.append("=");
+                sCommand.append(sValue);
+             }
+         }         
          else {
             if (param instanceof ParameterDataObject) {
                //GRASS input map(s)
@@ -1794,8 +1815,13 @@ public class GrassAlgorithm
                   optLCO = new String("\"SHPT=POLYGONZ\"");
                }
 
-               //GRASS 6.4.3 has support for "-s" to skip "cat" field export! 
-               sCommand.append("v.out.ogr -s -c input=");
+               //GRASS 6.4.3 has support for "-s" to skip "cat" field export!
+               
+               if ( bCompatMode == false ) {
+            	   sCommand.append("v.out.ogr -s -c input=");
+               } else {
+            	   sCommand.append("v.out.ogr -c input=");
+               }
                sCommand.append(out.getName());
                file = new File(foc.getFilename());
                sCommand.append(" dsn=\"" + file.getParent() + "\"");
@@ -1814,8 +1840,12 @@ public class GrassAlgorithm
             }
             else if (out instanceof OutputRasterLayer) {
                //Raster layer output: adjust region to layer before exporting
+               final boolean bSEXTANTENull = new Boolean(SextanteGUI.getSettingParameterValue(SextanteGrassSettings.GRASS_USE_SEXTANTE_NULL)).booleanValue();
                sCommand.append("g.region rast=" + out.getName() + "\n");
-               sCommand.append("r.out.gdal -c");               
+               sCommand.append("r.out.gdal -c");
+               if ( bSEXTANTENull == true ) {
+            	   sCommand.append(" nodata=\"" + Double.toString(SextanteGUI.getOutputFactory().getDefaultNoDataValue()) + "\"");
+               }
                sCommand.append(" createopt=\"TFW=YES,COMPRESS=LZW\"");
                sCommand.append(" input=");
                sCommand.append(out.getName());
