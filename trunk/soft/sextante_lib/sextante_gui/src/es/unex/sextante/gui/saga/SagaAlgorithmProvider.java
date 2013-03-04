@@ -15,6 +15,7 @@ import es.unex.sextante.gui.core.SextanteGUI;
 import es.unex.sextante.gui.core.ToolboxAction;
 import es.unex.sextante.gui.grass.GrassAlgorithmProvider;
 import es.unex.sextante.gui.settings.Setting;
+import es.unex.sextante.gui.settings.SextanteGrassSettings;
 import es.unex.sextante.gui.settings.SextanteSagaSettings;
 
 public class SagaAlgorithmProvider
@@ -107,6 +108,16 @@ public class SagaAlgorithmProvider
 
       m_Algs.clear();
 
+      if ( SagaUtils.getSagaDescriptionFolder() == null ) {
+    	  SextanteGUI.setSettingParameterValue(SextanteSagaSettings.SAGA_ACTIVATE, new Boolean(false).toString());    	  
+    	  return;
+      }
+      
+      if ( SagaUtils.getSagaDescriptionFolder().length() < 1 ) {
+    	  SextanteGUI.setSettingParameterValue(SextanteSagaSettings.SAGA_ACTIVATE, new Boolean(false).toString());  
+    	  return;
+      }      
+      
       try {
          final File file = new File(SagaUtils.getSagaDescriptionFolder());
          final String[] files = file.list();

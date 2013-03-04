@@ -18,8 +18,10 @@ import es.unex.sextante.gui.core.NameAndIcon;
 import es.unex.sextante.gui.core.SextanteGUI;
 import es.unex.sextante.gui.core.ToolboxAction;
 import es.unex.sextante.gui.exceptions.WrongGrassFolderException;
+import es.unex.sextante.gui.r.RUtils;
 import es.unex.sextante.gui.settings.Setting;
 import es.unex.sextante.gui.settings.SextanteGrassSettings;
+import es.unex.sextante.gui.settings.SextanteRSettings;
 
 public class GrassAlgorithmProvider
          implements
@@ -60,6 +62,16 @@ public class GrassAlgorithmProvider
 
       m_Algs.clear();
 
+      if ( getGrassDescriptionFolder() == null ) {
+    	  SextanteGUI.setSettingParameterValue(SextanteGrassSettings.GRASS_ACTIVATE, new Boolean(false).toString());    	  
+    	  return;
+      }
+      
+      if ( getGrassDescriptionFolder().length() < 1 ) {
+    	  SextanteGUI.setSettingParameterValue(SextanteGrassSettings.GRASS_ACTIVATE, new Boolean(false).toString());  
+    	  return;
+      }      
+      
       try {
          final File file = new File(getGrassDescriptionFolder());
          final String[] files = file.list();

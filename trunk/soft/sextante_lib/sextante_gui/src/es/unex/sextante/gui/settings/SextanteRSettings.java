@@ -38,7 +38,7 @@ public class SextanteRSettings
 
       final HashMap<String, String> map = new HashMap<String, String>();
       map.put(R_ACTIVATE, Boolean.FALSE.toString());
-      map.put(R_PORTABLE, Boolean.FALSE.toString());
+      map.put(R_PORTABLE, Boolean.TRUE.toString());
       map.put(R_FOLDER, SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_FOLDER);            
       map.put(R_FOLDER, SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_R_SCRIPTS_FOLDER);
       return map;

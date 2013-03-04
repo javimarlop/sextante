@@ -39,7 +39,7 @@ Setting {
 
 		final HashMap<String, String> map = new HashMap<String, String>();
 		map.put(SAGA_ACTIVATE, Boolean.FALSE.toString());
-		map.put(SAGA_PORTABLE, Boolean.FALSE.toString());		
+		map.put(SAGA_PORTABLE, Boolean.TRUE.toString());		
 		map.put(SAGA_FOLDER, SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_SAGA_FOLDER);
 		return map;
 

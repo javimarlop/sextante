@@ -97,6 +97,16 @@ public class RAlgorithmProvider
    public void initialize() {
 
       m_Algs = new HashMap<String, GeoAlgorithm>();
+      
+      if ( RUtils.getScriptsFolder() == null ) {
+    	  SextanteGUI.setSettingParameterValue(SextanteRSettings.R_ACTIVATE, new Boolean(false).toString());    	  
+    	  return;
+      }
+      
+      if ( RUtils.getScriptsFolder().length() < 1 ) {
+    	  SextanteGUI.setSettingParameterValue(SextanteRSettings.R_ACTIVATE, new Boolean(false).toString());  
+    	  return;
+      }
 
       final GeoAlgorithm[] algs = RScriptsIO.loadRScriptsAsAlgorithms(RUtils.getScriptsFolder());
 

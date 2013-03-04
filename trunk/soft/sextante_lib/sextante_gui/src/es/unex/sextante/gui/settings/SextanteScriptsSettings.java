@@ -34,7 +34,7 @@ Setting {
 	public HashMap<String, String> getInitValues() {
 
 		final HashMap<String, String> map = new HashMap<String, String>();
-		map.put(SCRIPTS_PORTABLE, Boolean.FALSE.toString());
+		map.put(SCRIPTS_PORTABLE, Boolean.TRUE.toString());
 		map.put(SCRIPTS_FOLDER, SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_SCRIPTS_FOLDER);
 
 		return map;
