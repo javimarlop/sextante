@@ -31,7 +31,7 @@ Setting {
 
 		final HashMap<String, String> map = new HashMap<String, String>();
 		map.put(GRASS_ACTIVATE, Boolean.FALSE.toString());
-		map.put(GRASS_PORTABLE, Boolean.FALSE.toString());
+		map.put(GRASS_PORTABLE, Boolean.TRUE.toString());
 		map.put(GRASS_FOLDER, SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_GRASS_FOLDER);
 		map.put(GRASS_WIN_SHELL, SextanteGUI.getSextantePath() + File.separator + Sextante.PORTABLE_MSYS_FILE);
 		map.put(GRASS_LAT_LON_MODE, Boolean.FALSE.toString());
